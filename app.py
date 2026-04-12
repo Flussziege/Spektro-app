@@ -1,6 +1,7 @@
 from __future__ import annotations
 import streamlit as st
 from datetime import date
+from services.plotly_nmr import make_interactive_1h_plot
 
 from liste_neu import moleküle
 from daily_molekuele import moleküle_daily
@@ -9,6 +10,7 @@ import generator
 import generator2
 import generator5
 import hnmr
+
 
 from services.quiz_logic import (
     pick_random_molecule,
@@ -62,17 +64,25 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
     with tab2:
         st.subheader("1H NMR")
         try:
-            fig2 = hnmr.simulate_1h_nmr(
+            nmr_result = hnmr.simulate_1h_nmr(
                 smiles,
                 seed=42,
                 plot=False,
                 verbose=False,
                 line_width=0.008,
-                show_integrals=False,
+                show_integrals=True,
                 show_title=True,
-                testrun=False,
+                testrun=True,
             )
-            st.pyplot(fig2, clear_figure=True)
+    
+            fig2 = make_interactive_1h_plot(
+                nmr_result=nmr_result,
+                smiles=smiles,
+                show_integrals=True,
+            )
+    
+            st.plotly_chart(fig2, use_container_width=True)
+    
         except Exception as e:
             st.error(f"1H NMR konnte nicht erzeugt werden: {e}")
 
