@@ -81,7 +81,24 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 show_integrals=True,
             )
     
-            st.plotly_chart(fig2, use_container_width=True)
+            st.plotly_chart(
+                fig2,
+                use_container_width=True,
+                config={
+                    "scrollZoom": True,
+                    "displaylogo": False,
+                    "doubleClick": "reset",
+                    "modeBarButtonsToRemove": [
+                        "zoom2d",
+                        "select2d",
+                        "lasso2d",
+                        "zoomIn2d",
+                        "zoomOut2d",
+                        "autoScale2d",
+                    ],
+                },
+                theme=None,
+            )
     
         except Exception as e:
             st.error(f"1H NMR konnte nicht erzeugt werden: {e}")
