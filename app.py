@@ -8,6 +8,7 @@ from daily_molekuele import moleküle_daily
 import generator
 import generator2
 import generator5
+import hnmr
 
 from services.quiz_logic import (
     pick_random_molecule,
@@ -60,7 +61,20 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
 
     with tab2:
         st.subheader("1H NMR")
-        st.info("1H-NMR-Einbindung folgt im nächsten Schritt.")
+        try:
+            fig2 = hnmr.simulate_1h_nmr(
+                smiles,
+                seed=42,
+                plot=False,
+                verbose=False,
+                line_width=0.008,
+                show_integrals=False,
+                show_title=True,
+                testrun=False,
+            )
+            st.pyplot(fig2, clear_figure=True)
+        except Exception as e:
+            st.error(f"1H NMR konnte nicht erzeugt werden: {e}")
 
     with tab3:
         st.subheader("IR")
