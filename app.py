@@ -116,6 +116,24 @@ init_session_state()
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
 daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily)
 
+def card(title: str, text: str):
+    st.html(f"""
+    <div style="
+        background:#FFFFFF;
+        border:1px solid #E5E7EB;
+        border-radius:16px;
+        padding:1.2rem;
+        box-shadow:0 1px 3px rgba(15,23,42,0.04);
+    ">
+        <div style="font-size:1.1rem;font-weight:600;">
+            {title}
+        </div>
+        <div style="color:#475569;">
+            {text}
+        </div>
+    </div>
+    """)
+
 
 def render_spectra_tabs(smiles: str, show_structure: bool = False):
 
@@ -225,16 +243,22 @@ def render_home():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Quiz")
-        st.write("Zufälliges Molekül aus der Hauptliste.")
+        card("Quiz", "Zufälliges Molekül aus der Hauptliste.")
+        if st.button("Quiz starten", type="primary", use_container_width=True):
+            mol = pick_random_molecule(moleküle)
+            start_quiz(mol)
+            st.rerun()
         if st.button("Quiz starten", type="primary", use_container_width=True):
             mol = pick_random_molecule(moleküle)
             start_quiz(mol)
             st.rerun()
 
     with col2:
-        st.subheader("Daily Quiz")
-        st.write("Jeden Tag ein neues Molekül aus einer separaten Liste.")
+        card("Daily Quiz", "Jeden Tag ein neues Molekül.")
+        if st.button("Daily Quiz öffnen", use_container_width=True):
+            mol = pick_daily_molecule(moleküle_daily)
+            start_daily(mol)
+            st.rerun()
         if st.button("Daily Quiz öffnen", use_container_width=True):
             mol = pick_daily_molecule(moleküle_daily)
             start_daily(mol)
