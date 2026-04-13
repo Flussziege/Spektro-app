@@ -46,7 +46,7 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
 
     if show_integrals:
         fig.update_layout(
-            title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
+            title=f"Simuliertes ¹³C-NMR-Spektrum",
             xaxis_title="Chemical Shift δ (ppm)",
             yaxis_title="Intensität (rel.)",
             template="plotly_white",
