@@ -748,6 +748,13 @@ def render_daily():
     if current_daily_value not in available_daily_names:
         st.session_state["daily_reset_selection"] = True
 
+    if "daily_reset_selection" not in st.session_state:
+        st.session_state["daily_reset_selection"] = False
+
+    if st.session_state.get("daily_reset_selection"):
+        st.session_state["daily_answer_select"] = ""
+        st.session_state["daily_reset_selection"] = False
+
     answer = st.selectbox(
         t("daily_question"),
         available_daily_names,
@@ -790,7 +797,7 @@ def render_daily():
                 attempts_now = st.session_state["daily_attempt_count"]
                 st.session_state["daily_last_feedback"] = get_daily_unlock_message(attempts_now)
 
-                st.session_state["daily_answer_select"] = ""
+                st.session_state["daily_reset_selection"] = True
 
             st.rerun()
 
