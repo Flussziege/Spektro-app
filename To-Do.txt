@@ -19,6 +19,7 @@ NMR FEHLERHAFT:
 
 - methanal/formaldehyd *
     -warum bei 0.1 statt 10 *
+- Anilin? singulett für amin?
 
 
 MS:

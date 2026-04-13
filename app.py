@@ -101,6 +101,7 @@ details {
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
+    max-width: 95rem;
 }
 
 </style>
