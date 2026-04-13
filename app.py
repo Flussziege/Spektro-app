@@ -57,7 +57,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 smiles,
                 seed=42,
                 plot=False,
-                show_title=True,
+                show_title= show_structure,
                 easymode=False,
             )
             st.pyplot(fig1, clear_figure=True)
