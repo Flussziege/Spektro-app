@@ -583,15 +583,15 @@ def render_daily():
     col1, col2 = st.columns(2)
 
     with col1:
-    if st.button(t("daily_submit"), type="primary", use_container_width=True):
-        selected_smiles = daily_name_to_smiles.get(answer.strip().lower()) if answer else None
-        correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
+        if st.button(t("daily_submit"), type="primary", use_container_width=True):
+            selected_smiles = daily_name_to_smiles.get(answer.strip().lower()) if answer else None
+            correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
 
-        st.session_state["daily_user_answer"] = answer
-        st.session_state["daily_user_smiles"] = selected_smiles
+            st.session_state["daily_user_answer"] = answer
+            st.session_state["daily_user_smiles"] = selected_smiles
 
-        submit_daily(correct)
-        st.rerun()
+            submit_daily(correct)
+            st.rerun()
 
     with col2:
         if st.button(t("back_home"), key="daily_home_top", use_container_width=True):
