@@ -404,7 +404,7 @@ def render_quiz():
         st.markdown("---")
 
         user_answer = st.session_state.get("quiz_user_answer", "")
-        user_smiles = name_to_smiles.get(user_answer.strip().lower()) if user_answer else None
+        user_smiles = st.session_state.get("quiz_user_smiles")
         user_name = user_answer if user_answer else t("no_selection")
 
         if st.session_state["quiz_correct"]:

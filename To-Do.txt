@@ -99,8 +99,8 @@ Webseite:
 - sprache:
     liste neu machen? *
 - richtig falsch bei daily *
+- schwierigkeiten *
 
-- schwierigkeiten
 - daily mit weniger spektren?
 - hinweis funktion
     - 13C integral stimmt
