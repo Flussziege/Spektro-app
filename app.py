@@ -34,7 +34,6 @@ from services.render_helpers import (
 
 st.set_page_config(
     page_title="Spektren Quiz",
-    page_icon="🧪",
     layout="wide",
 )
 
@@ -144,7 +143,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
 
 
 def render_home():
-    st.title("🧪 Spektren Quiz")
+    st.title("Spektren Quiz")
     st.write("Trainiere die Zuordnung organischer Moleküle anhand simulierter Spektren.")
 
     col1, col2 = st.columns(2)
