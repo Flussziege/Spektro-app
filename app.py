@@ -133,9 +133,9 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
             try:
                 img = smiles_to_pil(smiles)
                 if img is not None:
-                        st.image(img, width=320)
-                    else:
-                        st.warning("Strukturbild konnte nicht erzeugt werden.")
+                    st.image(img, width=320)
+                else:
+                    st.warning("Strukturbild konnte nicht erzeugt werden.")
             except Exception as e:
                     st.error(f"Struktur konnte nicht gezeichnet werden: {e}")
 
