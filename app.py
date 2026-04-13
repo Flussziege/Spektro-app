@@ -76,10 +76,10 @@ details {
     border-radius: 12px;
 }
 
-/* Tabs */
+/* Tabs nur leicht anpassen, nicht überschreiben */
 .stTabs [data-baseweb="tab"] {
     background: #F8FAFC;
-    border: 1px solid #E5E7EB;
+    border: none;
 }
 
 .stTabs [aria-selected="true"] {
