@@ -145,6 +145,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 seed=42,
                 plot=False,
                 show_title=show_structure,
+                show_integrals=show_structure,
                 easymode=False,
                 width=0.035,
                 testrun=True,
