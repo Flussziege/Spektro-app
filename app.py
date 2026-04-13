@@ -266,6 +266,38 @@ def get_daily_unlock_message(attempts: int) -> str | None:
         return t("daily_new_hint_formula")
     return None
 
+def empirical_formula_with_n_html(smiles: str) -> str | None:
+    molecular = get_molecular_formula(smiles)
+    if not molecular:
+        return None
+
+    parts = re.findall(r"([A-Z][a-z]*)(\d*)", molecular)
+    if not parts:
+        return None
+
+    parsed = []
+    counts = []
+
+    for element, count_str in parts:
+        count = int(count_str) if count_str else 1
+        parsed.append((element, count))
+        counts.append(count)
+
+    divisor = reduce(gcd, counts)
+    if divisor <= 1:
+        return formula_to_html_subscripts(molecular)
+
+    chunks = []
+    for element, count in parsed:
+        reduced = count // divisor
+
+        if reduced == 1:
+            chunks.append(f"{element}<sub>n</sub>")
+        else:
+            chunks.append(f"{element}<sub>{reduced}n</sub>")
+
+    return " ".join(chunks)
+
 def card(title: str, text: str):
     st.html(f"""
     <div style="
@@ -713,9 +745,12 @@ def render_daily():
     )
 
     if show_empirical_formula:
-        empirical_n = empirical_formula_with_n(smiles)
-        if empirical_n:
-            st.markdown(f"**{t('empirical_formula_n_label_plain')}** {empirical_n}")
+        empirical_n_html = empirical_formula_with_n_html(smiles)
+        if empirical_n_html:
+            st.markdown(
+                f"**{t('empirical_formula_n_label_plain')}** {empirical_n_html}",
+                unsafe_allow_html=True,
+            )
 
     if show_molecular_formula:
         molecular_formula = get_molecular_formula(smiles)
