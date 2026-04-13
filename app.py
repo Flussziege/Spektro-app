@@ -104,16 +104,17 @@ details {
 init_session_state()
 
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
-daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily)
-
+daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily
+                                                                          
+                                                                          
 def card(title: str, text: str):
     st.html(f"""
     <div style="
-        background:#FFFFFF;
+        background:#F8FAFC;
         border:1px solid #E5E7EB;
         border-radius:16px;
         padding:1.2rem;
-        box-shadow:0 1px 3px rgba(15,23,42,0.04);
+        box-shadow:0 1px 3px rgba(15,23,42,0.03);
     ">
         <div style="font-size:1.1rem;font-weight:600;">
             {title}
