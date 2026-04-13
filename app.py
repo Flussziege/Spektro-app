@@ -73,15 +73,15 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 plot=False,
                 verbose=False,
                 line_width=0.008,
-                show_integrals=True,
-                show_title=True,
+                show_integrals=show_structure,
+                show_title=show_structure,
                 testrun=True,
             )
     
             fig2 = make_interactive_1h_plot(
                 nmr_result=nmr_result,
                 smiles=smiles,
-                show_integrals=True,
+                show_integrals=show_structure,
             )
     
             st.plotly_chart(
@@ -113,7 +113,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 smiles,
                 seed=42,
                 plot=False,
-                show_title=True,
+                show_title=show_structure,
             )
             st.pyplot(fig3, clear_figure=True)
         except Exception as e:
