@@ -86,7 +86,7 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
     return fig
 
 
-def make_interactive_ir_plot(ir_result: dict, smiles: str):
+def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool = True):
     x = ir_result["wns"]
     y = ir_result["spectrum"]
 
