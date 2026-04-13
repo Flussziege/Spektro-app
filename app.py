@@ -32,82 +32,72 @@ from services.render_helpers import (
     set_lookup,
 )
 
-st.set_page_config(
-    page_title="Spektren Quiz",
-    layout="wide",
-)
-
 st.html("""
 <style>
-/* Hauptbereich luftiger */
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    max-width: 1200px;
+
+/* Hintergrund der gesamten App minimal wärmer */
+.main {
+    background-color: #FFFFFF;
 }
 
-/* Überschriften klar und ruhig */
-h1, h2, h3 {
-    letter-spacing: -0.02em;
-    font-weight: 600;
-}
-
-/* Buttons klinisch und ruhig */
+/* Buttons leicht grau */
 .stButton > button {
-    background: white;
+    background: #F8FAFC;
     color: #111827;
     border: 1px solid #E5E7EB;
     border-radius: 10px;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    box-shadow: none;
 }
 
 .stButton > button:hover {
+    background: #F1F5F9;
     border-color: #CBD5E1;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 }
 
-/* Primäre Buttons etwas dunkler, aber nicht bunt */
+/* Primäre Buttons (z.B. Quiz starten) */
 .stButton > button[kind="primary"] {
     background: #111827;
     color: white;
     border: 1px solid #111827;
 }
 
-/* Expander sehr sauber */
+/* Input-Felder (SMILES / Selectbox) */
+.stTextInput input,
+.stSelectbox div[data-baseweb="select"] > div {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+}
+
+/* Expander (Lookup) */
 details {
+    background: #F8FAFC;
     border: 1px solid #E5E7EB;
     border-radius: 12px;
-    background: #FFFFFF;
 }
 
-/* Tabs ruhiger */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 0.5rem;
-}
-
+/* Tabs */
 .stTabs [data-baseweb="tab"] {
     background: #F8FAFC;
     border: 1px solid #E5E7EB;
-    border-radius: 10px 10px 0 0;
-    padding: 0.5rem 0.9rem;
 }
 
 .stTabs [aria-selected="true"] {
     background: #FFFFFF;
-    border-bottom-color: #FFFFFF;
 }
 
-/* Inputs und Selectboxen klarer */
-.stTextInput input, .stSelectbox div[data-baseweb="select"] > div {
-    border-radius: 10px;
-}
-
-/* Alert-Boxen dezenter */
+/* Alerts (Ergebnisboxen) */
 [data-testid="stAlert"] {
-    border-radius: 12px;
+    background: #F8FAFC;
     border: 1px solid #E5E7EB;
-    box-shadow: none;
 }
+
+/* Allgemeine Container etwas luftiger */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
 </style>
 """)
 
