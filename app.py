@@ -78,7 +78,7 @@ details {
 
 /* Tabs nur leicht anpassen, nicht überschreiben */
 .stTabs [data-baseweb="tab"] {
-    background: #F8FAFC;
+    background: #FFFFFF;
     border: none;
 }
 
