@@ -117,6 +117,12 @@ details {
 
 init_session_state()
 
+if "lang_select" not in st.session_state:
+    st.session_state["lang_select"] = st.session_state.get("lang", "de")
+
+if "lang" not in st.session_state:
+    st.session_state["lang"] = "de"
+
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
 daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily)
                                                                           
@@ -291,14 +297,16 @@ def render_home():
     col_title, col_lang = st.columns([5, 1])
 
     with col_lang:
-        lang = st.selectbox(
+        lang = st.segmented_control(
             t("language_label"),
             options=["de", "en"],
-            format_func=lambda x: "Deutsch" if x == "de" else "English",
-            index=0 if st.session_state.get("lang", "de") == "de" else 1,
+            format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
             key="lang_select",
+            selection_mode="single",
+            width="content",
         )
-        st.session_state["lang"] = lang
+        if lang is not None:
+            st.session_state["lang"] = lang
 
     with col_title:
         st.title(t("home_title"))
