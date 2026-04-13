@@ -13,6 +13,7 @@ def init_session_state():
         "quiz_submitted": False,
         "quiz_correct": None,
         "quiz_user_answer": "",
+        "quiz_user_smiles": None,
 
         # Daily Quiz
         "daily_smiles": None,
@@ -21,18 +22,18 @@ def init_session_state():
         "daily_correct": None,
         "daily_done_date": None,
         "daily_user_answer": "",
+        "daily_user_smiles": None,
 
         # Lookup
         "lookup_smiles": None,
 
-        #Sprache
+        # Sprache
         "lang": "de",
     }
 
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
-
 
 
 def go_home():
@@ -45,6 +46,7 @@ def start_quiz(mol: dict):
     st.session_state["quiz_submitted"] = False
     st.session_state["quiz_correct"] = None
     st.session_state["quiz_user_answer"] = ""
+    st.session_state["quiz_user_smiles"] = None
     st.session_state["mode"] = "quiz"
 
 
@@ -59,6 +61,7 @@ def start_daily(mol: dict):
     st.session_state["daily_submitted"] = False
     st.session_state["daily_correct"] = None
     st.session_state["daily_user_answer"] = ""
+    st.session_state["daily_user_smiles"] = None
     st.session_state["mode"] = "daily"
 
 
