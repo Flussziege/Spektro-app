@@ -1,4 +1,4 @@
-moleküle = [
+moleküle_daily = [
     # Alkane / Cycloalkane
     {"name_de": "Methan", "name_en": "Methane", "smiles": "C", "difficulty": "easy"},
     {"name_de": "Ethan", "name_en": "Ethane", "smiles": "CC", "difficulty": "easy"},
