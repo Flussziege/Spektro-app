@@ -322,18 +322,31 @@ def plot_ir(wns, transmittance, smiles: str,
 # ══════════════════════════════════════════════════════════════════════════════
 
 def simulate_ir(smiles: str, noise: float = 0.006,
-                seed: int = None, plot: bool = True, show_title: bool=True, testrun: bool = False):
+                seed: int = None, plot: bool = True,
+                show_title: bool = True, testrun: bool = False):
 
     freqs, intens, widths, groups = collect_peaks(smiles, seed=seed)
-    wns, trans = synthesize_spectrum(freqs, intens, widths,
-                                      noise_level=noise, seed=seed or 42)
+    wns, trans = synthesize_spectrum(
+        freqs, intens, widths,
+        noise_level=noise, seed=seed or 42
+    )
     fig = plot_ir(wns, trans, smiles, groups=groups, show_title=show_title)
-    
-    if testrun and plot:
-            plt.show()
 
-    return fig
-    
+    if testrun:
+        return {
+            "frequencies": freqs,
+            "intensities": intens,
+            "widths": widths,
+            "groups": groups,
+            "wns": wns,
+            "spectrum": trans,
+            "figure": fig,
+        }
+
+    if plot:
+        plt.show()
+
+    return fig   
 
 
 

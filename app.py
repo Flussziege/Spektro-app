@@ -33,7 +33,8 @@ from services.render_helpers import (
 )
 
 from services.plotly_spectra import (
-    make_interactive_13c_plot
+    make_interactive_13c_plot,
+    make_interactive_ir_plot
 )
 
 st.html("""
@@ -218,13 +219,34 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
     with tab3:
         st.subheader("IR")
         try:
-            fig3 = generator2.simulate_ir(
+            ir_result = generator2.simulate_ir(
                 smiles,
                 seed=42,
                 plot=False,
-                show_title=show_structure,
+                show_title=True,
+                testrun=True,
             )
-            st.pyplot(fig3, clear_figure=True)
+
+            fig3 = make_interactive_ir_plot(ir_result, smiles)
+
+            st.plotly_chart(
+                fig3,
+                use_container_width=True,
+                config={
+                    "scrollZoom": True,
+                    "displaylogo": False,
+                    "doubleClick": "reset",
+                    "modeBarButtonsToRemove": [
+                        "zoom2d",
+                        "select2d",
+                        "lasso2d",
+                        "zoomIn2d",
+                        "zoomOut2d",
+                        "autoScale2d",
+                    ],
+                },
+                theme=None,
+            )
         except Exception as e:
             st.error(f"IR konnte nicht erzeugt werden: {e}")
 
