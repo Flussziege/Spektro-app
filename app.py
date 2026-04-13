@@ -290,9 +290,6 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
 def render_home():
     col_title, col_lang = st.columns([5, 1])
 
-    with col_title:
-        st.title(t("home_title"))
-
     with col_lang:
         lang = st.selectbox(
             t("language_label"),
@@ -302,6 +299,9 @@ def render_home():
             key="lang_select",
         )
         st.session_state["lang"] = lang
+
+    with col_title:
+        st.title(t("home_title"))
 
     st.write(t("home_subtitle"))
 
