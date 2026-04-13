@@ -3,6 +3,12 @@ import streamlit as st
 from datetime import date
 from services.plotly_nmr import make_interactive_1h_plot
 
+import re
+from math import gcd
+from functools import reduce
+from rdkit import Chem
+from rdkit.Chem import rdMolDescriptors
+
 from liste_neu import moleküle
 from daily_molekuele import moleküle_daily
 
@@ -158,6 +164,61 @@ def get_molecule_data(smiles: str, daily: bool = False) -> tuple[dict | None, st
 
     return mol, get_display_name(mol, lang=current_lang), get_difficulty(mol)
 
+def get_molecular_formula(smiles: str) -> str | None:
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        return None
+    return rdMolDescriptors.CalcMolFormula(mol)
+
+
+def get_empirical_formula_from_molecular(formula: str) -> str:
+    parts = re.findall(r"([A-Z][a-z]*)(\d*)", formula)
+    if not parts:
+        return formula
+
+    parsed = []
+    counts = []
+
+    for element, count_str in parts:
+        count = int(count_str) if count_str else 1
+        parsed.append((element, count))
+        counts.append(count)
+
+    divisor = reduce(gcd, counts)
+    if divisor <= 1:
+        return formula
+
+    result = ""
+    for element, count in parsed:
+        reduced = count // divisor
+        result += element if reduced == 1 else f"{element}{reduced}"
+    return result
+
+
+def get_empirical_formula_hint(smiles: str) -> str | None:
+    molecular = get_molecular_formula(smiles)
+    if not molecular:
+        return None
+
+    empirical = get_empirical_formula_from_molecular(molecular)
+    if empirical == molecular:
+        return empirical
+    return f"({empirical})n"
+
+
+def get_daily_unlock_message(attempts: int) -> str | None:
+    if attempts == 1:
+        return t("daily_new_hint_ea")
+    if attempts == 2:
+        return t("daily_new_hint_ms")
+    if attempts == 3:
+        return t("daily_new_hint_c13_easy")
+    if attempts == 4:
+        return t("daily_new_hint_empirical")
+    if attempts == 5:
+        return t("daily_new_hint_formula")
+    return None
+
 def card(title: str, text: str):
     st.html(f"""
     <div style="
@@ -177,150 +238,179 @@ def card(title: str, text: str):
     """)
 
 
-def render_spectra_tabs(smiles: str, show_structure: bool = False):
+def render_spectra_tabs(
+    smiles: str,
+    show_structure: bool = False,
+    show_c13: bool = True,
+    show_h1: bool = True,
+    show_ir: bool = True,
+    show_ea: bool = True,
+    show_ms: bool = False,
+    c13_easy_mode: bool = False,
+):
+    tabs = []
+    tab_keys = []
 
+    if show_c13:
+        tabs.append(t("c13_nmr_title"))
+        tab_keys.append("c13")
+    if show_h1:
+        tabs.append(t("h1_nmr_title"))
+        tab_keys.append("h1")
+    if show_ir:
+        tabs.append(t("ir_title"))
+        tab_keys.append("ir")
+    if show_ea:
+        tabs.append(t("ea_title"))
+        tab_keys.append("ea")
+    if show_ms:
+        tabs.append(t("ms_title"))
+        tab_keys.append("ms")
     if show_structure:
-        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ms_title"), t("ea_title"), t("structure_title")])
-    else: 
-        tab1, tab2, tab3, tab4, = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ms_title"), t("ea_title")])
+        tabs.append(t("structure_title"))
+        tab_keys.append("structure")
 
-    with tab1:
-        st.subheader(t("c13_nmr_title"))
-        try:
-            c13_result = generator.simulate_13c_nmr(
-                smiles,
-                seed=42,
-                plot=False,
-                show_title=show_structure,
-                easymode=False,
-                width=0.035,
-                testrun=True,
-            )
+    rendered_tabs = st.tabs(tabs)
 
-            fig1 = make_interactive_13c_plot(c13_result, smiles, show_integrals=show_structure)
+    for tab, key in zip(rendered_tabs, tab_keys):
+        with tab:
+            if key == "c13":
+                st.subheader(t("c13_nmr_title"))
+                try:
+                    c13_result = generator.simulate_13c_nmr(
+                        smiles,
+                        seed=42,
+                        plot=False,
+                        show_title=show_structure,
+                        easymode=c13_easy_mode,
+                        width=0.035,
+                        testrun=True,
+                    )
 
-            st.plotly_chart(
-                fig1,
-                use_container_width=True,
-                config={
-                    "scrollZoom": True,
-                    "displaylogo": False,
-                    "doubleClick": "reset",
-                    "modeBarButtonsToRemove": [
-                        "zoom2d",
-                        "select2d",
-                        "lasso2d",
-                        "zoomIn2d",
-                        "zoomOut2d",
-                        "autoScale2d",
-                    ],
-                },
-                theme=None,
-            )
-        except Exception as e:
-            st.error(f"13C NMR: {e}")
+                    fig1 = make_interactive_13c_plot(c13_result, smiles, show_integrals=show_structure)
 
-    with tab2:
-        st.subheader(t("h1_nmr_title"))
-        try:
-            nmr_result = hnmr.simulate_1h_nmr(
-                smiles,
-                seed=42,
-                plot=False,
-                verbose=False,
-                line_width=0.008,
-                show_integrals=show_structure,
-                show_title=show_structure,
-                testrun=True,
-            )
-    
-            fig2 = make_interactive_1h_plot(
-                nmr_result=nmr_result,
-                smiles=smiles,
-                show_integrals=show_structure,
-            )
-    
-            st.plotly_chart(
-                fig2,
-                use_container_width=True,
-                config={
-                    "scrollZoom": True,
-                    "displaylogo": False,
-                    "doubleClick": "reset",
-                    "modeBarButtonsToRemove": [
-                        "zoom2d",
-                        "select2d",
-                        "lasso2d",
-                        "zoomIn2d",
-                        "zoomOut2d",
-                        "autoScale2d",
-                    ],
-                },
-                theme=None,
-            )
-    
-        except Exception as e:
-            st.error(f"1H NMR: {e}")
+                    st.plotly_chart(
+                        fig1,
+                        width="stretch",
+                        config={
+                            "scrollZoom": True,
+                            "displaylogo": False,
+                            "doubleClick": "reset",
+                            "modeBarButtonsToRemove": [
+                                "zoom2d",
+                                "select2d",
+                                "lasso2d",
+                                "zoomIn2d",
+                                "zoomOut2d",
+                                "autoScale2d",
+                            ],
+                        },
+                        theme=None,
+                    )
+                except Exception as e:
+                    st.error(f"13C NMR: {e}")
 
-    with tab3:
-        st.subheader(t("ms_title"))        
+            elif key == "h1":
+                st.subheader(t("h1_nmr_title"))
+                try:
+                    nmr_result = hnmr.simulate_1h_nmr(
+                        smiles,
+                        seed=42,
+                        plot=False,
+                        verbose=False,
+                        line_width=0.008,
+                        show_integrals=show_structure,
+                        show_title=show_structure,
+                        testrun=True,
+                    )
 
-    with tab4:
-        st.subheader(t("ir_title"))
-        try:
-            ir_result = generator2.simulate_ir(
-                smiles,
-                seed=42,
-                plot=False,
-                show_title=True,
-                testrun=True,
-            )
+                    fig2 = make_interactive_1h_plot(
+                        nmr_result=nmr_result,
+                        smiles=smiles,
+                        show_integrals=show_structure,
+                    )
 
-            fig3 = make_interactive_ir_plot(ir_result, smiles, show_integrals=show_structure)
+                    st.plotly_chart(
+                        fig2,
+                        width="stretch",
+                        config={
+                            "scrollZoom": True,
+                            "displaylogo": False,
+                            "doubleClick": "reset",
+                            "modeBarButtonsToRemove": [
+                                "zoom2d",
+                                "select2d",
+                                "lasso2d",
+                                "zoomIn2d",
+                                "zoomOut2d",
+                                "autoScale2d",
+                            ],
+                        },
+                        theme=None,
+                    )
 
-            st.plotly_chart(
-                fig3,
-                use_container_width=True,
-                config={
-                    "scrollZoom": True,
-                    "displaylogo": False,
-                    "doubleClick": "reset",
-                    "modeBarButtonsToRemove": [
-                        "zoom2d",
-                        "select2d",
-                        "lasso2d",
-                        "zoomIn2d",
-                        "zoomOut2d",
-                        "autoScale2d",
-                    ],
-                },
-                theme=None,
-            )
-        except Exception as e:
-            st.error(f"IR: {e}")
+                except Exception as e:
+                    st.error(f"1H NMR: {e}")
 
-    with tab5:
-        st.subheader(t("ea_title"))
-        try:
-            result = generator5.elementaranalyse(smiles)
-            if result:
-                for el, perc in sorted(result.items()):
-                    st.write(f"**{el}**: {perc:.2f} %")
-            else:
-                st.warning(t("ea_missing"))
-        except Exception as e:
-            st.error(t("ea_error", error=e))
+            elif key == "ir":
+                st.subheader(t("ir_title"))
+                try:
+                    ir_result = generator2.simulate_ir(
+                        smiles,
+                        seed=42,
+                        plot=False,
+                        show_title=True,
+                        testrun=True,
+                    )
 
-    if show_structure:
-        with tab6:
-            st.subheader(t("structure_title"))
-            try:
-                img = smiles_to_pil(smiles)
-                if img is not None:
-                    st.image(img, width=320)
-                else:
-                    st.warning(t("structure_missing"))
-            except Exception as e:
+                    fig3 = make_interactive_ir_plot(ir_result, smiles, show_integrals=show_structure)
+
+                    st.plotly_chart(
+                        fig3,
+                        width="stretch",
+                        config={
+                            "scrollZoom": True,
+                            "displaylogo": False,
+                            "doubleClick": "reset",
+                            "modeBarButtonsToRemove": [
+                                "zoom2d",
+                                "select2d",
+                                "lasso2d",
+                                "zoomIn2d",
+                                "zoomOut2d",
+                                "autoScale2d",
+                            ],
+                        },
+                        theme=None,
+                    )
+                except Exception as e:
+                    st.error(f"IR: {e}")
+
+            elif key == "ea":
+                st.subheader(t("ea_title"))
+                try:
+                    result = generator5.elementaranalyse(smiles)
+                    if result:
+                        for el, perc in sorted(result.items()):
+                            st.write(f"**{el}**: {perc:.2f} %")
+                    else:
+                        st.warning(t("ea_missing"))
+                except Exception as e:
+                    st.error(t("ea_error", error=e))
+
+            elif key == "ms":
+                st.subheader(t("ms_title"))
+                st.info(t("ms_placeholder"))
+
+            elif key == "structure":
+                st.subheader(t("structure_title"))
+                try:
+                    img = smiles_to_pil(smiles)
+                    if img is not None:
+                        st.image(img, width=320)
+                    else:
+                        st.warning(t("structure_missing"))
+                except Exception as e:
                     st.error(t("structure_error", error=e))
 
 
@@ -348,14 +438,14 @@ def render_home():
 
     with col2:
         card(t("card_quiz_title"), t("card_quiz_text"))
-        if st.button(t("quiz_start"), use_container_width=True):
+        if st.button(t("quiz_start"), width="stretch"):
             mol = pick_random_molecule(moleküle)
             start_quiz(mol)
             st.rerun()
 
     with col1:
         card(t("card_daily_title"), t("card_daily_text"))
-        if st.button(t("daily_open"), use_container_width=True):
+        if st.button(t("daily_open"), width="stretch"):
             mol = pick_daily_molecule(moleküle_daily)
             start_daily(mol)
             st.rerun()
@@ -364,7 +454,7 @@ def render_home():
         selected_name = st.selectbox(t("lookup_name"), [""] + namen_liste)
         smiles_input = st.text_input(t("lookup_smiles"))
 
-        if st.button(t("lookup_submit"), use_container_width=True):
+        if st.button(t("lookup_submit"), width="stretch"):
             chosen_smiles = None
 
             if selected_name:
@@ -419,7 +509,7 @@ def render_quiz():
                 try:
                     img = smiles_to_pil(smiles)
                     if img is not None:
-                        st.image(img, caption=correct_name, use_container_width=True)
+                        st.image(img, caption=correct_name, width="stretch")
                 except Exception as e:
                     st.warning(t("structure_display_error", error=e))
 
@@ -453,13 +543,13 @@ def render_quiz():
         col_a, col_b = st.columns(2)
 
         with col_a:
-            if st.button(t("another_quiz"), use_container_width=True):
+            if st.button(t("another_quiz"), width="stretch"):
                 mol = pick_random_molecule(moleküle)
                 start_quiz(mol)
                 st.rerun()
 
         with col_b:
-            if st.button(t("startpage"), use_container_width=True, key="quiz_home_end"):
+            if st.button(t("startpage"), width="stretch", key="quiz_home_end"):
                 go_home()
                 st.rerun()
 
@@ -476,7 +566,7 @@ def render_quiz():
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button(t("quiz_submit"), type="primary", use_container_width=True):
+        if st.button(t("quiz_submit"), type="primary", width="stretch"):
             selected_smiles = name_to_smiles.get(answer.strip().lower()) if answer else None
             correct = is_correct_answer(answer, smiles, name_to_smiles)
 
@@ -487,7 +577,7 @@ def render_quiz():
             st.rerun()
 
     with col2:
-        if st.button(t("back_home"), use_container_width=True):
+        if st.button(t("back_home"), width="stretch"):
             go_home()
             st.rerun()
 
@@ -502,7 +592,7 @@ def render_daily():
         and not st.session_state["daily_submitted"]
     ):
         st.success(t("daily_done"))
-        if st.button(t("back_home"), key="daily_done_home"):
+        if st.button(t("back_home"), key="daily_done_home", width="stretch"):
             go_home()
             st.rerun()
         return
@@ -514,93 +604,116 @@ def render_daily():
 
         if not smiles:
             st.warning(t("no_quiz_active"))
-            if st.button(t("back_home"), key="daily_home_fallback"):
+            if st.button(t("back_home"), key="daily_home_fallback", width="stretch"):
                 go_home()
                 st.rerun()
             return
 
-    mol_data, correct_name, difficulty = get_molecule_data(smiles, daily=True)
+    _, correct_name, difficulty = get_molecule_data(smiles, daily=True)
+
+    attempts = st.session_state.get("daily_attempt_count", 0)
+    wrong_guesses = st.session_state.get("daily_wrong_guesses", [])
+
+    show_ea = attempts >= 1
+    show_ms = attempts >= 2
+    c13_easy_mode = attempts >= 3
+    show_empirical_formula = attempts >= 4
+    show_molecular_formula = attempts >= 5
 
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
+    st.caption(t("daily_attempts_label", count=attempts))
 
-    if st.session_state["daily_submitted"]:
-        st.markdown("---")
+    unlock_message = st.session_state.get("daily_last_feedback")
+    if unlock_message:
+        st.info(unlock_message)
+        st.session_state["daily_last_feedback"] = None
 
-        user_answer = st.session_state.get("daily_user_answer", "")
-        user_smiles = st.session_state.get("daily_user_smiles")
-        user_name = user_answer if user_answer else t("no_selection")
+    if st.session_state["daily_submitted"] and st.session_state["daily_correct"]:
+        st.success(t("correct_daily", name=correct_name))
 
-        if st.session_state["daily_correct"]:
-            st.success(t("correct_daily", name=correct_name))
-
-            col_left, col_center, col_right = st.columns([1, 2, 1])
-
-            with col_center:
-                try:
-                    img = smiles_to_pil(smiles)
-                    if img is not None:
-                        st.image(img, caption=correct_name, use_container_width=True)
-                except Exception as e:
-                    st.warning(t("structure_display_error", error=e))
-
+        st.markdown(f"### {t('wrong_guesses_title')}")
+        if wrong_guesses:
+            for guess in wrong_guesses:
+                st.write(f"- {guess}")
         else:
-            st.error(t("wrong_daily", name=correct_name))
+            st.write(t("no_selection"))
 
-            col1, col2 = st.columns(2)
-
-            with col1:
-                st.markdown(f"### {t('correct_label', name=correct_name)}")
-                try:
-                    img_correct = smiles_to_pil(smiles)
-                    if img_correct is not None:
-                        st.image(img_correct, width=320)
-                except Exception as e:
-                    st.warning(t("structure_display_error", error=e))
-
-            with col2:
-                st.markdown(f"### {t('your_answer_label', name=user_name)}")
-                if user_smiles:
-                    try:
-                        img_user = smiles_to_pil(user_smiles)
-                        if img_user is not None:
-                            st.image(img_user, width=320)
-                    except Exception as e:
-                        st.warning(t("structure_display_error", error=e))
-                else:
-                    st.info(t("no_answer_image"))
-
-        if st.button(t("startpage"), key="daily_home_bottom", use_container_width=True):
+        if st.button(t("startpage"), key="daily_home_bottom", width="stretch"):
             st.session_state["daily_submitted"] = False
             go_home()
             st.rerun()
-
         return
 
-    render_spectra_tabs(smiles, show_structure=False)
+    render_spectra_tabs(
+        smiles,
+        show_structure=False,
+        show_c13=True,
+        show_h1=True,
+        show_ir=True,
+        show_ea=show_ea,
+        show_ms=show_ms,
+        c13_easy_mode=c13_easy_mode,
+    )
+
+    if show_empirical_formula:
+        empirical_hint = get_empirical_formula_hint(smiles)
+        if empirical_hint:
+            st.info(t("empirical_formula_n_label", formula=empirical_hint))
+
+    if show_molecular_formula:
+        molecular_formula = get_molecular_formula(smiles)
+        if molecular_formula:
+            st.info(t("molecular_formula_label", formula=molecular_formula))
+
+    if st.session_state["daily_submitted"] and st.session_state["daily_correct"] is False:
+        st.error(t("wrong_daily", name=correct_name))
+        st.session_state["daily_submitted"] = False
+
+    st.markdown(f"### {t('wrong_guesses_title')}")
+    if wrong_guesses:
+        for guess in wrong_guesses:
+            st.write(f"- {guess}")
+    else:
+        st.write(t("no_selection"))
+
+    excluded = set(wrong_guesses)
+    available_daily_names = [""] + [name for name in daily_names if name not in excluded]
 
     answer = st.selectbox(
         t("daily_question"),
-        [""] + daily_names,
+        available_daily_names,
         key="daily_answer_select",
     )
 
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button(t("daily_submit"), type="primary", use_container_width=True):
+        if st.button(t("daily_submit"), type="primary", width="stretch"):
             selected_smiles = daily_name_to_smiles.get(answer.strip().lower()) if answer else None
             correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
 
             st.session_state["daily_user_answer"] = answer
             st.session_state["daily_user_smiles"] = selected_smiles
+            st.session_state["daily_submitted"] = True
+            st.session_state["daily_correct"] = correct
 
-            submit_daily(correct)
+            if correct:
+                st.session_state["daily_done_date"] = date.today().isoformat()
+            else:
+                st.session_state["daily_attempt_count"] += 1
+                if answer and answer not in st.session_state["daily_wrong_guesses"]:
+                    st.session_state["daily_wrong_guesses"].append(answer)
+
+                attempts_now = st.session_state["daily_attempt_count"]
+                st.session_state["daily_last_feedback"] = get_daily_unlock_message(attempts_now)
+
             st.rerun()
 
     with col2:
-        if st.button(t("back_home"), key="daily_home_top", use_container_width=True):
+        if st.button(t("back_home"), key="daily_home_top", width="stretch"):
             go_home()
             st.rerun()
+
 
 def render_lookup():
     smiles = st.session_state["lookup_smiles"]
@@ -623,7 +736,7 @@ def render_lookup():
     st.write(f"**SMILES:** `{smiles}`")
     render_spectra_tabs(smiles, show_structure=True)
 
-    if st.button(t("back_home"), key="lookup_home", use_container_width=True):
+    if st.button(t("back_home"), key="lookup_home", width="stretch"):
         go_home()
         st.rerun()
 

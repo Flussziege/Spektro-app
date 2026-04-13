@@ -23,6 +23,9 @@ def init_session_state():
         "daily_done_date": None,
         "daily_user_answer": "",
         "daily_user_smiles": None,
+        "daily_attempt_count": 0,
+        "daily_wrong_guesses": [],
+        "daily_last_feedback": None,
 
         # Lookup
         "lookup_smiles": None,
@@ -62,13 +65,17 @@ def start_daily(mol: dict):
     st.session_state["daily_correct"] = None
     st.session_state["daily_user_answer"] = ""
     st.session_state["daily_user_smiles"] = None
+    st.session_state["daily_attempt_count"] = 0
+    st.session_state["daily_wrong_guesses"] = []
+    st.session_state["daily_last_feedback"] = None
     st.session_state["mode"] = "daily"
 
 
 def submit_daily(correct: bool):
     st.session_state["daily_submitted"] = True
     st.session_state["daily_correct"] = correct
-    st.session_state["daily_done_date"] = date.today().isoformat()
+    if correct:
+        st.session_state["daily_done_date"] = date.today().isoformat()
 
 
 def set_lookup(smiles: str):
