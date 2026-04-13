@@ -21,7 +21,7 @@ moleküle = [
     {"name_de": "Cyclobutan", "name_en": "Cyclobutane", "smiles": "C1CCC1", "difficulty": "easy"},
     {"name_de": "Cyclopentan", "name_en": "Cyclopentane", "smiles": "C1CCCC1", "difficulty": "easy"},
     {"name_de": "Cyclohexan", "name_en": "Cyclohexane", "smiles": "C1CCCCC1", "difficulty": "easy"},
-    {"name_de": "Methylcyclohexan", "name_en": "Methylcyclohexane", "smiles": "CC1CCCCC1", "difficulty": "medium"},
+    {"name_de": "Toluol", "name_en": "Toluene", "smiles": "CC1CCCCC1", "difficulty": "medium"},
     {"name_de": "Decalin", "name_en": "Decalin", "smiles": "C1CCC2CCCCC2C1", "difficulty": "hard"},
 
     # ─────────────────────────────────────────────────────────────
