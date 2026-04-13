@@ -32,6 +32,11 @@ from services.render_helpers import (
     set_lookup,
 )
 
+from services.plotly_spectra import (
+    make_interactive_13c_plot,
+    make_interactive_ir_plot,
+)
+
 st.html("""
 <style>
 
@@ -136,14 +141,36 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
     with tab1:
         st.subheader("13C NMR")
         try:
-            fig1 = generator.simulate_13c_nmr(
+            c13_result = generator.simulate_13c_nmr(
                 smiles,
                 seed=42,
                 plot=False,
-                show_title= show_structure,
+                show_title=True,
                 easymode=False,
+                width=0.035,
+                testrun=True,
             )
-            st.pyplot(fig1, clear_figure=True)
+
+            fig1 = make_interactive_13c_plot(c13_result, smiles)
+
+            st.plotly_chart(
+                fig1,
+                use_container_width=True,
+                config={
+                    "scrollZoom": True,
+                    "displaylogo": False,
+                    "doubleClick": "reset",
+                    "modeBarButtonsToRemove": [
+                        "zoom2d",
+                        "select2d",
+                        "lasso2d",
+                        "zoomIn2d",
+                        "zoomOut2d",
+                        "autoScale2d",
+                    ],
+                },
+                theme=None,
+            )
         except Exception as e:
             st.error(f"13C NMR konnte nicht erzeugt werden: {e}")
 
@@ -301,9 +328,7 @@ def render_quiz():
         user_name = user_answer if user_answer else "Keine Auswahl"
 
         if st.session_state["quiz_correct"]:
-            st.success(f"Richtig. Das Molekül war **{correct_name}**.")
-
-            st.success(f"Richtig. Das Molekül war **{correct_name}**.")
+            st.success(f"Richtig. Das Molekül war **{correct_name}**.") 
 
             col_left, col_center, col_right = st.columns([1, 2, 1])
 

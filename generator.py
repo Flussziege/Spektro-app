@@ -257,7 +257,7 @@ def plot_nmr(wns, spectrum, smiles, frequencies=None,
 
 
 def simulate_13c_nmr(smiles: str, seed: int = None,
-                     plot: bool = True, width: float = 0.09,
+                     plot: bool = True, width: float = 0.035,
                      show_title: bool = True, testrun: bool = False,
                      easymode: bool = True):
     mol = Chem.MolFromSmiles(smiles)
@@ -270,16 +270,13 @@ def simulate_13c_nmr(smiles: str, seed: int = None,
         seed if seed is not None else sum(ord(c) for c in smiles)
     )
 
-    # Intensitäten für die Darstellung anpassen
     if easymode:
         plot_intens = intens.astype(float)
     else:
-        # Alle Peaks etwa gleich hoch, mit leichtem Zufallsrauschen
         plot_intens = np.array([
             max(0.2, 1.0 + rng.normal(0, 0.08)) for _ in intens
         ], dtype=float)
 
-    # Erkannte funktionelle Gruppen (für Anzeige)
     groups = []
     for smarts, _ in ALPHA_INCREMENTS:
         patt = Chem.MolFromSmarts(smarts)
@@ -293,15 +290,23 @@ def simulate_13c_nmr(smiles: str, seed: int = None,
     
     fig = plot_nmr(
         wns, spectrum, smiles,
-        frequencies=freqs, intensities=plot_intens,
-        show_title=show_title
+        frequencies=freqs, intensities=plot_intens, show_title=show_title
     )
 
-    if testrun and plot:
+    if testrun:
+        return {
+            "frequencies": freqs,
+            "intensities": plot_intens,
+            "wns": wns,
+            "spectrum": spectrum,
+            "figure": fig,
+            "groups": groups,
+        }
+
+    if plot:
         plt.show()
 
     return fig
-
 
 # ── Tests ────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":

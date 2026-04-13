@@ -14,7 +14,10 @@ Problemmoleküle:
 - Propen *
 - 8-Hydroxychinolin *
 
-- methanal/formaldehyd
+NMR FEHLERHAFT:
+- But-2-en, intens  stimmt nicht mit angezeigten H überein
+
+- methanal/formaldehyd *
     -warum bei 0.1 statt 10 *
 
 
@@ -25,6 +28,7 @@ MS:
 - schmaler machen *
 - nicht quantitativ *
     - jetzt mit easymode accesable
+
 
 GUI:
 - scroll funktion in Quizz und Auswertungsscreen *
@@ -83,11 +87,11 @@ Webseite:
 - SMILES in spektren *
 - design (*)
 - bei falsch das falsche anzeigen *
-- wenn richtig dann mittig
-
-- enter logik
+- wenn richtig dann mittig *
 - struktur nicht anbieten bei quizz *
+
 - IR und 13C auch als so hübsche plots
+
 - grauer background bei nmr weg * (ist okay so)
 - legende weg (noch bei lookup da) (*)
 - bei hovern: 
@@ -97,3 +101,10 @@ Webseite:
     liste neu machen?
 - light/ dark design?
 - richtig falsch bei daily
+- schwierigkeiten
+- daily mit weniger spektren?
+- hinweis funktion
+    - 13C integral stimmt
+    - EA wird berechnet
+
+- enter logik x (sehr schwer))
