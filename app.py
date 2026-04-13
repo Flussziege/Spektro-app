@@ -227,7 +227,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 testrun=True,
             )
 
-            fig3 = make_interactive_ir_plot(ir_result, smiles)
+            fig3 = make_interactive_ir_plot(ir_result, smiles, show_integrals=show_structure)
 
             st.plotly_chart(
                 fig3,
