@@ -55,16 +55,16 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
             dragmode="pan",
             hovermode="x unified",
         )
-        else:
-            fig.update_layout(
-                title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
-                xaxis_title="Chemical Shift δ (ppm)",
-                yaxis_title="Intensität (rel.)",
-                template="plotly_white",
-                height=520,
-                margin=dict(l=30, r=30, t=60, b=30),
-                dragmode="pan",
-                hovermode="x unified",
+    else:
+        fig.update_layout(
+            title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
+            xaxis_title="Chemical Shift δ (ppm)",
+            yaxis_title="Intensität (rel.)",
+            template="plotly_white",
+            height=520,
+            margin=dict(l=30, r=30, t=60, b=30),
+            dragmode="pan",
+            hovermode="x unified",
             )
 
     fig.update_xaxes(
