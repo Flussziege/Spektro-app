@@ -422,6 +422,7 @@ def render_quiz():
 
         else:
             st.error(t("wrong_quiz", name=correct_name))
+            print(user_smiles)
 
             col1, col2 = st.columns(2)
 
