@@ -61,7 +61,7 @@ def make_interactive_1h_plot(
             title=f"Simuliertes ¹H-NMR-Spektrum — {smiles}",
             xaxis_title="Chemical Shift δ (ppm)",
             yaxis_title="Protonenzahl (rel. Intensität)",
-            template="simply_white",
+            template="simple_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
             dragmode="pan",
