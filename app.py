@@ -130,7 +130,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
     if not show_structure:
         with tab5:
             st.subheader("Struktur")
-                try:
+            try:
                     img = smiles_to_pil(smiles)
                     if img is not None:
                         st.image(img, width=320)
