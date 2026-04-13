@@ -2,7 +2,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 
 
-def make_interactive_13c_plot(spec_result: dict, smiles: str):
+def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bool = True):
     x = spec_result["wns"]
     y = spec_result["spectrum"]
     freqs = spec_result.get("frequencies", [])
@@ -31,28 +31,41 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str):
             for f, i in zip(freqs, intens)
         ]
 
-        fig.add_trace(
-            go.Scatter(
-                x=list(freqs),
-                y=peak_y,
-                mode="markers",
-                marker=dict(size=8, opacity=0.0),
-                text=peak_text,
-                hovertemplate="%{text}<extra></extra>",
-                showlegend=False,
-            )
+        if show_integrals:
+            fig.add_trace(
+                go.Scatter(
+                    x=list(freqs),
+                    y=peak_y,
+                    mode="markers",
+                    marker=dict(size=8, opacity=0.0),
+                    text=peak_text,
+                    hovertemplate="%{text}<extra></extra>",
+                    showlegend=False,
+                )
         )
 
-    fig.update_layout(
-        title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
-        xaxis_title="Chemical Shift δ (ppm)",
-        yaxis_title="Intensität (rel.)",
-        template="plotly_white",
-        height=520,
-        margin=dict(l=30, r=30, t=60, b=30),
-        dragmode="pan",
-        hovermode="x unified",
-    )
+    if show_integrals:
+        fig.update_layout(
+            title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
+            xaxis_title="Chemical Shift δ (ppm)",
+            yaxis_title="Intensität (rel.)",
+            template="plotly_white",
+            height=520,
+            margin=dict(l=30, r=30, t=60, b=30),
+            dragmode="pan",
+            hovermode="x unified",
+        )
+        else:
+            fig.update_layout(
+                title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
+                xaxis_title="Chemical Shift δ (ppm)",
+                yaxis_title="Intensität (rel.)",
+                template="plotly_white",
+                height=520,
+                margin=dict(l=30, r=30, t=60, b=30),
+                dragmode="pan",
+                hovermode="x unified",
+            )
 
     fig.update_xaxes(
         range=[230, -10],
@@ -89,16 +102,28 @@ def make_interactive_ir_plot(ir_result: dict, smiles: str):
         )
     )
 
-    fig.update_layout(
-        title=f"Simuliertes IR-Spektrum — {smiles}",
-        xaxis_title="Wellenzahl (cm⁻¹)",
-        yaxis_title="Intensität (rel.)",
-        template="plotly_white",
-        height=520,
-        margin=dict(l=30, r=30, t=60, b=30),
-        dragmode="pan",
-        hovermode="x unified",
-    )
+    if show_integrals:
+        fig.update_layout(
+            title=f"Simuliertes IR-Spektrum — {smiles}",
+            xaxis_title="Wellenzahl (cm⁻¹)",
+            yaxis_title="Intensität (rel.)",
+            template="plotly_white",
+            height=520,
+            margin=dict(l=30, r=30, t=60, b=30),
+            dragmode="pan",
+            hovermode="x unified",
+        )
+    else: 
+        fig.update_layout(
+            title=f"Simuliertes IR-Spektrum",
+            xaxis_title="Wellenzahl (cm⁻¹)",
+            yaxis_title="Intensität (rel.)",
+            template="plotly_white",
+            height=520,
+            margin=dict(l=30, r=30, t=60, b=30),
+            dragmode="pan",
+            hovermode="x unified",
+        )
 
     # IR klassisch: hohe Wellenzahl links
     fig.update_xaxes(
