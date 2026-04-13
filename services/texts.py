@@ -100,6 +100,20 @@ TEXTS = {
         "daily_new_hint_formula": "Neue Hilfe freigeschaltet: Summenformel",
         "ms_title": "MS",
         "ms_placeholder": "Massenspektrum wird bald eingebunden.",
+
+        "daily_attempts_label": "Fehlversuche: {count}",
+        "wrong_guesses_title": "Bisher falsch geraten",
+        "empirical_formula_label": "Empirische Formel: {formula}",
+        "empirical_formula_n_label": "Empirische Formel als Wiederholungseinheit: {formula}",
+        "molecular_formula_label": "Summenformel: {formula}",
+        "daily_new_hint_ea": "Neue Hilfe freigeschaltet: Elementaranalyse",
+        "daily_new_hint_ms": "Neue Hilfe freigeschaltet: Massenspektrometrie",
+        "daily_new_hint_c13_easy": "Neue Hilfe freigeschaltet: vereinfachtes 13C-NMR",
+        "daily_new_hint_empirical": "Neue Hilfe freigeschaltet: empirische Formel",
+        "daily_new_hint_formula": "Neue Hilfe freigeschaltet: Summenformel",
+        "ms_title": "MS",
+        "ms_placeholder": "Massenspektrum wird bald eingebunden.",
+        "daily_try_again": "Versuche es erneut. Neue Hinweise werden nach Fehlversuchen freigeschaltet.",
     },
 
     "en": {
@@ -183,7 +197,7 @@ TEXTS = {
         "selected_answer": "Selected answer",
         "correct_answer": "Correct answer",
         "result_title": "Result",
-        
+
         "daily_attempts_label": "Wrong attempts: {count}",
         "wrong_guesses_title": "Wrong guesses so far",
         "empirical_formula_label": "Empirical formula: {formula}",
@@ -196,6 +210,7 @@ TEXTS = {
         "daily_new_hint_formula": "New hint unlocked: molecular formula",
         "ms_title": "MS",
         "ms_placeholder": "Mass spectrum will be integrated soon.",
+        "daily_try_again": "Try again. New hints unlock after wrong attempts.",
 
     },
 }

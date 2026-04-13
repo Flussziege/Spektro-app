@@ -101,6 +101,8 @@ Webseite:
 - richtig falsch bei daily *
 - schwierigkeiten *
 
+alle graphen auf englisch umstellen:
+
 - daily mit weniger spektren?
 - hinweis funktion
     - 13C integral stimmt

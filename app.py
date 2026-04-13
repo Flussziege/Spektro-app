@@ -595,7 +595,7 @@ def render_daily():
     if "daily_user_smiles" not in st.session_state:
         st.session_state["daily_user_smiles"] = None
         st.title(t("daily_title"))
-        
+
 
     if (
         st.session_state["daily_done_date"] == today
@@ -676,7 +676,7 @@ def render_daily():
             st.info(t("molecular_formula_label", formula=molecular_formula))
 
     if st.session_state["daily_submitted"] and st.session_state["daily_correct"] is False:
-        st.error(t("wrong_daily", name=correct_name))
+        st.error(t("daily_try_again"))
         st.session_state["daily_submitted"] = False
 
     st.markdown(f"### {t('wrong_guesses_title')}")
