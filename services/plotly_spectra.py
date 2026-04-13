@@ -131,6 +131,8 @@ def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool 
         fixedrange=False,
         showgrid=True,
         zeroline=False,
+        minallowed=500,
+        maxallowed=4000,
     )
 
     fig.update_yaxes(
