@@ -180,9 +180,9 @@ def card(title: str, text: str):
 def render_spectra_tabs(smiles: str, show_structure: bool = False):
 
     if show_structure:
-        tab1, tab2, tab3, tab4, tab5 = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ea_title"), t("structure_title")])
+        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ms_title"), t("ea_title"), t("structure_title")])
     else: 
-        tab1, tab2, tab3, tab4 = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ea_title")])
+        tab1, tab2, tab3, tab4, = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ms_title"), t("ea_title")])
 
     with tab1:
         st.subheader(t("c13_nmr_title"))
@@ -263,6 +263,9 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
             st.error(f"1H NMR: {e}")
 
     with tab3:
+        st.subheader(t("ms_title"))        
+
+    with tab4:
         st.subheader(t("ir_title"))
         try:
             ir_result = generator2.simulate_ir(
@@ -296,7 +299,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
         except Exception as e:
             st.error(f"IR: {e}")
 
-    with tab4:
+    with tab5:
         st.subheader(t("ea_title"))
         try:
             result = generator5.elementaranalyse(smiles)
@@ -309,7 +312,7 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
             st.error(t("ea_error", error=e))
 
     if show_structure:
-        with tab5:
+        with tab6:
             st.subheader(t("structure_title"))
             try:
                 img = smiles_to_pil(smiles)

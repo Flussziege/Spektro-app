@@ -71,6 +71,7 @@ TEXTS = {
         "c13_nmr_title": "13C NMR",
         "h1_nmr_title": "1H NMR",
         "ir_title": "IR",
+        "ms_title": "MS",
         "no_selection": "Keine Auswahl",
         "difficulty_label": "Schwierigkeit",
         "difficulty_easy": "Leicht",
@@ -157,6 +158,7 @@ TEXTS = {
         "c13_nmr_title": "13C NMR",
         "h1_nmr_title": "1H NMR",
         "ir_title": "IR",
+        "ms_title": "MS",
         "no_selection": "No selection",
 
         "disclaimer": (
