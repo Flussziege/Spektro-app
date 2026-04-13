@@ -40,7 +40,7 @@ from services.plotly_spectra import (
 from services.texts import get_text
 
 st.set_page_config(
-    page_title="Spektren Quiz",
+    page_title=t("page_title"),
     page_icon="🧪",
     layout="wide",
 )

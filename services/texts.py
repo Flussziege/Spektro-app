@@ -8,6 +8,7 @@ def get_text(lang: str, key: str, **kwargs) -> str:
 
 TEXTS = {
     "de": {
+        "page_title": "Spektren Quiz",
         "language_label": "Sprache",
         "lang_de": "Deutsch",
         "lang_en": "Englisch",
@@ -81,6 +82,7 @@ TEXTS = {
     },
 
     "en": {
+        "page_title": "Spectra Quiz",
         "language_label": "Language",
         "lang_de": "German",
         "lang_en": "English",
