@@ -145,13 +145,12 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 seed=42,
                 plot=False,
                 show_title=show_structure,
-                show_integrals=show_structure,
                 easymode=False,
                 width=0.035,
                 testrun=True,
             )
 
-            fig1 = make_interactive_13c_plot(c13_result, smiles)
+            fig1 = make_interactive_13c_plot(c13_result, smiles, show_integrals=show_structure)
 
             st.plotly_chart(
                 fig1,
