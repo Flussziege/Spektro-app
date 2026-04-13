@@ -244,7 +244,7 @@ def render_home():
 
     with col2:
         card("Quiz", "Zufälliges Molekül aus der Hauptliste.")
-        if st.button("Quiz starten", type="primary", use_container_width=True):
+        if st.button("Quiz starten", use_container_width=True):
             mol = pick_random_molecule(moleküle)
             start_quiz(mol)
             st.rerun()
