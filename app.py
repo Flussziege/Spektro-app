@@ -23,8 +23,10 @@ from services.molecule_utils import (
     build_smiles_to_molecule_map,
     smiles_to_pil,
     molecule_exists,
+    get_display_name,
+    get_difficulty,
+    normalize_smiles,
 )
-
 from services.render_helpers import (
     init_session_state,
     go_home,
@@ -140,6 +142,21 @@ def t(key: str, **kwargs) -> str:
 
 def difficulty_text(level: str) -> str:
     return t(f"difficulty_{level}")
+
+def get_molecule_data(smiles: str, daily: bool = False) -> tuple[dict | None, str, str]:
+    smiles_norm = normalize_smiles(smiles)
+    current_lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
+
+    if daily:
+        mol = daily_smiles_to_molecule.get(smiles_norm)
+    else:
+        mol = smiles_to_molecule.get(smiles_norm)
+
+    if not mol:
+        fallback_name = "Unknown" if current_lang == "en" else "Unbekannt"
+        return None, fallback_name, "medium"
+
+    return mol, get_display_name(mol, lang=current_lang), get_difficulty(mol)
 
 def card(title: str, text: str):
     st.html(f"""
@@ -352,7 +369,7 @@ def render_home():
 
             elif smiles_input.strip():
                 if molecule_exists(smiles_input.strip()):
-                    chosen_smiles = smiles_input.strip()
+                    chosen_smiles = normalize_smiles(smiles_input)
                 else:
                     st.error(t("invalid_smiles"))
                     return
@@ -369,10 +386,7 @@ def render_home():
 
 
 def render_quiz():
-    smiles = st.session_state["quiz_smiles"]
-    mol_data = smiles_to_molecule.get(smiles.lower())
-    correct_name = smiles_to_name.get(smiles.lower(), "Unknown")
-    difficulty = mol_data.get("difficulty", "medium") if mol_data else "medium"
+    smiles = st.session_state.get("quiz_smiles")
 
     if not smiles:
         st.warning(t("no_quiz_active"))
@@ -380,6 +394,8 @@ def render_quiz():
             go_home()
             st.rerun()
         return
+
+    mol_data, correct_name, difficulty = get_molecule_data(smiles, daily=False)
 
     st.title(t("quiz_title"))
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
@@ -392,7 +408,7 @@ def render_quiz():
         user_name = user_answer if user_answer else t("no_selection")
 
         if st.session_state["quiz_correct"]:
-            st.success(t("correct_quiz", name=correct_name)) 
+            st.success(t("correct_quiz", name=correct_name))
 
             col_left, col_center, col_right = st.columns([1, 2, 1])
 
@@ -467,21 +483,12 @@ def render_quiz():
             go_home()
             st.rerun()
 
-
 def render_daily():
-
-    smiles = st.session_state["daily_smiles"]
-    mol_data = daily_smiles_to_molecule.get(smiles.lower())
-    correct_name = daily_smiles_to_name.get(smiles.lower(), "Unknown")
-    difficulty = mol_data.get("difficulty", "medium") if mol_data else "medium"
-
-    st.title(t("daily_title"))
-    st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
-
+    smiles = st.session_state.get("daily_smiles")
     today = date.today().isoformat()
 
-    # Nur sperren, wenn heute schon abgeschlossen UND wir uns NICHT
-    # gerade in der Ergebnisansicht dieses Daily befinden.
+    st.title(t("daily_title"))
+
     if (
         st.session_state["daily_done_date"] == today
         and not st.session_state["daily_submitted"]
@@ -492,18 +499,22 @@ def render_daily():
             st.rerun()
         return
 
-
-
     if not smiles:
-        mol_data = daily_smiles_to_molecule.get(smiles.lower())
-        correct_name = daily_smiles_to_name.get(smiles.lower(), "Unknown")
-        difficulty = mol_data.get("difficulty", "medium") if mol_data else "medium"
         mol = pick_daily_molecule(moleküle_daily)
         start_daily(mol)
-        smiles = st.session_state["daily_smiles"]
-        correct_name = st.session_state["daily_name"]
+        smiles = st.session_state.get("daily_smiles")
 
-    # Ergebnisansicht nach Abgabe
+        if not smiles:
+            st.warning(t("no_quiz_active"))
+            if st.button(t("back_home"), key="daily_home_fallback"):
+                go_home()
+                st.rerun()
+            return
+
+    mol_data, correct_name, difficulty = get_molecule_data(smiles, daily=True)
+
+    st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
+
     if st.session_state["daily_submitted"]:
         st.markdown("---")
 
@@ -551,14 +562,12 @@ def render_daily():
                     st.info(t("no_answer_image"))
 
         if st.button(t("startpage"), key="daily_home_bottom", use_container_width=True):
-            # Ergebnisansicht verlassen -> ab dann Daily gesperrt
             st.session_state["daily_submitted"] = False
             go_home()
             st.rerun()
 
         return
 
-    # Nur wenn noch nicht abgegeben wurde: Quiz anzeigen
     render_spectra_tabs(smiles, show_structure=False)
 
     answer = st.selectbox(
@@ -581,8 +590,6 @@ def render_daily():
             go_home()
             st.rerun()
 
-
-
 def render_lookup():
     smiles = st.session_state["lookup_smiles"]
 
@@ -595,13 +602,18 @@ def render_lookup():
             st.rerun()
         return
 
+    mol_data, display_name, difficulty = get_molecule_data(smiles, daily=False)
+
+    if mol_data:
+        st.subheader(display_name)
+        st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
+
     st.write(f"**SMILES:** `{smiles}`")
     render_spectra_tabs(smiles, show_structure=True)
 
     if st.button(t("back_home"), key="lookup_home", use_container_width=True):
         go_home()
         st.rerun()
-
 
 mode = st.session_state["mode"]
 

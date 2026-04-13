@@ -83,6 +83,9 @@ TEXTS = {
             "Es wird keine Gewähr für Richtigkeit oder Vollständigkeit übernommen.\n\n"
             "Kontakt: dailyspectroquizz@gmail.com"
         ),
+        "selected_answer": "Ausgewählte Antwort",
+        "correct_answer": "Richtige Antwort",
+        "result_title": "Ergebnis",
     },
 
     "en": {
@@ -147,9 +150,9 @@ TEXTS = {
         "structure_display_error": "Structure could not be displayed: {error}",
 
         "difficulty_label": "Difficulty",
-    "difficulty_easy": "Easy",
-    "difficulty_medium": "Medium",
-    "difficulty_hard": "Hard",
+        "difficulty_easy": "Easy",
+        "difficulty_medium": "Medium",
+        "difficulty_hard": "Hard",
 
         "c13_nmr_title": "13C NMR",
         "h1_nmr_title": "1H NMR",
@@ -162,5 +165,8 @@ TEXTS = {
             "No guarantee is given for correctness or completeness.\n\n"
             "Contact: dailyspectroquizz@gmail.com"
         ),
+        "selected_answer": "Selected answer",
+        "correct_answer": "Correct answer",
+        "result_title": "Result",
     },
 }

@@ -98,9 +98,8 @@ Webseite:
     - anzeige dd/ anzahl protonen ist doof *
 - sprache:
     liste neu machen? *
+- richtig falsch bei daily *
 
-
-- richtig falsch bei daily
 - schwierigkeiten
 - daily mit weniger spektren?
 - hinweis funktion

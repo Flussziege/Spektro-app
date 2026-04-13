@@ -3,36 +3,80 @@ from rdkit import Chem
 from rdkit.Chem import Draw
 
 
+def normalize_smiles(smiles: str) -> str:
+    return (smiles or "").strip().lower()
+
+
 def get_display_name(molecule: dict, lang: str = "de") -> str:
+    if not isinstance(molecule, dict):
+        return str(molecule)
+
     if lang == "en":
-        return molecule.get("name_en", molecule.get("name_de", "Unknown"))
-    return molecule.get("name_de", molecule.get("name_en", "Unbekannt"))
+        return (
+            molecule.get("name_en")
+            or molecule.get("name_de")
+            or molecule.get("name")
+            or "Unknown"
+        )
+
+    return (
+        molecule.get("name_de")
+        or molecule.get("name_en")
+        or molecule.get("name")
+        or "Unbekannt"
+    )
+
+
+def get_difficulty(molecule: dict, default: str = "medium") -> str:
+    difficulty = (molecule.get("difficulty") or default).strip().lower()
+    if difficulty not in {"easy", "medium", "hard"}:
+        return default
+    return difficulty
 
 
 def build_name_maps(molecules: list[dict], lang: str = "de"):
-    if lang == "en":
-        names = [m["name_en"] for m in molecules]
-        name_to_smiles = {
-            m["name_en"].strip().lower(): m["smiles"]
-            for m in molecules
-        }
-    else:
-        names = [m["name_de"] for m in molecules]
-        name_to_smiles = {
-            m["name_de"].strip().lower(): m["smiles"]
-            for m in molecules
-        }
+    """
+    Returns:
+    - names: list[str]                      -> display names for UI
+    - name_to_smiles: dict[str, str]        -> normalized display name -> normalized smiles
+    - smiles_to_name: dict[str, str]        -> normalized smiles -> display name
+    """
+    names: list[str] = []
+    name_to_smiles: dict[str, str] = {}
+    smiles_to_name: dict[str, str] = {}
 
-    smiles_to_name = {}
     for m in molecules:
-        display_name = get_display_name(m, lang)
-        smiles_to_name[m["smiles"].strip().lower()] = display_name
+        display_name = get_display_name(m, lang).strip()
+        smiles = normalize_smiles(m.get("smiles", ""))
+
+        if not display_name or not smiles:
+            continue
+
+        names.append(display_name)
+        name_to_smiles[display_name.lower()] = smiles
+
+        if smiles not in smiles_to_name:
+            smiles_to_name[smiles] = display_name
 
     return names, name_to_smiles, smiles_to_name
 
 
 def build_smiles_to_molecule_map(molecules: list[dict]) -> dict[str, dict]:
-    return {m["smiles"].strip().lower(): m for m in molecules}
+    """
+    Uses normalized SMILES as key.
+    Keeps the first molecule for a given SMILES, so synonyms do not overwrite
+    the primary entry accidentally.
+    """
+    result: dict[str, dict] = {}
+
+    for m in molecules:
+        smiles = normalize_smiles(m.get("smiles", ""))
+        if not smiles:
+            continue
+        if smiles not in result:
+            result[smiles] = m
+
+    return result
 
 
 def smiles_to_pil(smiles: str, size=(350, 350)):
