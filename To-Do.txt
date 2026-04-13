@@ -96,15 +96,16 @@ Webseite:
 - bei hovern: 
     - ppm und int sind gut (ppm doppelt tho) *
     - anzeige dd/ anzahl protonen ist doof *
-    
 - sprache:
-    liste neu machen?
-- light/ dark design?
+    liste neu machen? *
+
+
 - richtig falsch bei daily
 - schwierigkeiten
 - daily mit weniger spektren?
 - hinweis funktion
     - 13C integral stimmt
     - EA wird berechnet
+- light/ dark design?
 
 - enter logik x (sehr schwer))

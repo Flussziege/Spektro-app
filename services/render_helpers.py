@@ -41,7 +41,7 @@ def go_home():
 
 def start_quiz(mol: dict):
     st.session_state["quiz_smiles"] = mol["smiles"]
-    st.session_state["quiz_name"] = mol["name"]
+    st.session_state["quiz_name"] = mol.get("name_de", mol.get("name_en", "Unbekannt"))
     st.session_state["quiz_submitted"] = False
     st.session_state["quiz_correct"] = None
     st.session_state["quiz_user_answer"] = ""
@@ -55,7 +55,7 @@ def submit_quiz(correct: bool):
 
 def start_daily(mol: dict):
     st.session_state["daily_smiles"] = mol["smiles"]
-    st.session_state["daily_name"] = mol["name"]
+    st.session_state["daily_name"] = mol.get("name_de", mol.get("name_en", "Unbekannt"))
     st.session_state["daily_submitted"] = False
     st.session_state["daily_correct"] = None
     st.session_state["daily_user_answer"] = ""

@@ -72,6 +72,10 @@ TEXTS = {
         "h1_nmr_title": "1H NMR",
         "ir_title": "IR",
         "no_selection": "Keine Auswahl",
+        "difficulty_label": "Schwierigkeit",
+        "difficulty_easy": "Leicht",
+        "difficulty_medium": "Mittel",
+        "difficulty_hard": "Schwer",
 
         "disclaimer": (
             "Diese Anwendung dient der didaktischen Simulation chemischer Spektren. "
@@ -141,6 +145,11 @@ TEXTS = {
         "structure_missing": "Structure image could not be generated.",
         "structure_error": "Structure could not be drawn: {error}",
         "structure_display_error": "Structure could not be displayed: {error}",
+
+        "difficulty_label": "Difficulty",
+    "difficulty_easy": "Easy",
+    "difficulty_medium": "Medium",
+    "difficulty_hard": "Hard",
 
         "c13_nmr_title": "13C NMR",
         "h1_nmr_title": "1H NMR",

@@ -17,11 +17,14 @@ from services.quiz_logic import (
     pick_daily_molecule,
     is_correct_answer,
 )
+
 from services.molecule_utils import (
     build_name_maps,
+    build_smiles_to_molecule_map,
     smiles_to_pil,
     molecule_exists,
 )
+
 from services.render_helpers import (
     init_session_state,
     go_home,
@@ -123,12 +126,20 @@ if "lang_select" not in st.session_state:
 if "lang" not in st.session_state:
     st.session_state["lang"] = "de"
 
-namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
-daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily)
-                                                                          
+lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
+
+namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle, lang=lang)
+daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily, lang=lang)
+
+smiles_to_molecule = build_smiles_to_molecule_map(moleküle)
+daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)                                                                       
 
 def t(key: str, **kwargs) -> str:
-    return get_text(st.session_state.get("lang", "de"), key, **kwargs) 
+    lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
+    return get_text(lang, key, **kwargs)
+
+def difficulty_text(level: str) -> str:
+    return t(f"difficulty_{level}")
 
 def card(title: str, text: str):
     st.html(f"""
@@ -359,7 +370,9 @@ def render_home():
 
 def render_quiz():
     smiles = st.session_state["quiz_smiles"]
-    correct_name = st.session_state["quiz_name"]
+    mol_data = smiles_to_molecule.get(smiles.lower())
+    correct_name = smiles_to_name.get(smiles.lower(), "Unknown")
+    difficulty = mol_data.get("difficulty", "medium") if mol_data else "medium"
 
     if not smiles:
         st.warning(t("no_quiz_active"))
@@ -369,6 +382,7 @@ def render_quiz():
         return
 
     st.title(t("quiz_title"))
+    st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
 
     if st.session_state["quiz_submitted"]:
         st.markdown("---")
@@ -455,7 +469,14 @@ def render_quiz():
 
 
 def render_daily():
+
+    smiles = st.session_state["daily_smiles"]
+    mol_data = daily_smiles_to_molecule.get(smiles.lower())
+    correct_name = daily_smiles_to_name.get(smiles.lower(), "Unknown")
+    difficulty = mol_data.get("difficulty", "medium") if mol_data else "medium"
+
     st.title(t("daily_title"))
+    st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
 
     today = date.today().isoformat()
 
@@ -471,10 +492,12 @@ def render_daily():
             st.rerun()
         return
 
-    smiles = st.session_state["daily_smiles"]
-    correct_name = st.session_state["daily_name"]
+
 
     if not smiles:
+        mol_data = daily_smiles_to_molecule.get(smiles.lower())
+        correct_name = daily_smiles_to_name.get(smiles.lower(), "Unknown")
+        difficulty = mol_data.get("difficulty", "medium") if mol_data else "medium"
         mol = pick_daily_molecule(moleküle_daily)
         start_daily(mol)
         smiles = st.session_state["daily_smiles"]
