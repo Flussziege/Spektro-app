@@ -422,8 +422,7 @@ def render_quiz():
 
         else:
             st.error(t("wrong_quiz", name=correct_name))
-            st.write("DEBUG quiz_user_answer:", st.session_state.get("quiz_user_answer"))
-            st.write("DEBUG quiz_user_smiles:", st.session_state.get("quiz_user_smiles"))
+
 
             col1, col2 = st.columns(2)
 
