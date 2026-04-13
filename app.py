@@ -472,15 +472,15 @@ def render_quiz():
     col1, col2 = st.columns(2)
 
     with col1:
-    if st.button(t("quiz_submit"), type="primary", use_container_width=True):
-        selected_smiles = name_to_smiles.get(answer.strip().lower()) if answer else None
-        correct = is_correct_answer(answer, smiles, name_to_smiles)
+        if st.button(t("quiz_submit"), type="primary", use_container_width=True):
+            selected_smiles = name_to_smiles.get(answer.strip().lower()) if answer else None
+            correct = is_correct_answer(answer, smiles, name_to_smiles)
 
-        st.session_state["quiz_user_answer"] = answer
-        st.session_state["quiz_user_smiles"] = selected_smiles
+            st.session_state["quiz_user_answer"] = answer
+            st.session_state["quiz_user_smiles"] = selected_smiles
 
-        submit_quiz(correct)
-        st.rerun()
+            submit_quiz(correct)
+            st.rerun()
 
     with col2:
         if st.button(t("back_home"), use_container_width=True):
