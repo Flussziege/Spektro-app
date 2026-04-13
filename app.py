@@ -37,6 +37,12 @@ from services.plotly_spectra import (
     make_interactive_ir_plot
 )
 
+st.set_page_config(
+    page_title="Spektren Quiz",
+    page_icon="🧪",
+    layout="wide",
+)
+
 st.html("""
 <style>
 
