@@ -183,6 +183,7 @@ TEXTS = {
         "selected_answer": "Selected answer",
         "correct_answer": "Correct answer",
         "result_title": "Result",
+        
         "daily_attempts_label": "Wrong attempts: {count}",
         "wrong_guesses_title": "Wrong guesses so far",
         "empirical_formula_label": "Empirical formula: {formula}",

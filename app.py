@@ -585,7 +585,17 @@ def render_daily():
     smiles = st.session_state.get("daily_smiles")
     today = date.today().isoformat()
 
-    st.title(t("daily_title"))
+    # Safety net für ältere Sessions
+    if "daily_attempt_count" not in st.session_state:
+        st.session_state["daily_attempt_count"] = 0
+    if "daily_wrong_guesses" not in st.session_state:
+        st.session_state["daily_wrong_guesses"] = []
+    if "daily_last_feedback" not in st.session_state:
+        st.session_state["daily_last_feedback"] = None
+    if "daily_user_smiles" not in st.session_state:
+        st.session_state["daily_user_smiles"] = None
+        st.title(t("daily_title"))
+        
 
     if (
         st.session_state["daily_done_date"] == today
