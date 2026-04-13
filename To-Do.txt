@@ -100,13 +100,14 @@ Webseite:
     liste neu machen? *
 - richtig falsch bei daily *
 - schwierigkeiten *
+- hinweis funktion *
+    - 13C integral stimmt*
+    - EA wird berechnet *
+- daily mit weniger spektren? *
 
 alle graphen auf englisch umstellen:
 
-- daily mit weniger spektren?
-- hinweis funktion
-    - 13C integral stimmt
-    - EA wird berechnet
+
 - light/ dark design?
 
 - enter logik x (sehr schwer))

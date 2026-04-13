@@ -114,6 +114,10 @@ TEXTS = {
         "ms_title": "MS",
         "ms_placeholder": "Massenspektrum wird bald eingebunden.",
         "daily_try_again": "Versuche es erneut. Neue Hinweise werden nach Fehlversuchen freigeschaltet.",
+        "empirical_formula_n_label_plain": "Empirische Formel",
+        "molecular_formula_label_plain": "Summenformel",
+        "daily_already_guessed": "Dieses Molekül wurde bereits geraten. Bitte wähle ein anderes.",
+        "daily_invalid_selection": "Bitte wähle ein gültiges Molekül aus der Liste.",
     },
 
     "en": {
@@ -211,6 +215,11 @@ TEXTS = {
         "ms_title": "MS",
         "ms_placeholder": "Mass spectrum will be integrated soon.",
         "daily_try_again": "Try again. New hints unlock after wrong attempts.",
+
+        "empirical_formula_n_label_plain": "Empirical formula",
+        "molecular_formula_label_plain": "Molecular formula",
+        "daily_already_guessed": "This molecule has already been guessed. Please choose another one.",
+        "daily_invalid_selection": "Please choose a valid molecule from the list.",
 
     },
 }

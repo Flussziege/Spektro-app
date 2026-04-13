@@ -205,6 +205,53 @@ def get_empirical_formula_hint(smiles: str) -> str | None:
         return empirical
     return f"({empirical})n"
 
+def formula_to_html_subscripts(formula: str) -> str:
+    """
+    Macht aus C8H10 -> C<sub>8</sub>H<sub>10</sub>
+    """
+    return re.sub(r"(\d+)", r"<sub>\1</sub>", formula)
+
+
+def empirical_formula_with_n(smiles: str) -> str | None:
+    """
+    Gibt die empirische Formel im Stil C2n H6n zurück.
+    Beispiel:
+    - Summenformel C4H12O2
+    - empirische Formel CH3O
+    - Ausgabe: Cn H3n On
+    bzw. bei Teilern >1: C2n H6n
+    """
+    molecular = get_molecular_formula(smiles)
+    if not molecular:
+        return None
+
+    parts = re.findall(r"([A-Z][a-z]*)(\d*)", molecular)
+    if not parts:
+        return None
+
+    parsed = []
+    counts = []
+
+    for element, count_str in parts:
+        count = int(count_str) if count_str else 1
+        parsed.append((element, count))
+        counts.append(count)
+
+    divisor = reduce(gcd, counts)
+    if divisor <= 1:
+        return molecular
+
+    chunks = []
+    for element, count in parsed:
+        reduced = count // divisor
+
+        if reduced == 1:
+            chunks.append(f"{element}n")
+        else:
+            chunks.append(f"{element}{reduced}n")
+
+    return " ".join(chunks)
+
 
 def get_daily_unlock_message(attempts: int) -> str | None:
     if attempts == 1:
@@ -666,14 +713,18 @@ def render_daily():
     )
 
     if show_empirical_formula:
-        empirical_hint = get_empirical_formula_hint(smiles)
-        if empirical_hint:
-            st.info(t("empirical_formula_n_label", formula=empirical_hint))
+        empirical_n = empirical_formula_with_n(smiles)
+        if empirical_n:
+            st.markdown(f"**{t('empirical_formula_n_label_plain')}** {empirical_n}")
 
     if show_molecular_formula:
         molecular_formula = get_molecular_formula(smiles)
         if molecular_formula:
-            st.info(t("molecular_formula_label", formula=molecular_formula))
+            formula_html = formula_to_html_subscripts(molecular_formula)
+            st.markdown(
+                f"**{t('molecular_formula_label_plain')}** {formula_html}",
+                unsafe_allow_html=True,
+            )
 
     if st.session_state["daily_submitted"] and st.session_state["daily_correct"] is False:
         st.error(t("daily_try_again"))
@@ -689,6 +740,10 @@ def render_daily():
     excluded = set(wrong_guesses)
     available_daily_names = [""] + [name for name in daily_names if name not in excluded]
 
+    current_daily_value = st.session_state.get("daily_answer_select", "")
+    if current_daily_value not in available_daily_names:
+        st.session_state["daily_answer_select"] = ""
+
     answer = st.selectbox(
         t("daily_question"),
         available_daily_names,
@@ -699,10 +754,24 @@ def render_daily():
 
     with col1:
         if st.button(t("daily_submit"), type="primary", width="stretch"):
-            selected_smiles = daily_name_to_smiles.get(answer.strip().lower()) if answer else None
-            correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
+            cleaned_answer = answer.strip() if answer else ""
 
-            st.session_state["daily_user_answer"] = answer
+            if not cleaned_answer:
+                st.warning(t("daily_invalid_selection"))
+                return
+
+            if cleaned_answer in wrong_guesses:
+                st.warning(t("daily_already_guessed"))
+                return
+
+            if cleaned_answer not in daily_names:
+                st.warning(t("daily_invalid_selection"))
+                return
+
+            selected_smiles = daily_name_to_smiles.get(cleaned_answer.lower())
+            correct = is_correct_answer(cleaned_answer, smiles, daily_name_to_smiles)
+
+            st.session_state["daily_user_answer"] = cleaned_answer
             st.session_state["daily_user_smiles"] = selected_smiles
             st.session_state["daily_submitted"] = True
             st.session_state["daily_correct"] = correct
@@ -711,11 +780,13 @@ def render_daily():
                 st.session_state["daily_done_date"] = date.today().isoformat()
             else:
                 st.session_state["daily_attempt_count"] += 1
-                if answer and answer not in st.session_state["daily_wrong_guesses"]:
-                    st.session_state["daily_wrong_guesses"].append(answer)
+                if cleaned_answer not in st.session_state["daily_wrong_guesses"]:
+                    st.session_state["daily_wrong_guesses"].append(cleaned_answer)
 
                 attempts_now = st.session_state["daily_attempt_count"]
                 st.session_state["daily_last_feedback"] = get_daily_unlock_message(attempts_now)
+
+                st.session_state["daily_answer_select"] = ""
 
             st.rerun()
 
