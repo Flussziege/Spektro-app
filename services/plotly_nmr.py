@@ -23,17 +23,6 @@ def make_interactive_1h_plot(
         )
     )
 
-    # Unsichtbare Marker für Peak-Hover
-    peak_x = [p["shift"] for p in peaks]
-    peak_y = []
-    for x in peak_x:
-        idx = min(range(len(ppm_axis)), key=lambda i: abs(ppm_axis[i] - x))
-        peak_y.append(float(spectrum[idx]))
-
-    peak_text = [
-        f"{p['shift']:.2f} ppm<br>{p['mult_str']}, {p['n_h']}H"
-        for p in peaks
-    ]
 
     fig.add_trace(
         go.Scatter(
