@@ -472,11 +472,15 @@ def render_quiz():
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button(t("quiz_submit"), type="primary", use_container_width=True):
-            correct = is_correct_answer(answer, smiles, name_to_smiles)
-            st.session_state["quiz_user_answer"] = answer
-            submit_quiz(correct)
-            st.rerun()
+    if st.button(t("quiz_submit"), type="primary", use_container_width=True):
+        selected_smiles = name_to_smiles.get(answer.strip().lower()) if answer else None
+        correct = is_correct_answer(answer, smiles, name_to_smiles)
+
+        st.session_state["quiz_user_answer"] = answer
+        st.session_state["quiz_user_smiles"] = selected_smiles
+
+        submit_quiz(correct)
+        st.rerun()
 
     with col2:
         if st.button(t("back_home"), use_container_width=True):
@@ -519,7 +523,7 @@ def render_daily():
         st.markdown("---")
 
         user_answer = st.session_state.get("daily_user_answer", "")
-        user_smiles = daily_name_to_smiles.get(user_answer.strip().lower()) if user_answer else None
+        user_smiles = st.session_state.get("daily_user_smiles")
         user_name = user_answer if user_answer else t("no_selection")
 
         if st.session_state["daily_correct"]:
@@ -579,11 +583,15 @@ def render_daily():
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button(t("daily_submit"), type="primary", use_container_width=True):
-            correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
-            st.session_state["daily_user_answer"] = answer
-            submit_daily(correct)
-            st.rerun()
+    if st.button(t("daily_submit"), type="primary", use_container_width=True):
+        selected_smiles = daily_name_to_smiles.get(answer.strip().lower()) if answer else None
+        correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
+
+        st.session_state["daily_user_answer"] = answer
+        st.session_state["daily_user_smiles"] = selected_smiles
+
+        submit_daily(correct)
+        st.rerun()
 
     with col2:
         if st.button(t("back_home"), key="daily_home_top", use_container_width=True):
