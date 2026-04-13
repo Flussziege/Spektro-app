@@ -24,6 +24,9 @@ def init_session_state():
 
         # Lookup
         "lookup_smiles": None,
+
+        #Sprache
+        "lang": "de",
     }
 
     for key, value in defaults.items():

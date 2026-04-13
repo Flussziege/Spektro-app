@@ -37,6 +37,8 @@ from services.plotly_spectra import (
     make_interactive_ir_plot
 )
 
+from services.texts import get_text
+
 st.set_page_config(
     page_title="Spektren Quiz",
     page_icon="🧪",
@@ -118,7 +120,10 @@ init_session_state()
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
 daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily)
                                                                           
-                                                                          
+
+def t(key: str, **kwargs) -> str:
+    return get_text(st.session_state.get("lang", "de"), key, **kwargs) 
+
 def card(title: str, text: str):
     st.html(f"""
     <div style="
@@ -141,12 +146,12 @@ def card(title: str, text: str):
 def render_spectra_tabs(smiles: str, show_structure: bool = False):
 
     if show_structure:
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["13C NMR", "1H NMR", "IR", "EA", "Struktur"])
+        tab1, tab2, tab3, tab4, tab5 = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ea_title"), t("structure_title")])
     else: 
-        tab1, tab2, tab3, tab4 = st.tabs(["13C NMR", "1H NMR", "IR", "EA"])
+        tab1, tab2, tab3, tab4 = st.tabs([t("c13_nmr_title"), t("h1_nmr_title"), t("ir_title"), t("ea_title")])
 
     with tab1:
-        st.subheader("13C NMR")
+        st.subheader(t("c13_nmr_title"))
         try:
             c13_result = generator.simulate_13c_nmr(
                 smiles,
@@ -179,10 +184,10 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 theme=None,
             )
         except Exception as e:
-            st.error(f"13C NMR konnte nicht erzeugt werden: {e}")
+            st.error(f"13C NMR: {e}")
 
     with tab2:
-        st.subheader("1H NMR")
+        st.subheader(t("h1_nmr_title"))
         try:
             nmr_result = hnmr.simulate_1h_nmr(
                 smiles,
@@ -221,10 +226,10 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
             )
     
         except Exception as e:
-            st.error(f"1H NMR konnte nicht erzeugt werden: {e}")
+            st.error(f"1H NMR: {e}")
 
     with tab3:
-        st.subheader("IR")
+        st.subheader(t("ir_title"))
         try:
             ir_result = generator2.simulate_ir(
                 smiles,
@@ -255,58 +260,72 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
                 theme=None,
             )
         except Exception as e:
-            st.error(f"IR konnte nicht erzeugt werden: {e}")
+            st.error(f"IR: {e}")
 
     with tab4:
-        st.subheader("Elementaranalyse")
+        st.subheader(t("ea_title"))
         try:
             result = generator5.elementaranalyse(smiles)
             if result:
                 for el, perc in sorted(result.items()):
                     st.write(f"**{el}**: {perc:.2f} %")
             else:
-                st.warning("Keine EA-Daten verfügbar.")
+                st.warning(t("ea_missing"))
         except Exception as e:
-            st.error(f"EA konnte nicht berechnet werden: {e}")
+            st.error(t("ea_error", error=e))
 
     if show_structure:
         with tab5:
-            st.subheader("Struktur")
+            st.subheader(t("structure_title"))
             try:
                 img = smiles_to_pil(smiles)
                 if img is not None:
                     st.image(img, width=320)
                 else:
-                    st.warning("Strukturbild konnte nicht erzeugt werden.")
+                    st.warning(t("structure_missing"))
             except Exception as e:
-                    st.error(f"Struktur konnte nicht gezeichnet werden: {e}")
+                    st.error(t("structure_error", error=e))
 
 
 def render_home():
-    st.title("Spektren Quiz")
-    st.write("Trainiere die Zuordnung organischer Moleküle anhand simulierter Spektren.")
+    col_title, col_lang = st.columns([5, 1])
+
+    with col_title:
+        st.title(t("home_title"))
+
+    with col_lang:
+        lang = st.selectbox(
+            t("language_label"),
+            options=["de", "en"],
+            format_func=lambda x: "Deutsch" if x == "de" else "English",
+            index=0 if st.session_state.get("lang", "de") == "de" else 1,
+            key="lang_select",
+        )
+        st.session_state["lang"] = lang
+
+    st.write(t("home_subtitle"))
 
     col1, col2 = st.columns(2)
 
     with col2:
-        card("Quiz", "Zufälliges Molekül aus der Hauptliste.")
-        if st.button("Quiz starten", use_container_width=True):
+        card(t("card_quiz_title"), t("card_quiz_text"))
+        if st.button(t("quiz_start"), use_container_width=True):
             mol = pick_random_molecule(moleküle)
             start_quiz(mol)
             st.rerun()
 
     with col1:
-        card("Daily Quiz", "Jeden Tag ein neues Molekül.")
-        if st.button("Daily Quiz öffnen", use_container_width=True):
+        card(t("card_daily_title"), t("card_daily_text"))
+        if st.button(t("daily_open"), use_container_width=True):
             mol = pick_daily_molecule(moleküle_daily)
             start_daily(mol)
             st.rerun()
 
-    with st.expander("Molekül nachschlagen", expanded=False):
-        selected_name = st.selectbox("Name auswählen", [""] + namen_liste)
-        smiles_input = st.text_input("Oder SMILES eingeben")
+    with st.expander(t("lookup_expander"), expanded=False):
+        selected_name = st.selectbox(t("lookup_name"), [""] + namen_liste)
+        smiles_input = st.text_input(t("lookup_smiles"))
 
-        if st.button("Nachschlagen", use_container_width=True):
+        if st.button(t("lookup_submit"), use_container_width=True):
             chosen_smiles = None
 
             if selected_name:
@@ -316,23 +335,18 @@ def render_home():
                 if molecule_exists(smiles_input.strip()):
                     chosen_smiles = smiles_input.strip()
                 else:
-                    st.error("Ungültiger SMILES.")
+                    st.error(t("invalid_smiles"))
                     return
 
             else:
-                st.warning("Bitte Namen auswählen oder SMILES eingeben.")
+                st.warning(t("lookup_missing_input"))
                 return
 
             set_lookup(chosen_smiles)
             st.rerun()
 
     st.markdown("---")
-    st.info(
-        "Diese Anwendung dient der didaktischen Simulation chemischer Spektren. "
-        "Die dargestellten Daten sind modellbasiert und ersetzen keine experimentellen Messdaten. "
-        "Es wird keine Gewähr für Richtigkeit oder Vollständigkeit übernommen.\n\n"
-        "Kontakt: dailyspectroquizz@gmail.com"
-    )
+    st.info(t("disclaimer"))
 
 
 def render_quiz():
@@ -340,23 +354,23 @@ def render_quiz():
     correct_name = st.session_state["quiz_name"]
 
     if not smiles:
-        st.warning("Kein Quiz aktiv.")
-        if st.button("Zur Startseite"):
+        st.warning(t("no_quiz_active"))
+        if st.button(t("back_home")):
             go_home()
             st.rerun()
         return
 
-    st.title("Quiz")
+    st.title(t("quiz_title"))
 
     if st.session_state["quiz_submitted"]:
         st.markdown("---")
 
         user_answer = st.session_state.get("quiz_user_answer", "")
         user_smiles = name_to_smiles.get(user_answer.strip().lower()) if user_answer else None
-        user_name = user_answer if user_answer else "Keine Auswahl"
+        user_name = user_answer if user_answer else t("no_selection")
 
         if st.session_state["quiz_correct"]:
-            st.success(f"Richtig. Das Molekül war **{correct_name}**.") 
+            st.success(t("correct_quiz", name=correct_name)) 
 
             col_left, col_center, col_right = st.columns([1, 2, 1])
 
@@ -366,44 +380,44 @@ def render_quiz():
                     if img is not None:
                         st.image(img, caption=correct_name, use_container_width=True)
                 except Exception as e:
-                    st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+                    st.warning(t("structure_display_error", error=e))
 
         else:
-            st.error(f"Falsch. Richtig war **{correct_name}**.")
+            st.error(t("wrong_quiz", name=correct_name))
 
             col1, col2 = st.columns(2)
 
             with col1:
-                st.markdown(f"### Richtig: {correct_name}")
+                st.markdown(f"### {t('correct_label', name=correct_name)}")
                 try:
                     img_correct = smiles_to_pil(smiles)
                     if img_correct is not None:
                         st.image(img_correct, width=320)
                 except Exception as e:
-                    st.warning(f"Richtige Struktur konnte nicht angezeigt werden: {e}")
+                    st.warning(t("structure_display_error", error=e))
 
             with col2:
-                st.markdown(f"### Deine Antwort: {user_name}")
+                st.markdown(f"### {t('your_answer_label', name=user_name)}")
                 if user_smiles:
                     try:
                         img_user = smiles_to_pil(user_smiles)
                         if img_user is not None:
                             st.image(img_user, width=320)
                     except Exception as e:
-                        st.warning(f"Deine Struktur konnte nicht angezeigt werden: {e}")
+                        st.warning(t("structure_display_error", error=e))
                 else:
-                    st.info("Kein Molekülbild für die Antwort verfügbar.")
+                    st.info(t("no_answer_image"))
 
         col_a, col_b = st.columns(2)
 
         with col_a:
-            if st.button("Noch ein Quiz", use_container_width=True):
+            if st.button(t("another_quiz"), use_container_width=True):
                 mol = pick_random_molecule(moleküle)
                 start_quiz(mol)
                 st.rerun()
 
         with col_b:
-            if st.button("Startseite", use_container_width=True, key="quiz_home_end"):
+            if st.button(t("startpage"), use_container_width=True, key="quiz_home_end"):
                 go_home()
                 st.rerun()
 
@@ -412,7 +426,7 @@ def render_quiz():
     render_spectra_tabs(smiles, show_structure=False)
 
     answer = st.selectbox(
-        "Welches Molekül ist das?",
+        t("quiz_question"),
         [""] + namen_liste,
         key="quiz_answer_select",
     )
@@ -420,20 +434,20 @@ def render_quiz():
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("Abgeben", type="primary", use_container_width=True):
+        if st.button(t("quiz_submit"), type="primary", use_container_width=True):
             correct = is_correct_answer(answer, smiles, name_to_smiles)
             st.session_state["quiz_user_answer"] = answer
             submit_quiz(correct)
             st.rerun()
 
     with col2:
-        if st.button("Zurück zur Startseite", use_container_width=True):
+        if st.button(t("back_home"), use_container_width=True):
             go_home()
             st.rerun()
 
 
 def render_daily():
-    st.title("Daily Quiz")
+    st.title(t("daily_title"))
 
     today = date.today().isoformat()
 
@@ -443,8 +457,8 @@ def render_daily():
         st.session_state["daily_done_date"] == today
         and not st.session_state["daily_submitted"]
     ):
-        st.success("Du hast das Daily Quiz heute bereits abgeschlossen.")
-        if st.button("Zur Startseite", key="daily_done_home"):
+        st.success(t("daily_done"))
+        if st.button(t("back_home"), key="daily_done_home"):
             go_home()
             st.rerun()
         return
@@ -464,10 +478,10 @@ def render_daily():
 
         user_answer = st.session_state.get("daily_user_answer", "")
         user_smiles = daily_name_to_smiles.get(user_answer.strip().lower()) if user_answer else None
-        user_name = user_answer if user_answer else "Keine Auswahl"
+        user_name = user_answer if user_answer else t("no_selection")
 
         if st.session_state["daily_correct"]:
-            st.success(f"Richtig. Das heutige Molekül war **{correct_name}**.")
+            st.success(t("correct_daily", name=correct_name))
 
             col_left, col_center, col_right = st.columns([1, 2, 1])
 
@@ -477,35 +491,35 @@ def render_daily():
                     if img is not None:
                         st.image(img, caption=correct_name, use_container_width=True)
                 except Exception as e:
-                    st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+                    st.warning(t("structure_display_error", error=e))
 
         else:
-            st.error(f"Falsch. Das heutige Molekül war **{correct_name}**.")
+            st.error(t("wrong_daily", name=correct_name))
 
             col1, col2 = st.columns(2)
 
             with col1:
-                st.markdown(f"### Richtig: {correct_name}")
+                st.markdown(f"### {t('correct_label', name=correct_name)}")
                 try:
                     img_correct = smiles_to_pil(smiles)
                     if img_correct is not None:
                         st.image(img_correct, width=320)
                 except Exception as e:
-                    st.warning(f"Richtige Struktur konnte nicht angezeigt werden: {e}")
+                    st.warning(t("structure_display_error", error=e))
 
             with col2:
-                st.markdown(f"### Deine Antwort: {user_name}")
+                st.markdown(f"### {t('your_answer_label', name=user_name)}")
                 if user_smiles:
                     try:
                         img_user = smiles_to_pil(user_smiles)
                         if img_user is not None:
                             st.image(img_user, width=320)
                     except Exception as e:
-                        st.warning(f"Deine Struktur konnte nicht angezeigt werden: {e}")
+                        st.warning(t("structure_display_error", error=e))
                 else:
-                    st.info("Kein Molekülbild für die Antwort verfügbar.")
+                    st.info(t("no_answer_image"))
 
-        if st.button("Startseite", key="daily_home_bottom", use_container_width=True):
+        if st.button(t("startpage"), key="daily_home_bottom", use_container_width=True):
             # Ergebnisansicht verlassen -> ab dann Daily gesperrt
             st.session_state["daily_submitted"] = False
             go_home()
@@ -517,7 +531,7 @@ def render_daily():
     render_spectra_tabs(smiles, show_structure=False)
 
     answer = st.selectbox(
-        "Welches Molekül ist das heute?",
+        t("daily_question"),
         [""] + daily_names,
         key="daily_answer_select",
     )
@@ -525,14 +539,14 @@ def render_daily():
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("Daily abgeben", type="primary", use_container_width=True):
+        if st.button(t("daily_submit"), type="primary", use_container_width=True):
             correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
             st.session_state["daily_user_answer"] = answer
             submit_daily(correct)
             st.rerun()
 
     with col2:
-        if st.button("Zurück zur Startseite", key="daily_home_top", use_container_width=True):
+        if st.button(t("back_home"), key="daily_home_top", use_container_width=True):
             go_home()
             st.rerun()
 
@@ -541,11 +555,11 @@ def render_daily():
 def render_lookup():
     smiles = st.session_state["lookup_smiles"]
 
-    st.title("Molekül nachschlagen")
+    st.title(t("lookup_title"))
 
     if not smiles:
-        st.warning("Kein Molekül ausgewählt.")
-        if st.button("Zur Startseite", key="lookup_home_empty"):
+        st.warning(t("lookup_empty"))
+        if st.button(t("back_home"), key="lookup_home_empty"):
             go_home()
             st.rerun()
         return
@@ -553,7 +567,7 @@ def render_lookup():
     st.write(f"**SMILES:** `{smiles}`")
     render_spectra_tabs(smiles, show_structure=True)
 
-    if st.button("Zur Startseite", key="lookup_home", use_container_width=True):
+    if st.button(t("back_home"), key="lookup_home", use_container_width=True):
         go_home()
         st.rerun()
 

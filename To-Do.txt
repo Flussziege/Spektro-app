@@ -90,14 +90,13 @@ Webseite:
 - bei falsch das falsche anzeigen *
 - wenn richtig dann mittig *
 - struktur nicht anbieten bei quizz *
-
-- IR und 13C auch als so hübsche plots
-
+- IR und 13C auch als so hübsche plots*
 - grauer background bei nmr weg * (ist okay so)
 - legende weg (noch bei lookup da) (*)
 - bei hovern: 
     - ppm und int sind gut (ppm doppelt tho) *
     - anzeige dd/ anzahl protonen ist doof *
+    
 - sprache:
     liste neu machen?
 - light/ dark design?
