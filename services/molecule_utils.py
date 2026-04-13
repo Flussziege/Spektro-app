@@ -35,12 +35,6 @@ def get_difficulty(molecule: dict, default: str = "medium") -> str:
 
 
 def build_name_maps(molecules: list[dict], lang: str = "de"):
-    """
-    Returns:
-    - names: list[str]                      -> display names for UI
-    - name_to_smiles: dict[str, str]        -> normalized display name -> normalized smiles
-    - smiles_to_name: dict[str, str]        -> normalized smiles -> display name
-    """
     names: list[str] = []
     name_to_smiles: dict[str, str] = {}
     smiles_to_name: dict[str, str] = {}
@@ -62,11 +56,6 @@ def build_name_maps(molecules: list[dict], lang: str = "de"):
 
 
 def build_smiles_to_molecule_map(molecules: list[dict]) -> dict[str, dict]:
-    """
-    Uses normalized SMILES as key.
-    Keeps the first molecule for a given SMILES, so synonyms do not overwrite
-    the primary entry accidentally.
-    """
     result: dict[str, dict] = {}
 
     for m in molecules:
