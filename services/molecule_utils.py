@@ -4,7 +4,7 @@ from rdkit.Chem import Draw
 
 
 def normalize_smiles(smiles: str) -> str:
-    return (smiles or "").strip().lower()
+    return (smiles or "").strip()
 
 
 def get_display_name(molecule: dict, lang: str = "de") -> str:
