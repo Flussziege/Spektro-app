@@ -276,7 +276,7 @@ def render_home():
         "Diese Anwendung dient der didaktischen Simulation chemischer Spektren. "
         "Die dargestellten Daten sind modellbasiert und ersetzen keine experimentellen Messdaten. "
         "Es wird keine Gewähr für Richtigkeit oder Vollständigkeit übernommen.\n\n"
-        "Kontakt: deine.email@beispiel.de"
+        "Kontakt: dailyspectroquizz@gmail.com"
     )
 
 
@@ -303,12 +303,17 @@ def render_quiz():
         if st.session_state["quiz_correct"]:
             st.success(f"Richtig. Das Molekül war **{correct_name}**.")
 
-            try:
-                img = smiles_to_pil(smiles)
-                if img is not None:
-                    st.image(img, caption=correct_name, width=320)
-            except Exception as e:
-                st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+            st.success(f"Richtig. Das Molekül war **{correct_name}**.")
+
+            col_left, col_center, col_right = st.columns([1, 2, 1])
+
+            with col_center:
+                try:
+                    img = smiles_to_pil(smiles)
+                    if img is not None:
+                        st.image(img, caption=correct_name, use_container_width=True)
+                except Exception as e:
+                    st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
 
         else:
             st.error(f"Falsch. Richtig war **{correct_name}**.")
@@ -411,12 +416,15 @@ def render_daily():
         if st.session_state["daily_correct"]:
             st.success(f"Richtig. Das heutige Molekül war **{correct_name}**.")
 
-            try:
-                img = smiles_to_pil(smiles)
-                if img is not None:
-                    st.image(img, caption=correct_name, width=320)
-            except Exception as e:
-                st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+            col_left, col_center, col_right = st.columns([1, 2, 1])
+
+            with col_center:
+                try:
+                    img = smiles_to_pil(smiles)
+                    if img is not None:
+                        st.image(img, caption=correct_name, use_container_width=True)
+                except Exception as e:
+                    st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
 
         else:
             st.error(f"Falsch. Das heutige Molekül war **{correct_name}**.")

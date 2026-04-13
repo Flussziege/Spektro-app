@@ -82,7 +82,10 @@ Online:
 Webseite:
 - SMILES in spektren *
 - design (*)
-- bei falsch das falsche anzeigen   
+- bei falsch das falsche anzeigen *
+- wenn richtig dann mittig
+
+- enter logik
 - struktur nicht anbieten bei quizz *
 - IR und 13C auch als so hübsche plots
 - grauer background bei nmr weg * (ist okay so)
