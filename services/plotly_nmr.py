@@ -35,18 +35,7 @@ def make_interactive_1h_plot(
         for p in peaks
     ]
 
-    fig.add_trace(
-        go.Scatter(
-            x=peak_x,
-            y=peak_y,
-            mode="markers",
-            name="Peaks",
-            marker=dict(size=8, opacity=0.0),
-            text=peak_text,
-            hovertemplate="%{text}<extra></extra>",
-            showlegend=False,
-        )
-    )
+    #hier
 
     # NMR-typischer Bereich
     x_left = 12.5
