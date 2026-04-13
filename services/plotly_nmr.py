@@ -30,9 +30,9 @@ def make_interactive_1h_plot(
         idx = min(range(len(ppm_axis)), key=lambda i: abs(ppm_axis[i] - x))
         peak_y.append(float(spectrum[idx]))
 
-    #peak_text = [
-    #    f"{p['shift']:.2f} ppm<br>{p['mult_str']}, {p['n_h']}H"
-    #    for p in peaks
+    peak_text = [
+        f"{p['shift']:.2f} ppm<br>{p['mult_str']}, {p['n_h']}H"
+        for p in peaks
     ]
 
     fig.add_trace(
