@@ -104,7 +104,7 @@ details {
 init_session_state()
 
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
-daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily
+daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily)
                                                                           
                                                                           
 def card(title: str, text: str):
