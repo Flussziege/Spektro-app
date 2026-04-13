@@ -740,9 +740,13 @@ def render_daily():
     excluded = set(wrong_guesses)
     available_daily_names = [""] + [name for name in daily_names if name not in excluded]
 
+    if st.session_state.get("daily_reset_selection"):
+        st.session_state["daily_reset_selection"] = True
+        st.session_state["daily_reset_selection"] = False
+
     current_daily_value = st.session_state.get("daily_answer_select", "")
     if current_daily_value not in available_daily_names:
-        st.session_state["daily_answer_select"] = ""
+        st.session_state["daily_reset_selection"] = True
 
     answer = st.selectbox(
         t("daily_question"),

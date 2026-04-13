@@ -26,6 +26,7 @@ def init_session_state():
         "daily_attempt_count": 0,
         "daily_wrong_guesses": [],
         "daily_last_feedback": None,
+        "daily_reset_selection": False,
 
         # Lookup
         "lookup_smiles": None,
@@ -69,6 +70,7 @@ def start_daily(mol: dict):
     st.session_state["daily_wrong_guesses"] = []
     st.session_state["daily_last_feedback"] = None
     st.session_state["mode"] = "daily"
+    st.session_state["daily_reset_selection"] = False
 
 
 def submit_daily(correct: bool):
