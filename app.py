@@ -44,7 +44,11 @@ daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(molek√
 
 
 def render_spectra_tabs(smiles: str, show_structure: bool = False):
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["13C NMR", "1H NMR", "IR", "EA", "Struktur"])
+
+    if show_structure:
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["13C NMR", "1H NMR", "IR", "EA", "Struktur"])
+    else: 
+        tab1, tab2, tab3, tab4 = st.tabs(["13C NMR", "1H NMR", "IR", "EA"])
 
     with tab1:
         st.subheader("13C NMR")
