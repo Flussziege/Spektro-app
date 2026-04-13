@@ -242,14 +242,14 @@ def render_home():
 
     col1, col2 = st.columns(2)
 
-    with col1:
+    with col2:
         card("Quiz", "Zufälliges Molekül aus der Hauptliste.")
         if st.button("Quiz starten", type="primary", use_container_width=True):
             mol = pick_random_molecule(moleküle)
             start_quiz(mol)
             st.rerun()
 
-    with col2:
+    with col1:
         card("Daily Quiz", "Jeden Tag ein neues Molekül.")
         if st.button("Daily Quiz öffnen", use_container_width=True):
             mol = pick_daily_molecule(moleküle_daily)
