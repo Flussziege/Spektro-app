@@ -292,41 +292,49 @@ def render_quiz():
         return
 
     st.title("Quiz")
-    render_spectra_tabs(smiles, show_structure=False)
-
-    answer = st.selectbox(
-        "Welches Molekül ist das?",
-        [""] + namen_liste,
-        key="quiz_answer_select",
-    )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if st.button("Abgeben", type="primary", use_container_width=True):
-            correct = is_correct_answer(answer, smiles, name_to_smiles)
-            submit_quiz(correct)
-            st.rerun()
-
-    with col2:
-        if st.button("Zurück zur Startseite", use_container_width=True):
-            go_home()
-            st.rerun()
 
     if st.session_state["quiz_submitted"]:
         st.markdown("---")
 
+        user_answer = st.session_state.get("quiz_user_answer", "")
+        user_smiles = name_to_smiles.get(user_answer.strip().lower()) if user_answer else None
+        user_name = user_answer if user_answer else "Keine Auswahl"
+
         if st.session_state["quiz_correct"]:
             st.success(f"Richtig. Das Molekül war **{correct_name}**.")
+
+            try:
+                img = smiles_to_pil(smiles)
+                if img is not None:
+                    st.image(img, caption=correct_name, width=320)
+            except Exception as e:
+                st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+
         else:
             st.error(f"Falsch. Richtig war **{correct_name}**.")
 
-        try:
-            img = smiles_to_pil(smiles)
-            if img is not None:
-                st.image(img, caption=correct_name, width=320)
-        except Exception as e:
-            st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.markdown(f"### Richtig: {correct_name}")
+                try:
+                    img_correct = smiles_to_pil(smiles)
+                    if img_correct is not None:
+                        st.image(img_correct, width=320)
+                except Exception as e:
+                    st.warning(f"Richtige Struktur konnte nicht angezeigt werden: {e}")
+
+            with col2:
+                st.markdown(f"### Deine Antwort: {user_name}")
+                if user_smiles:
+                    try:
+                        img_user = smiles_to_pil(user_smiles)
+                        if img_user is not None:
+                            st.image(img_user, width=320)
+                    except Exception as e:
+                        st.warning(f"Deine Struktur konnte nicht angezeigt werden: {e}")
+                else:
+                    st.info("Kein Molekülbild für die Antwort verfügbar.")
 
         col_a, col_b = st.columns(2)
 
@@ -341,13 +349,42 @@ def render_quiz():
                 go_home()
                 st.rerun()
 
+        return
+
+    render_spectra_tabs(smiles, show_structure=False)
+
+    answer = st.selectbox(
+        "Welches Molekül ist das?",
+        [""] + namen_liste,
+        key="quiz_answer_select",
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("Abgeben", type="primary", use_container_width=True):
+            correct = is_correct_answer(answer, smiles, name_to_smiles)
+            st.session_state["quiz_user_answer"] = answer
+            submit_quiz(correct)
+            st.rerun()
+
+    with col2:
+        if st.button("Zurück zur Startseite", use_container_width=True):
+            go_home()
+            st.rerun()
+
 
 def render_daily():
     st.title("Daily Quiz")
 
     today = date.today().isoformat()
 
-    if st.session_state["daily_done_date"] == today:
+    # Nur sperren, wenn heute schon abgeschlossen UND wir uns NICHT
+    # gerade in der Ergebnisansicht dieses Daily befinden.
+    if (
+        st.session_state["daily_done_date"] == today
+        and not st.session_state["daily_submitted"]
+    ):
         st.success("Du hast das Daily Quiz heute bereits abgeschlossen.")
         if st.button("Zur Startseite", key="daily_done_home"):
             go_home()
@@ -363,6 +400,59 @@ def render_daily():
         smiles = st.session_state["daily_smiles"]
         correct_name = st.session_state["daily_name"]
 
+    # Ergebnisansicht nach Abgabe
+    if st.session_state["daily_submitted"]:
+        st.markdown("---")
+
+        user_answer = st.session_state.get("daily_user_answer", "")
+        user_smiles = daily_name_to_smiles.get(user_answer.strip().lower()) if user_answer else None
+        user_name = user_answer if user_answer else "Keine Auswahl"
+
+        if st.session_state["daily_correct"]:
+            st.success(f"Richtig. Das heutige Molekül war **{correct_name}**.")
+
+            try:
+                img = smiles_to_pil(smiles)
+                if img is not None:
+                    st.image(img, caption=correct_name, width=320)
+            except Exception as e:
+                st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
+
+        else:
+            st.error(f"Falsch. Das heutige Molekül war **{correct_name}**.")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.markdown(f"### Richtig: {correct_name}")
+                try:
+                    img_correct = smiles_to_pil(smiles)
+                    if img_correct is not None:
+                        st.image(img_correct, width=320)
+                except Exception as e:
+                    st.warning(f"Richtige Struktur konnte nicht angezeigt werden: {e}")
+
+            with col2:
+                st.markdown(f"### Deine Antwort: {user_name}")
+                if user_smiles:
+                    try:
+                        img_user = smiles_to_pil(user_smiles)
+                        if img_user is not None:
+                            st.image(img_user, width=320)
+                    except Exception as e:
+                        st.warning(f"Deine Struktur konnte nicht angezeigt werden: {e}")
+                else:
+                    st.info("Kein Molekülbild für die Antwort verfügbar.")
+
+        if st.button("Startseite", key="daily_home_bottom", use_container_width=True):
+            # Ergebnisansicht verlassen -> ab dann Daily gesperrt
+            st.session_state["daily_submitted"] = False
+            go_home()
+            st.rerun()
+
+        return
+
+    # Nur wenn noch nicht abgegeben wurde: Quiz anzeigen
     render_spectra_tabs(smiles, show_structure=False)
 
     answer = st.selectbox(
@@ -376,6 +466,7 @@ def render_daily():
     with col1:
         if st.button("Daily abgeben", type="primary", use_container_width=True):
             correct = is_correct_answer(answer, smiles, daily_name_to_smiles)
+            st.session_state["daily_user_answer"] = answer
             submit_daily(correct)
             st.rerun()
 
@@ -384,24 +475,6 @@ def render_daily():
             go_home()
             st.rerun()
 
-    if st.session_state["daily_submitted"]:
-        st.markdown("---")
-
-        if st.session_state["daily_correct"]:
-            st.success(f"Richtig. Das heutige Molekül war **{correct_name}**.")
-        else:
-            st.error(f"Falsch. Das heutige Molekül war **{correct_name}**.")
-
-        try:
-            img = smiles_to_pil(smiles)
-            if img is not None:
-                st.image(img, caption=correct_name, width=320)
-        except Exception as e:
-            st.warning(f"Struktur konnte nicht angezeigt werden: {e}")
-
-        if st.button("Startseite", key="daily_home_bottom", use_container_width=True):
-            go_home()
-            st.rerun()
 
 
 def render_lookup():
