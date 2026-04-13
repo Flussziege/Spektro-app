@@ -33,8 +33,7 @@ from services.render_helpers import (
 )
 
 from services.plotly_spectra import (
-    make_interactive_13c_plot,
-    make_interactive_ir_plot,
+    make_interactive_13c_plot
 )
 
 st.html("""
