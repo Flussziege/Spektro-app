@@ -56,10 +56,13 @@ def make_interactive_1h_plot(
     y_max = max(float(spectrum.max()) if len(spectrum) else 1.0, 1.0)
 
     fig.update_layout(
-        title=f"Simuliertes ¹H-NMR-Spektrum — {smiles}",
+        if show_integrals:
+            title=f"Simuliertes ¹H-NMR-Spektrum — {smiles}",
+        else:
+            title=f"Simuliertes ¹H-NMR-Spektrum ",
         xaxis_title="Chemical Shift δ (ppm)",
         yaxis_title="Protonenzahl (rel. Intensität)",
-        template="plotly_white",
+        template="simply_white",
         height=520,
         margin=dict(l=30, r=30, t=60, b=30),
         dragmode="pan",
