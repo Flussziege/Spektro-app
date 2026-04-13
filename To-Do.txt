@@ -1,0 +1,96 @@
+To-Do:
+
+1H-NMR:
+- y-Achse für int *
+- keine nervigen anzeigen (mit show_title) *
+- Title obv weg *
+    -grauer text *
+    -kleine boxen *
+- zoomen können, wiel mulitplizität *
+- zoomen und skala passt *
+
+Problemmoleküle:
+- But-2-en, zoomt nicht richtig weit genug wg *
+- Propen *
+- 8-Hydroxychinolin *
+
+- methanal/formaldehyd
+    -warum bei 0.1 statt 10 *
+
+
+MS:
+- regelbasiert
+
+13C:
+- schmaler machen *
+- nicht quantitativ *
+    - jetzt mit easymode accesable
+
+GUI:
+- scroll funktion in Quizz und Auswertungsscreen *
+- eventuell die funktion zu zoomen ums anpassen zu können x
+- scrollen in Auswertungsscreen *
+
+IR:
+- sehr viel mehr schwingungen *
+- offset, wenn gleiche funktionalität mehrfach
+- zu indensive Schwingungen bei längeren ketten  *
+- aromaten muster nicht schön 
+- CH- Schwingungen vielleicht nicht addieren
+
+Problemmoleküle:
+- benzol keine schwignungen? *
+- Methan *
+- Methanal *
+- Furan *
+
+kann man alle testen:
+    Ja
+
+-wie schwer wäre eine Simulation?: * 
+    schwer, damit sie mehr kann
+
+liste:
+- viiiieeeellll mehr moleküle (*)
+
+Sofort sinnvoll: 
+    ¹H: mehr Spezial-Protonklassen *
+    ¹H: cis/trans/vinylic/aromatische J-Kopplungen *
+    IR: fehlende Gruppen wie Sulfoxid/Sulfon/Säurechlorid/Carbamat *
+
+    IR: kontextabhängige Carbonylverschiebungen
+    ¹³C: Basismodell nach C-Typ statt nur Hybridisierung
+Danach:
+    ¹³C: mehr absolute Overrides
+    IR: smarter Fingerprint-Ausbau
+    ¹H: aromatische Substitutionsmuster
+    ¹³C: Heteroaromaten und konjugierte Systeme
+        gemeinsame zentrale Motivbibliothek
+
+
+
+ 
+
+Online:
+- lookup funktion mehr verstecken
+    -erste Funktion ist quizz. 
+- EIn Daily, dass aus seperater Datei die Moleküle zieht
+    -sollten nicht trivial sein
+- "Programm beenden" muss weg
+- Infofeld mit disclaimer und email
+
+Webseite:
+- SMILES in spektren *
+- design (*)
+- bei falsch das falsche anzeigen   
+- struktur nicht anbieten bei quizz *
+- IR und 13C auch als so hübsche plots
+- grauer background bei nmr weg * (ist okay so)
+- legende weg (noch bei lookup da) (*)
+- bei hovern: 
+    - ppm und int sind gut (ppm doppelt tho) *
+    - anzeige dd/ anzahl protonen ist doof *
+- sprache:
+    liste neu machen?
+- light/ dark design?
+- richtig falsch bei daily
