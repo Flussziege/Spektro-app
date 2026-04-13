@@ -127,19 +127,17 @@ def render_spectra_tabs(smiles: str, show_structure: bool = False):
         except Exception as e:
             st.error(f"EA konnte nicht berechnet werden: {e}")
 
-    with tab5:
-        st.subheader("Struktur")
-        if not show_structure:
-            st.info("Die Struktur wird im Quiz erst nach der Auflösung angezeigt.")
-        else:
-            try:
-                img = smiles_to_pil(smiles)
-                if img is not None:
-                    st.image(img, width=320)
-                else:
-                    st.warning("Strukturbild konnte nicht erzeugt werden.")
-            except Exception as e:
-                st.error(f"Struktur konnte nicht gezeichnet werden: {e}")
+    if not show_structure:
+        with tab5:
+            st.subheader("Struktur")
+                try:
+                    img = smiles_to_pil(smiles)
+                    if img is not None:
+                        st.image(img, width=320)
+                    else:
+                        st.warning("Strukturbild konnte nicht erzeugt werden.")
+                except Exception as e:
+                    st.error(f"Struktur konnte nicht gezeichnet werden: {e}")
 
 
 def render_home():
