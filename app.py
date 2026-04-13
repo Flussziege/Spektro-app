@@ -37,6 +37,80 @@ st.set_page_config(
     layout="wide",
 )
 
+st.html("""
+<style>
+/* Hauptbereich luftiger */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* Überschriften klar und ruhig */
+h1, h2, h3 {
+    letter-spacing: -0.02em;
+    font-weight: 600;
+}
+
+/* Buttons klinisch und ruhig */
+.stButton > button {
+    background: white;
+    color: #111827;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.stButton > button:hover {
+    border-color: #CBD5E1;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+/* Primäre Buttons etwas dunkler, aber nicht bunt */
+.stButton > button[kind="primary"] {
+    background: #111827;
+    color: white;
+    border: 1px solid #111827;
+}
+
+/* Expander sehr sauber */
+details {
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    background: #FFFFFF;
+}
+
+/* Tabs ruhiger */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.5rem;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px 10px 0 0;
+    padding: 0.5rem 0.9rem;
+}
+
+.stTabs [aria-selected="true"] {
+    background: #FFFFFF;
+    border-bottom-color: #FFFFFF;
+}
+
+/* Inputs und Selectboxen klarer */
+.stTextInput input, .stSelectbox div[data-baseweb="select"] > div {
+    border-radius: 10px;
+}
+
+/* Alert-Boxen dezenter */
+[data-testid="stAlert"] {
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    box-shadow: none;
+}
+</style>
+""")
+
 init_session_state()
 
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle)
