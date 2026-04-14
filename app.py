@@ -13,7 +13,7 @@ from liste_neu import moleküle
 from daily_molekuele import moleküle_daily
 
 import generator
-import generator2
+import generator2   
 import generator5
 import hnmr
 
