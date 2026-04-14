@@ -233,7 +233,7 @@ def plot_nmr(wns, spectrum, smiles, frequencies=None,
     fig, ax = plt.subplots(figsize=(13, 5))
     ax.plot(wns, spectrum, color="#185FA5", linewidth=1.2)
     ax.fill_between(wns, spectrum, 0, alpha=0.07, color="#185FA5")
-    
+        
 
     
     ax.set_xlim(220, 0)
