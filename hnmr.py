@@ -782,27 +782,26 @@ def compute_1h_peaks(smiles: str, seed: int = None
 
     equiv_ranks = get_equivalent_rank(mol)
 
-    # Gruppiere H-tragende Schweratome nach Äquivalenzrang
     rank_to_atoms: dict[int, list[int]] = defaultdict(list)
+
     for atom in mol.GetAtoms():
-        if atom.GetAtomicNum() != 1:    # nur explizite H (nach AddHs)
+        if atom.GetAtomicNum() == 1:
             continue
-        # H ist gebunden an genau ein Schweratom
-        neighbors = atom.GetNeighbors()
-        if not neighbors:
+
+        n_h = count_attached_explicit_h(atom)
+        if n_h == 0:
             continue
-        heavy = neighbors[0]
-        r = equiv_ranks[heavy.GetIdx()]
-        # Verwende Rang des H selbst für feinere Unterscheidung
-        h_rank = equiv_ranks[atom.GetIdx()]
-        rank_to_atoms[(r, h_rank)].append(heavy.GetIdx())
+
+        r = equiv_ranks[atom.GetIdx()]
+        rank_to_atoms[r].append(atom.GetIdx())
 
     peaks = []
 
-    for (heavy_rank, h_rank), heavy_indices in rank_to_atoms.items():
-        rep_idx   = heavy_indices[0]
-        rep_atom  = mol.GetAtomWithIdx(rep_idx)
-        n_h       = len(heavy_indices)
+    for heavy_rank, heavy_indices in rank_to_atoms.items():
+        rep_idx = heavy_indices[0]
+        rep_atom = mol.GetAtomWithIdx(rep_idx)
+
+        n_h = sum(count_attached_explicit_h(mol.GetAtomWithIdx(idx)) for idx in heavy_indices)
 
         # Shift berechnen
         base_shift = calculate_h_shift(rep_idx, mol)
