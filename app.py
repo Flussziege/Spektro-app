@@ -599,34 +599,8 @@ def render_spectra_tabs(
 
 
 def render_home():
-    col_title, col_lang, col_theme = st.columns([4, 1, 1])
     render_top_controls()
-
-    with col_lang:
-        lang = st.segmented_control(
-            t("language_label"),
-            options=["de", "en"],
-            format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
-            key="lang_select",
-            selection_mode="single",
-            width="content",
-        )
-        if lang is not None:
-            st.session_state["lang"] = lang
-
-    with col_theme:
-        theme = st.segmented_control(
-            t("theme_label"),
-            options=["light", "dark"],
-            format_func=lambda x: "☀️" if x == "light" else "🌙",
-            key="theme_mode",
-            selection_mode="single",
-            width="content",
-        )
-
-    with col_title:
-        st.title(t("home_title"))
-
+    st.title(t("home_title"))
     st.write(t("home_subtitle"))
 
     col1, col2 = st.columns(2)
@@ -654,14 +628,12 @@ def render_home():
 
             if selected_name:
                 chosen_smiles = name_to_smiles.get(selected_name.lower())
-
             elif smiles_input.strip():
                 if molecule_exists(smiles_input.strip()):
                     chosen_smiles = normalize_smiles(smiles_input)
                 else:
                     st.error(t("invalid_smiles"))
                     return
-
             else:
                 st.warning(t("lookup_missing_input"))
                 return
@@ -836,7 +808,8 @@ def render_daily():
         st.session_state["daily_last_feedback"] = None
     if "daily_user_smiles" not in st.session_state:
         st.session_state["daily_user_smiles"] = None
-        st.title(t("daily_title"))
+
+    st.title(t("daily_title"))
 
 
     if (
@@ -943,10 +916,6 @@ def render_daily():
 
     excluded = set(wrong_guesses)
     available_daily_names = [""] + [name for name in daily_names if name not in excluded]
-
-    if st.session_state.get("daily_reset_selection"):
-        st.session_state["daily_reset_selection"] = True
-        st.session_state["daily_reset_selection"] = False
 
     current_daily_value = st.session_state.get("daily_answer_select", "")
     if current_daily_value not in available_daily_names:
