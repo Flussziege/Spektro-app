@@ -27,15 +27,16 @@ Musterstraße 1
 12345 Musterstadt  
 Deutschland  
 
-E-Mail: deine@email.de  
+E-Mail: dailyspectroquizz@gmail.com 
 
 ---
 
 **Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV**
 
-Max Mustermann  
-Musterstraße 1  
-12345 Musterstadt  
+Klaus Heinzen  
+Kamminer Str. 16
+10589 Berlin
+Deutschland
 
 ---
 
@@ -79,12 +80,12 @@ Die dargestellten Spektren sind simuliert und können von realen Daten abweichen
 
 **6. Verantwortliche Stelle**
 
-Max Mustermann  
-Musterstraße 1  
-12345 Musterstadt  
-Deutschland  
+Klaus Heinzen  
+Kamminer Str. 16
+10589 Berlin
+Deutschland
 
-E-Mail: deine@email.de
+E-Mail: dailyspectroquizz@gmail.com
 """
 
 
