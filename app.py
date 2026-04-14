@@ -583,10 +583,11 @@ def render_spectra_tabs(
     show_ms: bool = False,
     c13_easy_mode: bool = False,
 ):
+    
+    theme_mode = st.session_state.get("theme_mode", "light")
     tabs = []
     tab_keys = []
 
-    theme_mode = st.session_state.get("theme_mode", "light")
 
     if show_c13:
         tabs.append(t("c13_nmr_title"))

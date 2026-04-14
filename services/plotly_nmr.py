@@ -18,6 +18,7 @@ def make_interactive_1h_plot(
     smiles: str,
     show_integrals: bool = True,
     theme_mode: str = "light",
+    **kwargs,
 ):
     ppm_axis = nmr_result["ppm_axis"]
     spectrum = np.asarray(nmr_result["spectrum"], dtype=float)
