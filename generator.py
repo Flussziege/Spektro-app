@@ -221,7 +221,14 @@ def rule_based_peaks(smiles: str, seed: int = None) -> tuple[np.ndarray, np.ndar
 def synthesize_spectrum(frequencies, intensities,
                         n_points=3500, wn_range=(-10, 230),
                         width=0.5, seed=42):
-    wns = np.linspace(wn_range[1], wn_range[0], n_points)
+    
+    buffer = 30  # ppm Puffer links & rechts
+
+    wns = np.linspace(
+        wn_range[1] + buffer,   # z. B. 220 → 250
+        wn_range[0] - buffer,   # z. B. 0 → -30
+        n_points
+    )
     spectrum = np.zeros(n_points)
     for f, i in zip(frequencies, intensities):
         spectrum += i * np.exp(-(wns - f)**2 / (2 * width**2))
