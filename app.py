@@ -709,10 +709,8 @@ def render_daily():
     show_molecular_formula = attempts >= 5
 
     st.markdown("<div id='top-anchor'></div>", unsafe_allow_html=True)
-    
-    st.write("")
-    st.write(f"**{t('difficulty_label')}: {difficulty_text(difficulty)}**")
 
+    st.write("")
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
     st.caption(t("daily_attempts_label", count=attempts))
 
