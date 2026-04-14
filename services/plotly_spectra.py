@@ -11,7 +11,8 @@ def add_baseline_noise(y, noise_level: float = 0.006, seed: int | None = 42):
 
     baseline = np.clip(noise, 0, None)
     return y + baseline
-def def make_interactive_13c_plot(
+
+def make_interactive_13c_plot(
         spec_result: dict,
         smiles: str,
         show_integrals: bool = True,
