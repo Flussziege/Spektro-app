@@ -73,17 +73,6 @@ Danach:
         gemeinsame zentrale Motivbibliothek
 
 
-
- 
-
-Online:
-- lookup funktion mehr verstecken
-    -erste Funktion ist quizz. 
-- EIn Daily, dass aus seperater Datei die Moleküle zieht
-    -sollten nicht trivial sein
-- "Programm beenden" muss weg
-- Infofeld mit disclaimer und email
-
 Webseite:
 - SMILES in spektren *
 - design (*)
@@ -104,10 +93,16 @@ Webseite:
     - 13C integral stimmt*
     - EA wird berechnet *
 - daily mit weniger spektren? *
+- alle graphen auf englisch umstellen und auch manche titel *
 
-alle graphen auf englisch umstellen: und auch manche titel
+warum sind machnche texte über dem normalen scrollbereich und man sieht die nur, wenn man gerade hochscrollt?
 
+- Maybe popup mit Erklärung, dass es sich um eine Simulation handelt und die Ergebnisse nicht exakt mit experimentellen Spektren übereinstimmen müssen.
+    - entsprechende erkärung über z.b. protonenzahl als intensität bei ¹H-NMR, dass es sich um eine Simulation handelt, die nicht exakt mit experimentellen Spektren übereinstimmen muss, und dass die Ergebnisse als Annäherung betrachtet werden sollten.
+    - bei fehlern bitte melden
+    - oder als fragezeichen, die man anklicken kann
 
+- 
 - light/ dark design?
 
 - enter logik x (sehr schwer))

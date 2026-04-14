@@ -498,7 +498,6 @@ def render_home():
 
     with col_lang:
         lang = st.segmented_control(
-            t("language_label"),
             options=["de", "en"],
             format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
             key="lang_select",
@@ -709,7 +708,7 @@ def render_daily():
     show_empirical_formula = attempts >= 4
     show_molecular_formula = attempts >= 5
 
-    st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
+    st.markdown(f"**{t('difficulty_label')}: {difficulty_text(difficulty)}**")
     st.caption(t("daily_attempts_label", count=attempts))
 
     unlock_message = st.session_state.get("daily_last_feedback")
