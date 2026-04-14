@@ -102,6 +102,9 @@ warum sind machnche texte über dem normalen scrollbereich und man sieht die nur
     - bei fehlern bitte melden
     - oder als fragezeichen, die man anklicken kann
 
+
+reset bei 1H setzt nichz auf alles zurück
+-trivialnamen ersetzen durch systematische namen (z.b. 1,3,5-Trimethylbenzol statt Mesitylen)
 - 
 - light/ dark design?
 

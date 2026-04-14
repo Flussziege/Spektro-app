@@ -498,6 +498,7 @@ def render_home():
 
     with col_lang:
         lang = st.segmented_control(
+            t("language_label"),
             options=["de", "en"],
             format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
             key="lang_select",

@@ -208,7 +208,7 @@ moleküle_daily = [
     {"name_de": "o-Xylol", "name_en": "o-Xylene", "smiles": "Cc1ccccc1C", "difficulty": "hard"},
     {"name_de": "m-Xylol", "name_en": "m-Xylene", "smiles": "Cc1cccc(C)c1", "difficulty": "hard"},
     {"name_de": "p-Xylol", "name_en": "p-Xylene", "smiles": "Cc1ccc(C)cc1", "difficulty": "hard"},
-    {"name_de": "Mesitylen", "name_en": "Mesitylene", "smiles": "Cc1cc(C)cc(C)c1", "difficulty": "hard"},
+    {"name_de": "1,3,5-Trimethylbenzol", "name_en": "1,3,5-Trimethylbenzene", "smiles": "Cc1cc(C)cc(C)c1", "difficulty": "hard"},
     {"name_de": "Phenol", "name_en": "Phenol", "smiles": "Oc1ccccc1", "difficulty": "medium"},
     {"name_de": "o-Kresol", "name_en": "o-Cresol", "smiles": "Cc1ccccc1O", "difficulty": "hard"},
     {"name_de": "m-Kresol", "name_en": "m-Cresol", "smiles": "Cc1cccc(O)c1", "difficulty": "hard"},
