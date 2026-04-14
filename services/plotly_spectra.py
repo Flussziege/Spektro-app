@@ -69,10 +69,10 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
             )
 
     fig.update_xaxes(
-        range=[220, 0],
+        range=[230, -10],
         autorange=False,
-        minallowed=0,
-        maxallowed=220,
+        minallowed=-10,
+        maxallowed=230,
         fixedrange=False,
         showgrid=True,
         zeroline=False,

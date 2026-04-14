@@ -236,7 +236,7 @@ def plot_nmr(wns, spectrum, smiles, frequencies=None,
 
 
     
-    ax.set_xlim(220, 0)
+    ax.set_xlim(230, -10)
     ax.set_ylim(bottom=0)
     ax.xaxis.set_major_locator(ticker.MultipleLocator(20))
     ax.xaxis.set_minor_locator(ticker.MultipleLocator(5))
