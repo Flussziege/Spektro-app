@@ -169,6 +169,9 @@ TEXTS = {
             "Nach Fehlversuch 4 wird die empirische Formel angezeigt. "
             "Nach Fehlversuch 5 wird die Summenformel angezeigt."
         ),
+        "theme_label": "Design",
+        "theme_light": "Hell",
+        "theme_dark": "Dunkel",
     },
 
     "en": {
@@ -322,5 +325,9 @@ TEXTS = {
             "After wrong attempt 4, the empirical formula is shown. "
             "After wrong attempt 5, the molecular formula is shown."
         ),
+
+        "theme_label": "Theme",
+        "theme_light": "Light",
+        "theme_dark": "Dark",
     },
 }

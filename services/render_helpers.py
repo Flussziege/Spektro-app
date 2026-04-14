@@ -28,6 +28,9 @@ def init_session_state():
         "daily_last_feedback": None,
         "daily_reset_selection": False,
 
+        #light/dark design
+        "theme": "light",
+
         # Lookup
         "lookup_smiles": None,
 

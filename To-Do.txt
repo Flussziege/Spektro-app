@@ -103,16 +103,87 @@ Webseite:
 - integral bei mesitylen i guess.... *
 - reset bei 1H setzt nichz auf alles zurück!!! (nicht mehr gefunden) *
 - trivialnamen ersetzen durch systematische namen (z.b. 1,3,5-Trimethylbenzol statt Mesitylen)*
-- 
-- light/ dark design?
-
-MS:
-
-- Maybe popup mit Erklärung, dass es sich um eine Simulation handelt und die Ergebnisse nicht exakt mit experimentellen Spektren übereinstimmen müssen.
+- - Maybe popup mit Erklärung, dass es sich um eine Simulation handelt und die Ergebnisse nicht exakt mit experimentellen Spektren übereinstimmen müssen.
     - entsprechende erkärung über z.b. protonenzahl als intensität bei ¹H-NMR, dass es sich um eine Simulation handelt, die nicht exakt mit experimentellen Spektren übereinstimmen muss, und dass die Ergebnisse als Annäherung betrachtet werden sollten.
     - bei fehlern bitte melden
     - oder als fragezeichen, die man anklicken kann
+- light/ dark design? x kein bock bisher
+
+MS:
+
+
 
 - Impressum nötig?
 
 aufgeben button
+
+
+st.html("""
+<style>
+
+/* Hintergrund der gesamten App minimal wärmer */
+.main {
+    background-color: #FFFFFF;
+}
+
+/* Buttons leicht grau */
+.stButton > button {
+    background: #F8FAFC;
+    color: #111827;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.stButton > button:hover {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+}
+
+/* Primäre Buttons (z.B. Quiz starten) */
+.stButton > button[kind="primary"] {
+    background: #111827;
+    color: white;
+    border: 1px solid #111827;
+}
+
+/* Input-Felder (SMILES / Selectbox) */
+.stTextInput input,
+.stSelectbox div[data-baseweb="select"] > div {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+}
+
+/* Expander (Lookup) */
+details {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+}
+
+/* Tabs nur leicht anpassen, nicht überschreiben */
+.stTabs [data-baseweb="tab"] {
+    background: #FFFFFF;
+    border: none;
+}
+
+.stTabs [aria-selected="true"] {
+    background: #FFFFFF;
+}
+
+/* Alerts (Ergebnisboxen) */
+[data-testid="stAlert"] {
+    background: #F8FAFC;
+    border: 1px solid #E5E7EB;
+}
+
+/* Allgemeine Container etwas luftiger */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 95rem;
+}
+
+</style>
+""")

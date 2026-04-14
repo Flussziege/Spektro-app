@@ -56,77 +56,157 @@ st.set_page_config(
     layout="wide",
 )
 
-st.html("""
-<style>
 
-/* Hintergrund der gesamten App minimal wärmer */
-.main {
-    background-color: #FFFFFF;
-}
+def get_light_css() -> str:
+    return """
+    <style>
+    .main {
+        background-color: #FFFFFF;
+    }
 
-/* Buttons leicht grau */
-.stButton > button {
-    background: #F8FAFC;
-    color: #111827;
-    border: 1px solid #E5E7EB;
-    border-radius: 10px;
-    box-shadow: none;
-}
+    .stApp {
+        background-color: #FFFFFF;
+        color: #111827;
+    }
 
-.stButton > button:hover {
-    background: #F1F5F9;
-    border-color: #CBD5E1;
-}
+    .stButton > button {
+        background: #F8FAFC;
+        color: #111827;
+        border: 1px solid #E5E7EB;
+        border-radius: 10px;
+        box-shadow: none;
+    }
 
-/* Primäre Buttons (z.B. Quiz starten) */
-.stButton > button[kind="primary"] {
-    background: #111827;
-    color: white;
-    border: 1px solid #111827;
-}
+    .stButton > button:hover {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+    }
 
-/* Input-Felder (SMILES / Selectbox) */
-.stTextInput input,
-.stSelectbox div[data-baseweb="select"] > div {
-    background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-    border-radius: 10px;
-}
+    .stButton > button[kind="primary"] {
+        background: #111827;
+        color: white;
+        border: 1px solid #111827;
+    }
 
-/* Expander (Lookup) */
-details {
-    background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-}
+    .stTextInput input,
+    .stSelectbox div[data-baseweb="select"] > div {
+        background: #F8FAFC;
+        border: 1px solid #E5E7EB;
+        border-radius: 10px;
+        color: #111827;
+    }
 
-/* Tabs nur leicht anpassen, nicht überschreiben */
-.stTabs [data-baseweb="tab"] {
-    background: #FFFFFF;
-    border: none;
-}
+    details {
+        background: #F8FAFC;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+    }
 
-.stTabs [aria-selected="true"] {
-    background: #FFFFFF;
-}
+    .stTabs [data-baseweb="tab"] {
+        background: #FFFFFF;
+        border: none;
+        color: #111827;
+    }
 
-/* Alerts (Ergebnisboxen) */
-[data-testid="stAlert"] {
-    background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-}
+    .stTabs [aria-selected="true"] {
+        background: #FFFFFF;
+    }
 
-/* Allgemeine Container etwas luftiger */
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    max-width: 95rem;
-}
+    [data-testid="stAlert"] {
+        background: #F8FAFC;
+        border: 1px solid #E5E7EB;
+    }
 
-</style>
-""")
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 95rem;
+    }
+    </style>
+    """
+
+
+def get_dark_css() -> str:
+    return """
+    <style>
+    .main {
+        background-color: #0F172A;
+    }
+
+    .stApp {
+        background-color: #0F172A;
+        color: #E5E7EB;
+    }
+
+    .stMarkdown, .stText, p, label, div, span, h1, h2, h3 {
+        color: #E5E7EB;
+    }
+
+    .stButton > button {
+        background: #1E293B;
+        color: #E5E7EB;
+        border: 1px solid #334155;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+
+    .stButton > button:hover {
+        background: #273449;
+        border-color: #475569;
+    }
+
+    .stButton > button[kind="primary"] {
+        background: #E5E7EB;
+        color: #0F172A;
+        border: 1px solid #E5E7EB;
+    }
+
+    .stTextInput input,
+    .stSelectbox div[data-baseweb="select"] > div {
+        background: #1E293B;
+        border: 1px solid #334155;
+        border-radius: 10px;
+        color: #E5E7EB;
+    }
+
+    details {
+        background: #1E293B;
+        border: 1px solid #334155;
+        border-radius: 12px;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        background: #0F172A;
+        border: none;
+        color: #E5E7EB;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: #1E293B;
+        border-radius: 8px;
+    }
+
+    [data-testid="stAlert"] {
+        background: #1E293B;
+        border: 1px solid #334155;
+    }
+
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 95rem;
+    }
+    </style>
+    """
 
 init_session_state()
+
+theme_mode = st.session_state.get("theme_mode", "light")
+
+if theme_mode == "dark":
+    st.html(get_dark_css())
+else:
+    st.html(get_light_css())
 
 if "lang_select" not in st.session_state:
     st.session_state["lang_select"] = st.session_state.get("lang", "de")
@@ -140,7 +220,32 @@ namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle, lang=la
 daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily, lang=lang)
 
 smiles_to_molecule = build_smiles_to_molecule_map(moleküle)
-daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)                                                                       
+daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)    
+
+def render_top_controls():
+    col_spacer, col_lang, col_theme = st.columns([6, 1, 1])
+
+    with col_lang:
+        lang = st.segmented_control(
+            t("language_label"),
+            options=["de", "en"],
+            format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
+            key="lang_select",
+            selection_mode="single",
+            width="content",
+        )
+        if lang is not None:
+            st.session_state["lang"] = lang
+
+    with col_theme:
+        st.segmented_control(
+            t("theme_label"),
+            options=["light", "dark"],
+            format_func=lambda x: "☀️" if x == "light" else "🌙",
+            key="theme_mode",
+            selection_mode="single",
+            width="content",
+        )
 
 def t(key: str, **kwargs) -> str:
     lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
@@ -494,7 +599,8 @@ def render_spectra_tabs(
 
 
 def render_home():
-    col_title, col_lang = st.columns([5, 1])
+    col_title, col_lang, col_theme = st.columns([4, 1, 1])
+    render_top_controls()
 
     with col_lang:
         lang = st.segmented_control(
@@ -507,6 +613,16 @@ def render_home():
         )
         if lang is not None:
             st.session_state["lang"] = lang
+
+    with col_theme:
+        theme = st.segmented_control(
+            t("theme_label"),
+            options=["light", "dark"],
+            format_func=lambda x: "☀️" if x == "light" else "🌙",
+            key="theme_mode",
+            selection_mode="single",
+            width="content",
+        )
 
     with col_title:
         st.title(t("home_title"))
@@ -592,6 +708,7 @@ def render_quiz():
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
 
     render_quiz_help()
+    render_top_controls()
 
     if st.session_state["quiz_submitted"]:
         st.markdown("---")
@@ -762,6 +879,7 @@ def render_daily():
     st.caption(t("daily_attempts_label", count=attempts))
 
     render_daily_help()
+    render_top_controls()
 
     unlock_message = st.session_state.get("daily_last_feedback")
     if unlock_message:
@@ -896,7 +1014,9 @@ def render_daily():
 def render_lookup():
     smiles = st.session_state["lookup_smiles"]
 
+
     st.title(t("lookup_title"))
+    render_top_controls()
 
     if not smiles:
         st.warning(t("lookup_empty"))
