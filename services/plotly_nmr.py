@@ -115,8 +115,8 @@ def make_interactive_1h_plot(
         linecolor="#94A3B8",
         tickfont=dict(color="#E5E7EB"),
         title_font=dict(color="#E5E7EB"),
-)
-    )
+        )
+
 
     fig.update_yaxes(
         range=[0, y_max * 1.08],
