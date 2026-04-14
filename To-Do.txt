@@ -74,6 +74,7 @@ Danach:
 
 
 Webseite:
+
 - SMILES in spektren *
 - design (*)
 - bei falsch das falsche anzeigen *
@@ -95,7 +96,7 @@ Webseite:
 - daily mit weniger spektren? *
 - alle graphen auf englisch umstellen und auch manche titel *
 
-warum sind machnche texte über dem normalen scrollbereich und man sieht die nur, wenn man gerade hochscrollt?
+- warum sind machnche texte über dem normalen scrollbereich und man sieht die nur, wenn man gerade hochscrollt? *
 
 - Maybe popup mit Erklärung, dass es sich um eine Simulation handelt und die Ergebnisse nicht exakt mit experimentellen Spektren übereinstimmen müssen.
     - entsprechende erkärung über z.b. protonenzahl als intensität bei ¹H-NMR, dass es sich um eine Simulation handelt, die nicht exakt mit experimentellen Spektren übereinstimmen muss, und dass die Ergebnisse als Annäherung betrachtet werden sollten.
