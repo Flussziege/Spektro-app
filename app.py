@@ -434,9 +434,10 @@ daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)
 def render_top_controls():
     col_spacer, col_lang, col_theme = st.columns([6, 1, 1])
 
-
+    
     with col_lang:
         lang = st.segmented_control(
+            t("language_label"),
             options=["de", "en"],
             format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
             key="lang_select",
@@ -448,6 +449,7 @@ def render_top_controls():
 
     with col_theme:
         st.segmented_control(
+            t("theme_label"),
             options=["light", "dark"],
             format_func=lambda x: "☀️" if x == "light" else "🌙",
             key="theme_mode",
