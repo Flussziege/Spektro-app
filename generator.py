@@ -259,7 +259,7 @@ def plot_nmr(wns, spectrum, smiles, frequencies=None,
 def simulate_13c_nmr(smiles: str, seed: int = None,
                      plot: bool = True, width: float = 0.035,
                      show_title: bool = True, testrun: bool = False, 
-                     easymode: bool = True):
+                     easymode: bool = False):
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         raise ValueError(f"Ungültiger SMILES: {smiles}")

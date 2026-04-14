@@ -1,5 +1,6 @@
 from __future__ import annotations
 import plotly.graph_objects as go
+import numpy as np
 
 
 def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bool = True):

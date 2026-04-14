@@ -1,5 +1,16 @@
 from __future__ import annotations
 import plotly.graph_objects as go
+import numpy as np
+
+
+def add_baseline_noise(y, noise_level: float = 0.003, seed: int | None = 42):
+    y = np.asarray(y, dtype=float)
+
+    rng = np.random.default_rng(seed)
+    noise = rng.normal(0, noise_level, size=len(y))
+
+    baseline = np.clip(noise, 0, None)
+    return y + baseline
 
 
 def make_interactive_1h_plot(
@@ -8,15 +19,18 @@ def make_interactive_1h_plot(
     show_integrals: bool = True,
 ):
     ppm_axis = nmr_result["ppm_axis"]
-    spectrum = nmr_result["spectrum"]
+    spectrum = np.asarray(nmr_result["spectrum"], dtype=float)
     peaks = nmr_result["peaks"]
 
     fig = go.Figure()
 
+    # leichtes Rauschen für 1H
+    y_plot = add_baseline_noise(spectrum, noise_level=0.003, seed=42)
+
     fig.add_trace(
         go.Scatter(
             x=ppm_axis,
-            y=spectrum,
+            y=y_plot,
             mode="lines",
             name="¹H NMR",
             hovertemplate="δ = %{x:.2f} ppm<br>Intensity = %{y:.2f}<extra></extra>",
@@ -28,7 +42,7 @@ def make_interactive_1h_plot(
     peak_y = []
     for x in peak_x:
         idx = min(range(len(ppm_axis)), key=lambda i: abs(ppm_axis[i] - x))
-        peak_y.append(float(spectrum[idx]))
+        peak_y.append(float(y_plot[idx]))
 
     peak_text = [
         f"{p['shift']:.2f} ppm<br>{p['mult_str']}, {p['n_h']}H"
@@ -53,33 +67,31 @@ def make_interactive_1h_plot(
     x_left = 12.5
     x_right = -0.3
 
-    y_max = max(float(spectrum.max()) if len(spectrum) else 1.0, 1.0)
+    y_max = max(float(y_plot.max()) if len(y_plot) else 1.0, 1.0)
 
-    
     if show_integrals:
         fig.update_layout(
-            title=f"Simulated ¹H-NMR Spectrum — {smiles}",
+            title="Simulated ¹H-NMR Spectrum — {smiles}",
             xaxis_title="Chemical Shift δ (ppm)",
             yaxis_title="Proton Number (rel. Intensity)",
             template="simple_white",
             height=520,
-            margin=dict(l=30, r=30, t=60, b=30),
+            margin=dict(l=70, r=30, t=50, b=70),
             dragmode="pan",
             hovermode="x unified",
         )
     else:
         fig.update_layout(
-            title=f"Simulated ¹H-NMR Spectrum",
+            title="Simulated ¹H-NMR Spectrum",
             xaxis_title="Chemical Shift δ (ppm)",
             yaxis_title="Proton Number (rel. Intensity)",
             template="plotly_white",
             height=520,
-            margin=dict(l=30, r=30, t=60, b=30),
+            margin=dict(l=70, r=30, t=50, b=70),
             dragmode="pan",
             hovermode="x unified",
-        )    
+        )
 
-    # X-Achse: invertiert, begrenzt und nur horizontal navigierbar
     fig.update_xaxes(
         range=[x_left, x_right],
         autorange=False,
@@ -95,7 +107,6 @@ def make_interactive_1h_plot(
         ticks="outside",
     )
 
-    # Y-Achse fixieren, damit Scroll/Zoom nur horizontal wirkt
     fig.update_yaxes(
         range=[0, y_max * 1.08],
         autorange=False,
@@ -107,10 +118,6 @@ def make_interactive_1h_plot(
         showline=True,
         mirror=False,
         ticks="outside",
-    )
-
-    fig.update_layout(
-    margin=dict(l=70, r=30, t=50, b=70),
     )
 
     return fig
