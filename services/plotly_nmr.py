@@ -71,7 +71,7 @@ def make_interactive_1h_plot(
 
     if show_integrals:
         fig.update_layout(
-            title="Simulated ¹H-NMR Spectrum — {smiles}",
+            title=f"Simulated ¹H-NMR Spectrum — {smiles}",
             xaxis_title="Chemical Shift δ (ppm)",
             yaxis_title="Proton Number (rel. Intensity)",
             template="simple_white",
