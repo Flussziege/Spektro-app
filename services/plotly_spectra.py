@@ -11,7 +11,12 @@ def add_baseline_noise(y, noise_level: float = 0.006, seed: int | None = 42):
 
     baseline = np.clip(noise, 0, None)
     return y + baseline
-def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bool = True):
+def def make_interactive_13c_plot(
+        spec_result: dict,
+        smiles: str,
+        show_integrals: bool = True,
+        theme_mode: str = "light",
+    ):
     x = np.asarray(spec_result["wns"], dtype=float)
     y = np.asarray(spec_result["spectrum"], dtype=float)
     freqs = spec_result.get("frequencies", [])
@@ -95,9 +100,46 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
         zeroline=False,
     )
 
+    if theme_mode == "dark":
+        fig.update_layout(
+            paper_bgcolor="#0F172A",
+            plot_bgcolor="#0F172A",
+            font=dict(color="#E5E7EB"),
+        )
+        fig.update_xaxes(
+            gridcolor="#334155",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#E5E7EB"),
+            title_font=dict(color="#E5E7EB"),
+        )
+        fig.update_yaxes(
+            gridcolor="#334155",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#E5E7EB"),
+            title_font=dict(color="#E5E7EB"),
+        )
+    else:
+        fig.update_layout(
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
+            font=dict(color="#111827"),
+        )
+        fig.update_xaxes(
+            gridcolor="#E5E7EB",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#111827"),
+            title_font=dict(color="#111827"),
+        )
+        fig.update_yaxes(
+            gridcolor="#E5E7EB",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#111827"),
+            title_font=dict(color="#111827"),
+        )
+
     return fig
 
-def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool = True):
+def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool = True, theme_mode: str = "light"):
     x = ir_result["wns"]
     y = ir_result["spectrum"]
 
@@ -151,5 +193,42 @@ def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool 
         showgrid=True,
         zeroline=False,
     )
+
+    if theme_mode == "dark":
+        fig.update_layout(
+            paper_bgcolor="#0F172A",
+            plot_bgcolor="#0F172A",
+            font=dict(color="#E5E7EB"),
+        )
+        fig.update_xaxes(
+            gridcolor="#334155",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#E5E7EB"),
+            title_font=dict(color="#E5E7EB"),
+        )
+        fig.update_yaxes(
+            gridcolor="#334155",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#E5E7EB"),
+            title_font=dict(color="#E5E7EB"),
+        )
+    else:
+        fig.update_layout(
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
+            font=dict(color="#111827"),
+        )
+        fig.update_xaxes(
+            gridcolor="#E5E7EB",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#111827"),
+            title_font=dict(color="#111827"),
+        )
+        fig.update_yaxes(
+            gridcolor="#E5E7EB",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#111827"),
+            title_font=dict(color="#111827"),
+        )
 
     return fig

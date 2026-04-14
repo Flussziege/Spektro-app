@@ -286,6 +286,54 @@ def get_dark_css() -> str:
     [data-testid="stVerticalBlock"] {
         color: #E5E7EB;
     }
+    /* Selectbox / Combobox komplett dunkel */
+    div[data-baseweb="select"] {
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] > div {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] span {
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] input {
+        color: #E5E7EB !important;
+        -webkit-text-fill-color: #E5E7EB !important;
+    }
+
+    /* Das eigentliche Antwortfeld / placeholder */
+    [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    /* Dropdown-Liste im Portal */
+    div[role="listbox"] {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    div[role="option"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+    }
+
+    div[role="option"][aria-selected="true"] {
+        background: #334155 !important;
+        color: #FFFFFF !important;
+    }
+
+    div[role="option"]:hover {
+        background: #273449 !important;
+        color: #FFFFFF !important;
+    }
     </style>
     """
 
@@ -538,6 +586,8 @@ def render_spectra_tabs(
     tabs = []
     tab_keys = []
 
+    theme_mode = st.session_state.get("theme_mode", "light")
+
     if show_c13:
         tabs.append(t("c13_nmr_title"))
         tab_keys.append("c13")
@@ -574,7 +624,12 @@ def render_spectra_tabs(
                         testrun=True,
                     )
 
-                    fig1 = make_interactive_13c_plot(c13_result, smiles, show_integrals=show_structure)
+                    fig1 = make_interactive_13c_plot(
+                         c13_result,
+                        smiles,
+                        show_integrals=show_structure,
+                        theme_mode=theme_mode,
+                        )
 
                     st.plotly_chart(
                         fig1,
@@ -615,6 +670,7 @@ def render_spectra_tabs(
                         nmr_result=nmr_result,
                         smiles=smiles,
                         show_integrals=show_structure,
+                        theme_mode=theme_mode,
                     )
 
                     st.plotly_chart(
@@ -650,7 +706,12 @@ def render_spectra_tabs(
                         testrun=True,
                     )
 
-                    fig3 = make_interactive_ir_plot(ir_result, smiles, show_integrals=show_structure)
+                    fig3 = make_interactive_ir_plot(
+                        ir_result,
+                        smiles,
+                        show_integrals=show_structure,
+                        theme_mode=theme_mode,
+                    )
 
                     st.plotly_chart(
                         fig3,

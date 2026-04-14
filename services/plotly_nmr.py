@@ -17,6 +17,7 @@ def make_interactive_1h_plot(
     nmr_result: dict,
     smiles: str,
     show_integrals: bool = True,
+    theme_mode: str = "light",
 ):
     ppm_axis = nmr_result["ppm_axis"]
     spectrum = np.asarray(nmr_result["spectrum"], dtype=float)
@@ -134,5 +135,43 @@ def make_interactive_1h_plot(
         tickfont=dict(color="#E5E7EB"),
         title_font=dict(color="#E5E7EB"),
     )
+
+    if theme_mode == "dark":
+        fig.update_layout(
+            paper_bgcolor="#0F172A",
+            plot_bgcolor="#0F172A",
+            font=dict(color="#E5E7EB"),
+        )
+        fig.update_xaxes(
+            gridcolor="#334155",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#E5E7EB"),
+            title_font=dict(color="#E5E7EB"),
+        )
+        fig.update_yaxes(
+            gridcolor="#334155",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#E5E7EB"),
+            title_font=dict(color="#E5E7EB"),
+        )
+    else:
+        fig.update_layout(
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
+            font=dict(color="#111827"),
+        )
+        fig.update_xaxes(
+            gridcolor="#E5E7EB",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#111827"),
+            title_font=dict(color="#111827"),
+        )
+        fig.update_yaxes(
+            gridcolor="#E5E7EB",
+            linecolor="#94A3B8",
+            tickfont=dict(color="#111827"),
+            title_font=dict(color="#111827"),
+        )
+
 
     return fig
