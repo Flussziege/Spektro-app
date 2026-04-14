@@ -107,7 +107,7 @@ Webseite:
     - entsprechende erkärung über z.b. protonenzahl als intensität bei ¹H-NMR, dass es sich um eine Simulation handelt, die nicht exakt mit experimentellen Spektren übereinstimmen muss, und dass die Ergebnisse als Annäherung betrachtet werden sollten.
     - bei fehlern bitte melden
     - oder als fragezeichen, die man anklicken kann
-- light/ dark design? x kein bock bisher
+- light/ dark design? *
 
 MS:
 

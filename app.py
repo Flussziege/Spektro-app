@@ -17,6 +17,76 @@ import generator2
 import generator5
 import hnmr
 
+IMPRINT_TEXT = """
+**Impressum**
+
+Angaben gemäß § 5 TMG
+
+Max Mustermann  
+Musterstraße 1  
+12345 Musterstadt  
+Deutschland  
+
+E-Mail: deine@email.de  
+
+---
+
+**Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV**
+
+Max Mustermann  
+Musterstraße 1  
+12345 Musterstadt  
+
+---
+
+**Hinweis**
+
+Diese Webanwendung dient ausschließlich zu Lern- und Demonstrationszwecken im Bereich der Spektroskopie. Trotz sorgfältiger Entwicklung können Fehler auftreten. Für die Richtigkeit der Inhalte wird keine Gewähr übernommen.
+"""
+
+PRIVACY_TEXT = """
+**Datenschutzerklärung**
+
+**1. Allgemeine Hinweise**
+
+Diese Webanwendung verarbeitet keine personenbezogenen Daten aktiv, außer wenn du sie selbst eingibst.
+
+---
+
+**2. Server-Logfiles**
+
+Beim Aufrufen können durch den Hosting-Anbieter automatisch Informationen erfasst werden (z. B. IP-Adresse, Browsertyp).
+
+---
+
+**3. Nutzung**
+
+Die Nutzung erfolgt ohne Registrierung. Daten werden nicht dauerhaft gespeichert.
+
+---
+
+**4. Kontakt**
+
+Bei Kontakt per E-Mail werden deine Angaben zur Bearbeitung gespeichert.
+
+---
+
+**5. Hinweis zur Simulation**
+
+Die dargestellten Spektren sind simuliert und können von realen Daten abweichen.
+
+---
+
+**6. Verantwortliche Stelle**
+
+Max Mustermann  
+Musterstraße 1  
+12345 Musterstadt  
+Deutschland  
+
+E-Mail: deine@email.de
+"""
+
 
 from services.quiz_logic import (
     pick_random_molecule,
@@ -384,6 +454,21 @@ def render_top_controls():
             selection_mode="single",
             width="content",
         )
+
+
+def render_footer():
+    st.markdown("---")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        with st.expander("Impressum"):
+            st.markdown(IMPRINT_TEXT)
+
+    with col2:
+        with st.expander("Datenschutz"):
+            st.markdown(PRIVACY_TEXT)
+
 
 def t(key: str, **kwargs) -> str:
     lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
@@ -809,6 +894,8 @@ def render_home():
     st.markdown("---")
     st.info(t("disclaimer"))
 
+    render_footer()   # 👈 HIER
+
 
 def render_quiz_help():
     with st.expander(t("how_to_play"), expanded=False):
@@ -934,6 +1021,9 @@ def render_quiz():
         if st.button(t("back_home"), width="stretch"):
             go_home()
             st.rerun()
+
+
+    render_footer()   # 👈 HIER
 
 def render_daily_help():
     with st.expander(t("how_to_play"), expanded=False):
@@ -1143,6 +1233,8 @@ def render_daily():
         if st.button(t("back_home"), key="daily_home_top", width="stretch"):
             go_home()
             st.rerun()
+    
+    render_footer()   # 👈 HIER
 
 
 def render_lookup():
@@ -1171,6 +1263,9 @@ def render_lookup():
     if st.button(t("back_home"), key="lookup_home", width="stretch"):
         go_home()
         st.rerun()
+
+    
+    render_footer()   # 👈 HIER
 
 mode = st.session_state["mode"]
 
