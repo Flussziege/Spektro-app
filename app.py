@@ -138,63 +138,153 @@ def get_dark_css() -> str:
         color: #E5E7EB;
     }
 
-    .stMarkdown, .stText, p, label, div, span, h1, h2, h3 {
-        color: #E5E7EB;
+    /* Oberer Header-Balken */
+    header[data-testid="stHeader"] {
+        background: #0F172A !important;
     }
 
-    .stButton > button {
-        background: #1E293B;
-        color: #E5E7EB;
-        border: 1px solid #334155;
-        border-radius: 10px;
-        box-shadow: none;
+    /* Toolbar / obere Leiste */
+    [data-testid="stToolbar"] {
+        background: #0F172A !important;
     }
 
-    .stButton > button:hover {
-        background: #273449;
-        border-color: #475569;
-    }
-
-    .stButton > button[kind="primary"] {
-        background: #E5E7EB;
-        color: #0F172A;
-        border: 1px solid #E5E7EB;
-    }
-
-    .stTextInput input,
-    .stSelectbox div[data-baseweb="select"] > div {
-        background: #1E293B;
-        border: 1px solid #334155;
-        border-radius: 10px;
-        color: #E5E7EB;
-    }
-
-    details {
-        background: #1E293B;
-        border: 1px solid #334155;
-        border-radius: 12px;
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        background: #0F172A;
-        border: none;
-        color: #E5E7EB;
-    }
-
-    .stTabs [aria-selected="true"] {
-        background: #1E293B;
-        border-radius: 8px;
-    }
-
-    [data-testid="stAlert"] {
-        background: #1E293B;
-        border: 1px solid #334155;
-    }
-
+    /* Hauptcontainer */
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
         max-width: 95rem;
+    }
+
+    /* Text */
+    .stMarkdown, .stText, p, label, span, h1, h2, h3, h4, h5, h6 {
+        color: #E5E7EB;
+    }
+
+    /* Buttons */
+    .stButton > button {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+    }
+
+    .stButton > button:hover {
+        background: #273449 !important;
+        border-color: #475569 !important;
+    }
+
+    .stButton > button[kind="primary"] {
+        background: #E5E7EB !important;
+        color: #0F172A !important;
+        border: 1px solid #E5E7EB !important;
+    }
+
+    /* Inputs */
+    .stTextInput input,
+    .stNumberInput input,
+    .stTextArea textarea {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        border-radius: 10px !important;
+        color: #E5E7EB !important;
+    }
+
+    /* Selectbox / Dropdown / Antwortfeld */
+    .stSelectbox div[data-baseweb="select"] > div,
+    div[data-baseweb="select"] > div {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        border-radius: 10px !important;
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] input {
+        color: #E5E7EB !important;
+    }
+
+    /* Dropdown-Menü selbst */
+    div[role="listbox"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
+    }
+
+    div[role="option"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+    }
+
+    div[role="option"]:hover {
+        background: #273449 !important;
+    }
+
+    /* Segmented control / Button group */
+    [data-testid="stBaseButton-segmented_control"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
+    }
+
+    div[role="radiogroup"] {
+        background: transparent !important;
+    }
+
+    div[role="radiogroup"] > label {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
+        border-radius: 10px !important;
+    }
+
+    div[role="radiogroup"] > label[data-checked="true"] {
+        background: #334155 !important;
+        color: #FFFFFF !important;
+    }
+
+    /* Expander */
+    details {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        border-radius: 12px !important;
+    }
+
+    summary {
+        color: #E5E7EB !important;
+    }
+
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.25rem;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        background: #0F172A !important;
+        border: none !important;
+        color: #E5E7EB !important;
+        border-radius: 8px !important;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: #1E293B !important;
+        color: #FFFFFF !important;
+    }
+
+    /* Alerts */
+    [data-testid="stAlert"] {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    /* Plotly-Container */
+    .js-plotly-plot, .plotly, .plot-container {
+        background: transparent !important;
+    }
+
+    /* Tabellen / Codeboxen / sonstige Container */
+    [data-testid="stVerticalBlock"] {
+        color: #E5E7EB;
     }
     </style>
     """
@@ -204,9 +294,9 @@ init_session_state()
 theme_mode = st.session_state.get("theme_mode", "light")
 
 if theme_mode == "dark":
-    st.html(get_dark_css())
+    st.markdown(get_dark_css(), unsafe_allow_html=True)
 else:
-    st.html(get_light_css())
+    st.markdown(get_light_css(), unsafe_allow_html=True)
 
 if "lang_select" not in st.session_state:
     st.session_state["lang_select"] = st.session_state.get("lang", "de")
@@ -404,18 +494,31 @@ def empirical_formula_with_n_html(smiles: str) -> str | None:
     return " ".join(chunks)
 
 def card(title: str, text: str):
+    theme_mode = st.session_state.get("theme_mode", "light")
+
+    if theme_mode == "dark":
+        bg = "#1E293B"
+        border = "#334155"
+        text_color = "#CBD5E1"
+        title_color = "#E5E7EB"
+    else:
+        bg = "#F8FAFC"
+        border = "#E5E7EB"
+        text_color = "#475569"
+        title_color = "#111827"
+
     st.html(f"""
     <div style="
-        background:#F8FAFC;
-        border:1px solid #E5E7EB;
+        background:{bg};
+        border:1px solid {border};
         border-radius:16px;
         padding:1.2rem;
         box-shadow:0 1px 3px rgba(15,23,42,0.03);
     ">
-        <div style="font-size:1.1rem;font-weight:600;">
+        <div style="font-size:1.1rem;font-weight:600;color:{title_color};">
             {title}
         </div>
-        <div style="color:#475569;">
+        <div style="color:{text_color};">
             {text}
         </div>
     </div>

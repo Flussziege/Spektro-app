@@ -79,6 +79,9 @@ def make_interactive_1h_plot(
             margin=dict(l=70, r=30, t=50, b=70),
             dragmode="pan",
             hovermode="x unified",
+            paper_bgcolor="#0F172A",
+            plot_bgcolor="#0F172A",
+            font=dict(color="#E5E7EB"),
         )
     else:
         fig.update_layout(
@@ -90,6 +93,9 @@ def make_interactive_1h_plot(
             margin=dict(l=70, r=30, t=50, b=70),
             dragmode="pan",
             hovermode="x unified",
+            paper_bgcolor="#0F172A",
+            plot_bgcolor="#0F172A",
+            font=dict(color="#E5E7EB"),
         )
 
     fig.update_xaxes(
@@ -105,6 +111,11 @@ def make_interactive_1h_plot(
         showline=True,
         mirror=False,
         ticks="outside",
+        gridcolor="#334155",
+        linecolor="#94A3B8",
+        tickfont=dict(color="#E5E7EB"),
+        title_font=dict(color="#E5E7EB"),
+)
     )
 
     fig.update_yaxes(
@@ -118,6 +129,10 @@ def make_interactive_1h_plot(
         showline=True,
         mirror=False,
         ticks="outside",
+        gridcolor="#334155",
+        linecolor="#94A3B8",
+        tickfont=dict(color="#E5E7EB"),
+        title_font=dict(color="#E5E7EB"),
     )
 
     return fig
