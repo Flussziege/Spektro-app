@@ -855,22 +855,13 @@ def synthesize_1h_spectrum(peaks: list[dict],
     spectrum  = np.zeros(n_points)
 
     for peak in peaks:
-        center = peak["shift"]
-        n_h = peak["n_h"]
-
-        peak_envelope = np.zeros(n_points)
-
+        center  = peak["shift"]
+        n_h     = peak["n_h"]
         for offset, rel_intens in peak["multiplet"]:
             pos = center + offset
+            # Lorentz-Profil: realistischer für NMR als Gauß
             lorentz = 1.0 / (1.0 + ((ppm_axis - pos) / (line_width_ppm / 2))**2)
-            peak_envelope += rel_intens * lorentz
-
-        # so normieren, dass die maximale Höhe genau der Protonenzahl entspricht
-        max_env = peak_envelope.max()
-        if max_env > 0:
-            peak_envelope = peak_envelope / max_env * n_h
-
-        spectrum += peak_envelope
+            spectrum += n_h * rel_intens * lorentz
 
 
 
