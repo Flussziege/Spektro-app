@@ -851,6 +851,7 @@ def render_spectra_tabs(
 
 
 def render_home():
+    st.markdown("<div style='height: 0.8rem'></div>", unsafe_allow_html=True)
     render_top_controls()
     st.title(t("home_title"))
     st.write(t("home_subtitle"))
