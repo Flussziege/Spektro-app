@@ -434,12 +434,7 @@ daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)
 def render_top_controls():
     col_spacer, col_lang, col_theme = st.columns([6, 1, 1])
 
-    if "lang_select" not in st.session_state:
-        st.session_state["lang_select"] = st.session_state.get("lang", "de")
-
-    if "theme_mode" not in st.session_state:
-        st.session_state["theme_mode"] = "light"
-
+    
     with col_lang:
         lang = st.segmented_control(
             t("language_label"),
@@ -448,29 +443,21 @@ def render_top_controls():
             key="lang_select",
             selection_mode="single",
             width="content",
-            label_visibility="collapsed",
         )
-
-        if lang is None:
-            st.session_state["lang_select"] = st.session_state.get("lang", "de")
-        else:
+        if lang is not None:
             st.session_state["lang"] = lang
 
     with col_theme:
-        theme = st.segmented_control(
+        st.segmented_control(
             t("theme_label"),
             options=["light", "dark"],
             format_func=lambda x: "☀️" if x == "light" else "🌙",
             key="theme_mode",
             selection_mode="single",
             width="content",
-            label_visibility="collapsed",
         )
 
-        if theme is None:
-            st.session_state["theme_mode"] = "light"
 
-      
 def render_footer():
     st.markdown("---")
 
