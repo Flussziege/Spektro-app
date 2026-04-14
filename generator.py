@@ -219,7 +219,7 @@ def rule_based_peaks(smiles: str, seed: int = None) -> tuple[np.ndarray, np.ndar
 # ══════════════════════════════════════════════════════════════════════════════
 
 def synthesize_spectrum(frequencies, intensities,
-                        n_points=3500, wn_range=(0, 220),
+                        n_points=3500, wn_range=(-10, 230),
                         width=0.5, seed=42):
     wns = np.linspace(wn_range[1], wn_range[0], n_points)
     spectrum = np.zeros(n_points)
