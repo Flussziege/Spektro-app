@@ -22,10 +22,10 @@ IMPRINT_TEXT = """
 
 Angaben gemäß § 5 TMG
 
-Klaus Heinzen  
-Kamminer Str. 16
-10589 Berlin
-Deutschland
+Klaus Heinzen   
+Kamminer Str. 16    
+10589 Berlin    
+Deutschland 
 
 E-Mail: dailyspectroquizz@gmail.com 
 
@@ -33,10 +33,10 @@ E-Mail: dailyspectroquizz@gmail.com
 
 **Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV**
 
-Klaus Heinzen  
-Kamminer Str. 16
-10589 Berlin
-Deutschland
+Klaus Heinzen   
+Kamminer Str. 16    
+10589 Berlin    
+Deutschland     
 
 ---
 
@@ -81,9 +81,9 @@ Die dargestellten Spektren sind simuliert und können von realen Daten abweichen
 **6. Verantwortliche Stelle**
 
 Klaus Heinzen  
-Kamminer Str. 16
-10589 Berlin
-Deutschland
+Kamminer Str. 16    
+10589 Berlin    
+Deutschland     
 
 E-Mail: dailyspectroquizz@gmail.com
 """
