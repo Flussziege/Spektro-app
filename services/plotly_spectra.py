@@ -3,18 +3,29 @@ import plotly.graph_objects as go
 import numpy as np
 
 
+def add_baseline_noise(y, noise_level: float = 0.006, seed: int | None = 42):
+    y = np.asarray(y, dtype=float)
+
+    rng = np.random.default_rng(seed)
+    noise = rng.normal(0, noise_level, size=len(y))
+
+    baseline = np.clip(noise, 0, None)
+    return y + baseline
 def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bool = True):
-    x = spec_result["wns"]
-    y = spec_result["spectrum"]
+    x = np.asarray(spec_result["wns"], dtype=float)
+    y = np.asarray(spec_result["spectrum"], dtype=float)
     freqs = spec_result.get("frequencies", [])
     intens = spec_result.get("intensities", [])
+
+    # leichtes 13C-Rauschen
+    y_plot = add_baseline_noise(y, noise_level=0.006, seed=42)
 
     fig = go.Figure()
 
     fig.add_trace(
         go.Scatter(
             x=x,
-            y=y,
+            y=y_plot,
             mode="lines",
             name="¹³C NMR",
             hovertemplate="δ = %{x:.2f} ppm<br>Intensity = %{y:.2f}<extra></extra>",
@@ -25,7 +36,7 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
         peak_y = []
         for f in freqs:
             idx = min(range(len(x)), key=lambda i: abs(x[i] - f))
-            peak_y.append(float(y[idx]))
+            peak_y.append(float(y_plot[idx]))
 
         peak_text = [
             f"{float(f):.1f} ppm<br>rel. Intensity: {float(i):.2f}"
@@ -43,13 +54,13 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
                     hovertemplate="%{text}<extra></extra>",
                     showlegend=False,
                 )
-        )
+            )
 
     if show_integrals:
         fig.update_layout(
             title=f"Simulated ¹³C-NMR Spectrum — {smiles}",
-            xaxis_title="Chemical Shift δ (ppm)",
-            yaxis_title="Intensity (rel.)",
+            xaxis_title="Chemical Shift (δ, ppm)",
+            yaxis_title="Relative Intensity",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
@@ -58,15 +69,15 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
         )
     else:
         fig.update_layout(
-            title=f"Simulated ¹³C-NMR Spectrum",
-            xaxis_title="Chemical Shift δ (ppm)",
-            yaxis_title="Intensity (rel.)",
+            title="Simulated ¹³C-NMR Spectrum",
+            xaxis_title="Chemical Shift (δ, ppm)",
+            yaxis_title="Relative Intensity",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
             dragmode="pan",
             hovermode="x unified",
-            )
+        )
 
     fig.update_xaxes(
         range=[230, -10],
@@ -85,7 +96,6 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
     )
 
     return fig
-
 
 def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool = True):
     x = ir_result["wns"]
