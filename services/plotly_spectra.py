@@ -16,7 +16,7 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
             y=y,
             mode="lines",
             name="¹³C NMR",
-            hovertemplate="δ = %{x:.2f} ppm<br>Intensität = %{y:.2f}<extra></extra>",
+            hovertemplate="δ = %{x:.2f} ppm<br>Intensity = %{y:.2f}<extra></extra>",
         )
     )
 
@@ -27,7 +27,7 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
             peak_y.append(float(y[idx]))
 
         peak_text = [
-            f"{float(f):.1f} ppm<br>rel. Intensität: {float(i):.2f}"
+            f"{float(f):.1f} ppm<br>rel. Intensity: {float(i):.2f}"
             for f, i in zip(freqs, intens)
         ]
 
@@ -46,9 +46,9 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
 
     if show_integrals:
         fig.update_layout(
-            title=f"Simuliertes ¹³C-NMR-Spektrum — {smiles}",
+            title=f"Simulated ¹³C-NMR Spectrum — {smiles}",
             xaxis_title="Chemical Shift δ (ppm)",
-            yaxis_title="Intensität (rel.)",
+            yaxis_title="Intensity (rel.)",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
@@ -57,9 +57,9 @@ def make_interactive_13c_plot(spec_result: dict, smiles: str, show_integrals: bo
         )
     else:
         fig.update_layout(
-            title=f"Simuliertes ¹³C-NMR-Spektrum",
+            title=f"Simulated ¹³C-NMR Spectrum",
             xaxis_title="Chemical Shift δ (ppm)",
-            yaxis_title="Intensität (rel.)",
+            yaxis_title="Intensity (rel.)",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
@@ -98,15 +98,15 @@ def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool 
             y=y,
             mode="lines",
             name="IR",
-            hovertemplate="%{x:.0f} cm⁻¹<br>Intensität = %{y:.2f}<extra></extra>",
+            hovertemplate="%{x:.0f} cm⁻¹<br>Intensity = %{y:.2f}<extra></extra>",
         )
     )
 
     if show_integrals:
         fig.update_layout(
-            title=f"Simuliertes IR-Spektrum — {smiles}",
-            xaxis_title="Wellenzahl (cm⁻¹)",
-            yaxis_title="Intensität (rel.)",
+            title=f"Simulated IR Spectrum — {smiles}",
+            xaxis_title="Wavenumber (cm⁻¹)",
+            yaxis_title="Intensity (rel.)",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
@@ -115,9 +115,9 @@ def make_interactive_ir_plot(ir_result: dict, smiles: str, show_integrals: bool 
         )
     else: 
         fig.update_layout(
-            title=f"Simuliertes IR-Spektrum",
-            xaxis_title="Wellenzahl (cm⁻¹)",
-            yaxis_title="Intensität (rel.)",
+            title=f"Simulated IR Spectrum",
+            xaxis_title="Wavenumber (cm⁻¹)",
+            yaxis_title="Intensity (rel.)",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
