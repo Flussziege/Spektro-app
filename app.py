@@ -22,10 +22,10 @@ IMPRINT_TEXT = """
 
 Angaben gemäß § 5 TMG
 
-Max Mustermann  
-Musterstraße 1  
-12345 Musterstadt  
-Deutschland  
+Klaus Heinzen  
+Kamminer Str. 16
+10589 Berlin
+Deutschland
 
 E-Mail: dailyspectroquizz@gmail.com 
 
