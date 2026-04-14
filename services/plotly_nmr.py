@@ -19,7 +19,7 @@ def make_interactive_1h_plot(
             y=spectrum,
             mode="lines",
             name="¹H NMR",
-            hovertemplate="δ = %{x:.2f} ppm<br>Intensität = %{y:.2f}<extra></extra>",
+            hovertemplate="δ = %{x:.2f} ppm<br>Intensity = %{y:.2f}<extra></extra>",
         )
     )
 
@@ -58,9 +58,9 @@ def make_interactive_1h_plot(
     
     if show_integrals:
         fig.update_layout(
-            title=f"Simuliertes ¹H-NMR-Spektrum — {smiles}",
+            title=f"Simulated ¹H-NMR Spectrum — {smiles}",
             xaxis_title="Chemical Shift δ (ppm)",
-            yaxis_title="Protonenzahl (rel. Intensität)",
+            yaxis_title="Proton Number (rel. Intensity)",
             template="simple_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
@@ -69,9 +69,9 @@ def make_interactive_1h_plot(
         )
     else:
         fig.update_layout(
-            title=f"Simuliertes ¹H-NMR-Spektrum ",
+            title=f"Simulated ¹H-NMR Spectrum",
             xaxis_title="Chemical Shift δ (ppm)",
-            yaxis_title="Protonenzahl (rel. Intensität)",
+            yaxis_title="Proton Number (rel. Intensity)",
             template="plotly_white",
             height=520,
             margin=dict(l=30, r=30, t=60, b=30),
