@@ -557,6 +557,25 @@ def render_home():
     st.info(t("disclaimer"))
 
 
+def render_quiz_help():
+    with st.expander(t("how_to_play"), expanded=False):
+        st.markdown(f"**{t('how_to_play_quiz_title')}**")
+
+        st.markdown(f"**{t('help_1h_title')}**")
+        st.write(t("help_1h_quiz_text"))
+
+        st.markdown(f"**{t('help_navigation_title')}**")
+        st.write(t("help_navigation_text"))
+
+        st.markdown(f"**{t('help_ea_title')}**")
+        st.write(t("help_ea_text"))
+
+        st.markdown(f"**{t('help_quiz_attempts_title')}**")
+        st.write(t("help_quiz_attempts_text"))
+
+        st.markdown(f"**{t('help_simulation_title')}**")
+        st.write(t("help_simulation_text"))
+
 def render_quiz():
     smiles = st.session_state.get("quiz_smiles")
 
@@ -571,6 +590,8 @@ def render_quiz():
 
     st.title(t("quiz_title"))
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
+
+    render_quiz_help()
 
     if st.session_state["quiz_submitted"]:
         st.markdown("---")
@@ -660,6 +681,31 @@ def render_quiz():
             go_home()
             st.rerun()
 
+def render_daily_help():
+    with st.expander(t("how_to_play"), expanded=False):
+        st.markdown(f"**{t('how_to_play_daily_title')}**")
+
+        st.markdown(f"**{t('help_1h_title')}**")
+        st.write(t("help_1h_quiz_text"))
+
+        st.markdown("**13C NMR**")
+        st.write(t("help_13c_daily_text"))
+
+        st.markdown(f"**{t('help_navigation_title')}**")
+        st.write(t("help_navigation_text"))
+
+        st.markdown(f"**{t('help_ea_title')}**")
+        st.write(t("help_ea_text"))
+
+        st.markdown(f"**{t('help_daily_attempts_title')}**")
+        st.write(t("help_daily_attempts_text"))
+
+        st.markdown(f"**{t('help_daily_hints_title')}**")
+        st.write(t("help_daily_hints_text"))
+
+        st.markdown(f"**{t('help_simulation_title')}**")
+        st.write(t("help_simulation_text"))
+
 def render_daily():
     smiles = st.session_state.get("daily_smiles")
     today = date.today().isoformat()
@@ -714,6 +760,8 @@ def render_daily():
     st.write("")
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
     st.caption(t("daily_attempts_label", count=attempts))
+
+    render_daily_help()
 
     unlock_message = st.session_state.get("daily_last_feedback")
     if unlock_message:

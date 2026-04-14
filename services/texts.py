@@ -118,6 +118,57 @@ TEXTS = {
         "molecular_formula_label_plain": "Summenformel",
         "daily_already_guessed": "Dieses Molekül wurde bereits geraten. Bitte wähle ein anderes.",
         "daily_invalid_selection": "Bitte wähle ein gültiges Molekül aus der Liste.",
+        "how_to_play": "❓ Spielhilfe",
+        "how_to_play_quiz_title": "So funktioniert das Quiz",
+        "how_to_play_daily_title": "So funktioniert das Daily Quiz",
+
+        "help_navigation_title": "Navigation der Spektren",
+        "help_navigation_text": (
+            "Die Spektren sind interaktiv. Du kannst horizontal hineinzoomen, "
+            "mit gedrückter Maustaste verschieben und per Doppelklick die Ansicht zurücksetzen."
+        ),
+
+        "help_simulation_title": "Wichtiger Hinweis zu den Spektren",
+        "help_simulation_text": (
+            "Alle Spektren sind vereinfacht simuliert und können daher ungenau oder fehlerhaft sein. "
+            "Wenn dir ein Fehler auffällt, der das Quiz unlösbar macht oder zu falschen Ergebnissen führt, "
+            "melde dich bitte per E-Mail an dailyspectroquizz@gmail.com."
+        ),
+
+        "help_ea_title": "Elementaranalyse",
+        "help_ea_text": (
+            "Die Elementaranalyse zeigt alle im Molekül enthaltenen Elemente an."
+        ),
+
+        "help_quiz_attempts_title": "Versuche im normalen Quiz",
+        "help_quiz_attempts_text": (
+            "Im normalen Quiz hast du nur einen Versuch."
+        ),
+
+        "help_daily_attempts_title": "Versuche im Daily Quiz",
+        "help_daily_attempts_text": (
+            "Im Daily Quiz hast du unbegrenzt viele Versuche."
+        ),
+
+        "help_1h_title": "1H-NMR",
+        "help_1h_quiz_text": (
+            "Im 1H-NMR entspricht die Intensität grob der Protonenzahl. "
+            "Bei überlappenden Signalen stimmt das jedoch nicht immer exakt."
+        ),
+
+        "help_13c_daily_text": (
+            "Im 13C-NMR entspricht die Intensität nicht der Anzahl der Kohlenstoffatome. "
+            "Erst nach mehreren Fehlversuchen wird eine vereinfachte Darstellung freigeschaltet."
+        ),
+
+        "help_daily_hints_title": "Hilfen im Daily Quiz",
+        "help_daily_hints_text": (
+            "Nach Fehlversuch 1 wird die Elementaranalyse freigeschaltet. "
+            "Nach Fehlversuch 2 wird MS freigeschaltet. "
+            "Nach Fehlversuch 3 wird das 13C-NMR vereinfacht. "
+            "Nach Fehlversuch 4 wird die empirische Formel angezeigt. "
+            "Nach Fehlversuch 5 wird die Summenformel angezeigt."
+        ),
     },
 
     "en": {
@@ -220,6 +271,56 @@ TEXTS = {
         "molecular_formula_label_plain": "Molecular formula",
         "daily_already_guessed": "This molecule has already been guessed. Please choose another one.",
         "daily_invalid_selection": "Please choose a valid molecule from the list.",
+        "how_to_play": "❓ How to play",
+        "how_to_play_quiz_title": "How the quiz works",
+        "how_to_play_daily_title": "How the daily quiz works",
 
+        "help_navigation_title": "How to navigate the spectra",
+        "help_navigation_text": (
+            "The spectra are interactive. You can zoom horizontally, "
+            "pan by dragging, and reset the view with a double click."
+        ),
+
+        "help_simulation_title": "Important note about the spectra",
+        "help_simulation_text": (
+            "All spectra are simplified simulations and may therefore be inaccurate or imperfect. "
+            "If you notice an error that makes the quiz unsolvable or leads to wrong results, "
+            "please contact us at dailyspectroquizz@gmail.com."
+        ),
+
+        "help_ea_title": "Elemental analysis",
+        "help_ea_text": (
+            "The elemental analysis shows all elements contained in the molecule."
+        ),
+
+        "help_quiz_attempts_title": "Attempts in the normal quiz",
+        "help_quiz_attempts_text": (
+            "In the normal quiz, you only have one attempt."
+        ),
+
+        "help_daily_attempts_title": "Attempts in the daily quiz",
+        "help_daily_attempts_text": (
+            "In the daily quiz, you have unlimited attempts."
+        ),
+
+        "help_1h_title": "1H NMR",
+        "help_1h_quiz_text": (
+            "In the 1H NMR spectrum, signal intensity roughly reflects the number of protons. "
+            "However, this is not always exact when signals overlap."
+        ),
+
+        "help_13c_daily_text": (
+            "In the 13C NMR spectrum, intensity does not correspond to the number of carbon atoms. "
+            "Only after several wrong attempts will a simplified version be unlocked."
+        ),
+
+        "help_daily_hints_title": "Hints in the daily quiz",
+        "help_daily_hints_text": (
+            "After wrong attempt 1, elemental analysis is unlocked. "
+            "After wrong attempt 2, MS is unlocked. "
+            "After wrong attempt 3, the 13C NMR becomes simplified. "
+            "After wrong attempt 4, the empirical formula is shown. "
+            "After wrong attempt 5, the molecular formula is shown."
+        ),
     },
 }
