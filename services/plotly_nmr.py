@@ -88,6 +88,11 @@ def make_interactive_1h_plot(
         fixedrange=False,
         showgrid=True,
         zeroline=False,
+        title_text="Chemical Shift (δ, ppm)",
+        automargin=True,
+        showline=True,
+        mirror=False,
+        ticks="outside",
     )
 
     # Y-Achse fixieren, damit Scroll/Zoom nur horizontal wirkt
@@ -97,6 +102,15 @@ def make_interactive_1h_plot(
         fixedrange=True,
         showgrid=True,
         zeroline=False,
+        title_text="Relative Intensity",
+        automargin=True,
+        showline=True,
+        mirror=False,
+        ticks="outside",
+    )
+
+    fig.update_layout(
+    margin=dict(l=70, r=30, t=50, b=70),
     )
 
     return fig
