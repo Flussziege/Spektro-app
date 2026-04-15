@@ -669,7 +669,7 @@ def render_spectra_tabs(
     show_h1: bool = True,
     show_ir: bool = True,
     show_ea: bool = True,
-    show_ms: bool = False,
+    show_ms: bool = True,
     c13_easy_mode: bool = False,
 ):
     
