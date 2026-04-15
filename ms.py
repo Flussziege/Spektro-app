@@ -452,14 +452,14 @@ def _generate_aromatic_special_peaks(
                 ),
                 Peak(
                     mz=_round_mz(65.0386),
-                    intensity=_jitter(36.0, rng, 0.90, 1.10),
+                    intensity=_jitter(50.0, rng, 0.90, 1.10),
                     label="benzyl-derived ring fragment",
                     kind="aromatic_special",
                     metadata={"protected": True},
                 ),
                 Peak(
                     mz=_round_mz(39.0230),
-                    intensity=_jitter(18.0, rng, 0.88, 1.12),
+                    intensity=_jitter(30.0, rng, 0.88, 1.12),
                     label="small aromatic fragment",
                     kind="aromatic_special",
                     metadata={"protected": True},
@@ -553,7 +553,7 @@ def _generate_cleavage_peaks(mol: Chem.Mol, rng: random.Random) -> List[Peak]:
             heavy_atoms = frag.GetNumHeavyAtoms()
 
             mz = _fragment_mass(frag)
-            
+
             if heavy_atoms < 2 and mz < 20:
                 continue
 
