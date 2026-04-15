@@ -1132,8 +1132,13 @@ def render_daily():
         st.info(unlock_message)
         st.session_state["daily_last_feedback"] = None
 
-    if st.session_state["daily_submitted"] and st.session_state["daily_correct"]:
-        st.success(t("correct_daily", name=correct_name))
+    if st.session_state["daily_submitted"] and (
+        st.session_state["daily_correct"] or st.session_state.get("daily_gave_up")
+    ):
+        if st.session_state["daily_correct"]:
+            st.success(t("correct_daily", name=correct_name))
+        else:
+            st.warning(t("gave_up_daily", name=correct_name))
 
         st.markdown(f"### {t('wrong_guesses_title')}")
         if wrong_guesses:
@@ -1142,11 +1147,18 @@ def render_daily():
         else:
             st.write(t("no_selection"))
 
-        if st.button(t("startpage"), key="daily_home_bottom", width="stretch"):
-            st.session_state["daily_submitted"] = False
-            go_home()
-            st.rerun()
-        return
+        col_a, col_b = st.columns(2)
+
+        with col_a:
+            if st.button(t("open_in_lookup"), key="daily_lookup_bottom", width="stretch"):
+                set_lookup(smiles)
+                st.rerun()
+
+        with col_b:
+            if st.button(t("startpage"), key="daily_home_bottom", width="stretch"):
+                st.session_state["daily_submitted"] = False
+                go_home()
+                st.rerun()
 
     render_spectra_tabs(
         smiles,
@@ -1207,7 +1219,7 @@ def render_daily():
         key="daily_answer_select",
     )
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         if st.button(t("daily_submit"), type="primary", width="stretch"):
@@ -1232,6 +1244,7 @@ def render_daily():
             st.session_state["daily_user_smiles"] = selected_smiles
             st.session_state["daily_submitted"] = True
             st.session_state["daily_correct"] = correct
+            st.session_state["daily_gave_up"] = False
 
             if correct:
                 st.session_state["daily_done_date"] = date.today().isoformat()
@@ -1242,12 +1255,16 @@ def render_daily():
 
                 attempts_now = st.session_state["daily_attempt_count"]
                 st.session_state["daily_last_feedback"] = get_daily_unlock_message(attempts_now)
-
                 st.session_state["daily_reset_selection"] = True
 
             st.rerun()
 
     with col2:
+        if st.button(t("give_up"), width="stretch"):
+            give_up_daily()
+            st.rerun()
+
+    with col3:
         if st.button(t("back_home"), key="daily_home_top", width="stretch"):
             go_home()
             st.rerun()
