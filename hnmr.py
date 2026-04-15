@@ -165,7 +165,7 @@ EXCHANGEABLE_H_SPECIAL_SHIFTS = [
     # ─────────────────────────────────────────────────────────────
     ("[OX2H][c][NX3]",                   6.20),  # Aminophenol-artig, eher hochfeld
     ("[OX2H][c][OX2][#6]",               6.60),  # Methoxy-phenol / Guajacol-artig
-    ("[OX2H][c]",                        7.20),  # allgemeines Phenol-OH
+    ("[OX2H][c]",                        5.50),  # allgemeines Phenol-OH
 
     # ─────────────────────────────────────────────────────────────
     # Enol-/vinyloges OH / Heteroaromat-OH
