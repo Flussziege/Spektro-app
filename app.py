@@ -439,29 +439,48 @@ daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)
 def render_top_controls():
     col_spacer, col_lang, col_theme = st.columns([6, 1, 1])
 
-    
+    # Session-State sauber initialisieren
+    if "lang" not in st.session_state:
+        st.session_state["lang"] = "de"
+    if "lang_select" not in st.session_state:
+        st.session_state["lang_select"] = st.session_state["lang"]
+
+    if "theme_mode" not in st.session_state:
+        st.session_state["theme_mode"] = "light"
+
     with col_lang:
-        lang = st.segmented_control(
+        lang_value = st.segmented_control(
             t("language_label"),
             options=["de", "en"],
+            default=st.session_state.get("lang_select", "de"),
             format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
             key="lang_select",
             selection_mode="single",
             width="content",
         )
-        if lang is not None:
-            st.session_state["lang"] = lang
+
+        # Falls Streamlit None zurückgibt, alten Wert behalten
+        if lang_value is None:
+            st.session_state["lang_select"] = st.session_state.get("lang", "de")
+        else:
+            st.session_state["lang_select"] = lang_value
+            st.session_state["lang"] = lang_value
 
     with col_theme:
-        st.segmented_control(
+        theme_value = st.segmented_control(
             t("theme_label"),
             options=["light", "dark"],
+            default=st.session_state.get("theme_mode", "light"),
             format_func=lambda x: "☀️" if x == "light" else "🌙",
             key="theme_mode",
             selection_mode="single",
             width="content",
         )
 
+        if theme_value is None:
+            st.session_state["theme_mode"] = st.session_state.get("theme_mode", "light")
+        else:
+            st.session_state["theme_mode"] = theme_value
 
 def render_footer():
     st.markdown("---")

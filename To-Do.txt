@@ -112,13 +112,14 @@ Webseite:
 - aufgeben button *
 - steuerung in IR, 13C und !H auch wie im MS *
 - MS darkomode *
+- mehr diagnostische MS schemen (aromaten und so) *
 
 
 MS *
 - BESSER MACHEN
 
 
-- mehr diagnostische MS schemen (aromaten und so)
+
 
 
 - (IR, 13C, 1H und MS gleiche quelle für schwingunen/verschiebungen/fragmentierungsmuster)
