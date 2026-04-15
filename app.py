@@ -1,7 +1,7 @@
 from __future__ import annotations
 import streamlit as st
 from datetime import date
-from services.plotly_nmr import make_interactive_1h_plot
+
 
 import re
 from math import gcd
@@ -119,7 +119,8 @@ from services.render_helpers import (
 
 from services.plotly_spectra import (
     make_interactive_13c_plot,
-    make_interactive_ir_plot
+    make_interactive_ir_plot,
+    make_interactive_1h_plot
 )
 
 from services.texts import get_text

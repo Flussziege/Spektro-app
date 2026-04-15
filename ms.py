@@ -774,16 +774,60 @@ def simulate_ms(smiles: str, seed: int = 42) -> dict:
 # Plotting
 # ============================================================
 
-def make_interactive_ms_plot(ms_result: dict, lookup_mode: bool = False) -> go.Figure:
+from __future__ import annotations
+
+import math
+import plotly.graph_objects as go
+
+
+def make_interactive_ms_plot(
+    ms_result: dict,
+    smiles: str,
+    lookup_mode: bool = False,
+    theme_mode: str = "light",
+):
     peaks = ms_result.get("peak_details") or ms_result.get("peaks", [])
+
+    fig = go.Figure()
+
     if not peaks:
-        fig = go.Figure()
         fig.update_layout(
-            template="plotly_white",
+            title=f"Simulated MS Spectrum — {smiles}" if lookup_mode else "Simulated MS Spectrum",
             xaxis_title="m/z",
             yaxis_title="Intensity (%)",
+            template="plotly_white",
+            height=520,
+            margin=dict(l=30, r=30, t=60, b=30),
+            dragmode="zoom",
+            hovermode="closest",
+            uirevision="ms-spectrum",
         )
-        return fig
+
+        fig.update_xaxes(
+            range=[0, 100],
+            autorange=False,
+            fixedrange=False,
+            showgrid=True,
+            zeroline=False,
+            automargin=True,
+            showline=True,
+            mirror=False,
+            ticks="outside",
+        )
+
+        fig.update_yaxes(
+            range=[0, 100],
+            autorange=False,
+            fixedrange=True,
+            showgrid=True,
+            zeroline=False,
+            automargin=True,
+            showline=True,
+            mirror=False,
+            ticks="outside",
+        )
+
+        return _apply_spectrum_theme(fig, theme_mode)
 
     x_vals = []
     y_vals = []
@@ -798,8 +842,9 @@ def make_interactive_ms_plot(ms_result: dict, lookup_mode: bool = False) -> go.F
         kind = str(peak.get("kind", ""))
         fragment_smiles = str(peak.get("fragment_smiles") or "")
 
+        # Stick-Spektrum
         x_vals.extend([mz, mz, None])
-        y_vals.extend([0, intensity, None])
+        y_vals.extend([0.0, intensity, None])
         labels.extend([label, label, ""])
         kinds.extend([kind, kind, ""])
         frag_smiles.extend([fragment_smiles, fragment_smiles, ""])
@@ -826,14 +871,14 @@ def make_interactive_ms_plot(ms_result: dict, lookup_mode: bool = False) -> go.F
         hover_texts.append(text)
 
     max_mz = max(float(p["mz"]) for p in peaks)
-
-    fig = go.Figure()
+    x_max = max(50, math.ceil(max_mz * 1.08))
 
     fig.add_trace(
         go.Scatter(
             x=x_vals,
             y=y_vals,
             mode="lines",
+            name="MS",
             line=dict(width=2),
             hoverinfo="text",
             text=hover_texts,
@@ -847,28 +892,48 @@ def make_interactive_ms_plot(ms_result: dict, lookup_mode: bool = False) -> go.F
             fig.add_annotation(
                 x=float(p["mz"]),
                 y=float(p["intensity"]),
-                text=p["label"],
+                text=str(p.get("label", "")),
                 showarrow=False,
                 yshift=10,
                 font=dict(size=10),
             )
 
     fig.update_layout(
+        title=f"Simulated MS Spectrum — {smiles}" if lookup_mode else "Simulated MS Spectrum",
         xaxis_title="m/z",
         yaxis_title="Intensity (%)",
-        hovermode="closest",
         template="plotly_white",
-        margin=dict(l=20, r=20, t=30, b=20),
+        height=520,
+        margin=dict(l=30, r=30, t=60, b=30),
         dragmode="zoom",
+        hovermode="closest",
         uirevision="ms-spectrum",
-        xaxis=dict(
-            range=[0, math.ceil(max_mz * 1.08)],
-            fixedrange=False,
-        ),
-        yaxis=dict(
-            range=[0, 100],
-            fixedrange=True,
-        ),
     )
 
-    return fig
+    fig.update_xaxes(
+        range=[0, x_max],
+        autorange=False,
+        minallowed=0,
+        maxallowed=x_max,
+        fixedrange=False,
+        showgrid=True,
+        zeroline=False,
+        automargin=True,
+        showline=True,
+        mirror=False,
+        ticks="outside",
+    )
+
+    fig.update_yaxes(
+        range=[0, 100],
+        autorange=False,
+        fixedrange=True,
+        showgrid=True,
+        zeroline=False,
+        automargin=True,
+        showline=True,
+        mirror=False,
+        ticks="outside",
+    )
+
+    return _apply_spectrum_theme(fig, theme_mode)

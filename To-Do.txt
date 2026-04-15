@@ -111,79 +111,14 @@ Webseite:
 - Impressum nötig? * 
 - aufgeben button *
 
-MS:
+MS *
+- BESSER MACHEN
+
+- steuerung in IR, 13C und !H auch wie im MS
+- mehr diagnostische MS schemen (aromaten und so)
+- MS darkomode
+
+- (IR, 13C, 1H und MS gleiche quelle für schwingunen/verschiebungen/fragmentierungsmuster)
 
 
 
-
-
-
-st.html("""
-<style>
-
-/* Hintergrund der gesamten App minimal wärmer */
-.main {
-    background-color: #FFFFFF;
-}
-
-/* Buttons leicht grau */
-.stButton > button {
-    background: #F8FAFC;
-    color: #111827;
-    border: 1px solid #E5E7EB;
-    border-radius: 10px;
-    box-shadow: none;
-}
-
-.stButton > button:hover {
-    background: #F1F5F9;
-    border-color: #CBD5E1;
-}
-
-/* Primäre Buttons (z.B. Quiz starten) */
-.stButton > button[kind="primary"] {
-    background: #111827;
-    color: white;
-    border: 1px solid #111827;
-}
-
-/* Input-Felder (SMILES / Selectbox) */
-.stTextInput input,
-.stSelectbox div[data-baseweb="select"] > div {
-    background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-    border-radius: 10px;
-}
-
-/* Expander (Lookup) */
-details {
-    background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-}
-
-/* Tabs nur leicht anpassen, nicht überschreiben */
-.stTabs [data-baseweb="tab"] {
-    background: #FFFFFF;
-    border: none;
-}
-
-.stTabs [aria-selected="true"] {
-    background: #FFFFFF;
-}
-
-/* Alerts (Ergebnisboxen) */
-[data-testid="stAlert"] {
-    background: #F8FAFC;
-    border: 1px solid #E5E7EB;
-}
-
-/* Allgemeine Container etwas luftiger */
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    max-width: 95rem;
-}
-
-</style>
-""")
