@@ -774,12 +774,6 @@ def simulate_ms(smiles: str, seed: int = 42) -> dict:
 # Plotting
 # ============================================================
 
-from __future__ import annotations
-
-import math
-import plotly.graph_objects as go
-
-
 def make_interactive_ms_plot(
     ms_result: dict,
     smiles: str,
