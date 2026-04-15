@@ -1184,8 +1184,8 @@ def render_daily():
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
     st.caption(t("daily_attempts_label", count=attempts))
 
-    render_daily_help()
     render_top_controls()
+    render_daily_help()
 
     unlock_message = st.session_state.get("daily_last_feedback")
     if unlock_message:
