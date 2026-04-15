@@ -551,10 +551,12 @@ def _generate_cleavage_peaks(mol: Chem.Mol, rng: random.Random) -> List[Peak]:
 
         for frag in frags:
             heavy_atoms = frag.GetNumHeavyAtoms()
+
+            mz = _fragment_mass(frag)
+            
             if heavy_atoms < 2 and mz < 20:
                 continue
 
-            mz = _fragment_mass(frag)
             if mz < 10:
                 continue
 
