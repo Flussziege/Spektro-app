@@ -831,7 +831,7 @@ def render_spectra_tabs(
                 st.subheader(t("ms_title"))
 
                 ms_result = ms.simulate_ms(smiles, seed=42)
-                fig5 = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure)
+                fig5 = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure, theme_mode=theme_mode)
 
                 st.plotly_chart(
                         fig5,
