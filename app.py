@@ -960,7 +960,7 @@ def render_quiz():
                     st.warning(t("structure_display_error", error=e))
 
         elif st.session_state.get("quiz_gave_up"):
-            st.info(t("gave_up_quiz", name=correct_name))
+            st.warning(t("gave_up_quiz", name=correct_name))
 
             col_left, col_center, col_right = st.columns([1, 2, 1])
 
