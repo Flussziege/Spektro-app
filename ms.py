@@ -569,8 +569,8 @@ def _generate_cleavage_peaks(mol: Chem.Mol, rng: random.Random) -> List[Peak]:
                 if label == "bond cleavage":
                     label = "aromatic-stabilized fragment"
                 
-                if _is_benzene_like(fragment):
-                    continue
+            if _is_benzene_like(fragment):
+                 continue
 
             intensity = _jitter(intensity, rng, 0.9, 1.1)
 
