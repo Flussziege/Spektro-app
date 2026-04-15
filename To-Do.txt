@@ -119,6 +119,12 @@ MS *
 - BESSER MACHEN
 
 
+- Cookies:
+    - Statistik, wie lange man immer gebraucht hat
+    - wie viele das schon gelöst haben
+
+
+wenn man daily nmr zoomt und dann abgibt, zoomt es nicht zurück auf die ursprüngliche Ansicht, sondern bleibt gezoomt. Das könnte verwirrend sein
 
 
 

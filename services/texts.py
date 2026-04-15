@@ -124,8 +124,8 @@ TEXTS = {
 
         "help_navigation_title": "Navigation der Spektren",
         "help_navigation_text": (
-            "Die Spektren sind interaktiv. Du kannst horizontal hineinzoomen, "
-            "mit gedrückter Maustaste verschieben und per Doppelklick die Ansicht zurücksetzen."
+            "Die Spektren sind interaktiv. Du kannst horizontal zoomen, indem du einen Bereich aufziehst. "
+            "Die Intensitätsachse bleibt dabei fixiert. Mit einem Doppelklick wird die Ansicht zurückgesetzt."
         ),
 
         "help_simulation_title": "Wichtiger Hinweis zu den Spektren",
@@ -285,8 +285,8 @@ TEXTS = {
 
         "help_navigation_title": "How to navigate the spectra",
         "help_navigation_text": (
-            "The spectra are interactive. You can zoom horizontally, "
-            "pan by dragging, and reset the view with a double click."
+            "The spectra are interactive. You can zoom horizontally by dragging over a region. "
+            "The intensity axis remains fixed. Double-click to reset the view."
         ),
 
         "help_simulation_title": "Important note about the spectra",

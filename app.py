@@ -1123,10 +1123,36 @@ def render_daily():
         st.session_state["daily_done_date"] == today
         and not st.session_state["daily_submitted"]
     ):
+        if not smiles:
+            mol = pick_daily_molecule(moleküle_daily)
+            smiles = normalize_smiles(mol["smiles"])
+
+        _, correct_name, difficulty = get_molecule_data(smiles, daily=True)
+
         st.success(t("daily_done"))
-        if st.button(t("back_home"), key="daily_done_home", width="stretch"):
-            go_home()
-            st.rerun()
+        st.markdown(f"### {correct_name}")
+        st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
+
+        try:
+            img = smiles_to_pil(smiles)
+            if img is not None:
+                st.image(img, caption=correct_name, width=320)
+        except Exception as e:
+            st.warning(t("structure_display_error", error=e))
+
+        col_a, col_b = st.columns(2)
+
+        with col_a:
+            if st.button(t("open_in_lookup"), key="daily_done_lookup", width="stretch"):
+                set_lookup(smiles)
+                st.rerun()
+
+        with col_b:
+            if st.button(t("back_home"), key="daily_done_home", width="stretch"):
+                go_home()
+                st.rerun()
+
+        render_footer()
         return
 
     if not smiles:
@@ -1174,6 +1200,13 @@ def render_daily():
         else:
             st.warning(t("gave_up_daily", name=correct_name))
 
+        try:
+            img = smiles_to_pil(smiles)
+            if img is not None:
+                st.image(img, caption=correct_name, width=320)
+        except Exception as e:
+            st.warning(t("structure_display_error", error=e))
+
         st.markdown(f"### {t('wrong_guesses_title')}")
         if wrong_guesses:
             for guess in wrong_guesses:
@@ -1193,6 +1226,9 @@ def render_daily():
                 st.session_state["daily_submitted"] = False
                 go_home()
                 st.rerun()
+
+        render_footer()
+        return
 
     render_spectra_tabs(
         smiles,
