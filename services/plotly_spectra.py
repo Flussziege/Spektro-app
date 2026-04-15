@@ -429,7 +429,6 @@ def make_interactive_ms_plot(
         margin=dict(l=30, r=30, t=60, b=30),
         dragmode="zoom",
         hovermode="closest",
-        uirevision="ms-spectrum",
     )
 
     fig.update_xaxes(
