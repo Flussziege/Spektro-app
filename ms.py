@@ -170,13 +170,25 @@ def _count_aromatic_atoms(mol: Chem.Mol) -> int:
 
 def _has_benzylic_position(mol: Chem.Mol) -> bool:
     for atom in mol.GetAtoms():
+        # nur Kohlenstoff
         if atom.GetAtomicNum() != 6:
             continue
+
+        # MUSS sp3 sein
+        if atom.GetHybridization() != Chem.rdchem.HybridizationType.SP3:
+            continue
+
+        # darf nicht aromatisch sein
         if atom.GetIsAromatic():
             continue
 
-        if any(nbr.GetIsAromatic() for nbr in atom.GetNeighbors()):
-            return True
+        # muss an aromatischen Nachbarn gebunden sein
+        aromatic_neighbors = [nbr for nbr in atom.GetNeighbors() if nbr.GetIsAromatic()]
+        if not aromatic_neighbors:
+            continue
+
+        return True
+
     return False
 
 
