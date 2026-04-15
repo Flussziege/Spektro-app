@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 import plotly.graph_objects as go
+import math
 
 
 def add_baseline_noise(y, noise_level: float = 0.006, seed: int | None = 42):
