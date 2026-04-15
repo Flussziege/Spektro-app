@@ -728,7 +728,7 @@ def render_spectra_tabs(
                         fig1,
                         width="stretch",
                         config={
-                            "scrollZoom": True,
+                            "scrollZoom": False,
                             "displaylogo": False,
                             "doubleClick": "reset",
                             "modeBarButtonsToRemove": [
@@ -770,7 +770,7 @@ def render_spectra_tabs(
                         fig2,
                         width="stretch",
                         config={
-                            "scrollZoom": True,
+                            "scrollZoom": False,
                             "displaylogo": False,
                             "doubleClick": "reset",
                             "modeBarButtonsToRemove": [
@@ -810,7 +810,7 @@ def render_spectra_tabs(
                         fig3,
                         width="stretch",
                         config={
-                            "scrollZoom": True,
+                            "scrollZoom": False,
                             "displaylogo": False,
                             "doubleClick": "reset",
                             "modeBarButtonsToRemove": [
@@ -831,9 +831,26 @@ def render_spectra_tabs(
                 st.subheader(t("ms_title"))
 
                 ms_result = ms.simulate_ms(smiles, seed=42)
-                fig = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure)
+                fig5 = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure)
 
-                st.plotly_chart(fig, width="stretch")
+                st.plotly_chart(
+                        fig5,
+                        width="stretch",
+                        config={
+                            "scrollZoom": False,
+                            "displaylogo": False,
+                            "doubleClick": "reset",
+                            "modeBarButtonsToRemove": [
+                                "zoom2d",
+                                "select2d",
+                                "lasso2d",
+                                "zoomIn2d",
+                                "zoomOut2d",
+                                "autoScale2d",
+                            ],
+                        },
+                        theme=None,
+                )
 
             elif key == "ea":
                 st.subheader(t("ea_title"))
