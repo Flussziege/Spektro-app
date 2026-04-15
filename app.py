@@ -838,7 +838,11 @@ def render_spectra_tabs(
 
             elif key == "ms":
                 st.subheader(t("ms_title"))
-                st.info(t("ms_placeholder"))
+
+                ms_result = simulate_ms(smiles, seed=42)
+                fig = make_interactive_ms_plot(ms_result)
+
+                st.plotly_chart(fig, width="stretch")
 
             elif key == "structure":
                 st.subheader(t("structure_title"))

@@ -108,14 +108,14 @@ Webseite:
     - bei fehlern bitte melden
     - oder als fragezeichen, die man anklicken kann
 - light/ dark design? *
+- Impressum nötig? * 
+- aufgeben button *
 
 MS:
 
 
 
-- Impressum nötig?
 
-aufgeben button
 
 
 st.html("""
