@@ -422,13 +422,13 @@ if theme_mode == "dark":
 else:
     st.markdown(get_light_css(), unsafe_allow_html=True)
 
+if "lang_select" not in st.session_state:
+    st.session_state["lang_select"] = st.session_state.get("lang", "de")
+
 if "lang" not in st.session_state:
     st.session_state["lang"] = "de"
 
-if "theme_mode" not in st.session_state:
-    st.session_state["theme_mode"] = "light"
-
-lang = st.session_state.get("lang", "de")
+lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
 
 namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle, lang=lang)
 daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily, lang=lang)
@@ -439,9 +439,11 @@ daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)
 def render_top_controls():
     col_spacer, col_lang, col_theme = st.columns([6, 1, 1])
 
-    # Defaults nur vor Widget-Erzeugung initialisieren
+    # Session-State sauber initialisieren
     if "lang" not in st.session_state:
         st.session_state["lang"] = "de"
+    if "lang_select" not in st.session_state:
+        st.session_state["lang_select"] = st.session_state["lang"]
 
     if "theme_mode" not in st.session_state:
         st.session_state["theme_mode"] = "light"
@@ -450,15 +452,18 @@ def render_top_controls():
         lang_value = st.segmented_control(
             t("language_label"),
             options=["de", "en"],
-            default=st.session_state.get("lang", "de"),
+            default=st.session_state.get("lang_select", "de"),
             format_func=lambda x: "🇩🇪 DE" if x == "de" else "🇬🇧 EN",
             key="lang_select",
             selection_mode="single",
             width="content",
         )
 
-        # Nur App-State setzen, NICHT st.session_state["lang_select"]
-        if lang_value is not None:
+        # Falls Streamlit None zurückgibt, alten Wert behalten
+        if lang_value is None:
+            st.session_state["lang_select"] = st.session_state.get("lang", "de")
+        else:
+            st.session_state["lang_select"] = lang_value
             st.session_state["lang"] = lang_value
 
     with col_theme:
@@ -467,14 +472,15 @@ def render_top_controls():
             options=["light", "dark"],
             default=st.session_state.get("theme_mode", "light"),
             format_func=lambda x: "☀️" if x == "light" else "🌙",
-            key="theme_select",
+            key="theme_mode",
             selection_mode="single",
             width="content",
         )
 
-        if theme_value is not None:
+        if theme_value is None:
+            st.session_state["theme_mode"] = st.session_state.get("theme_mode", "light")
+        else:
             st.session_state["theme_mode"] = theme_value
-
 
 def render_footer():
     st.markdown("---")
@@ -491,7 +497,7 @@ def render_footer():
 
 
 def t(key: str, **kwargs) -> str:
-    lang = st.session_state.get("lang", "de")
+    lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
     return get_text(lang, key, **kwargs)
 
 def difficulty_text(level: str) -> str:
