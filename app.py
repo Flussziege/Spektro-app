@@ -962,6 +962,16 @@ def render_quiz():
         elif st.session_state.get("quiz_gave_up"):
             st.info(t("gave_up_quiz", name=correct_name))
 
+            col_left, col_center, col_right = st.columns([1, 2, 1])
+
+            with col_center:
+                try:
+                    img = smiles_to_pil(smiles)
+                    if img is not None:
+                        st.image(img, caption=correct_name, width="stretch")
+                except Exception as e:
+                    st.warning(t("structure_display_error", error=e))
+
         else:
             st.error(t("wrong_quiz", name=correct_name))
 
