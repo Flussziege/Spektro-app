@@ -827,6 +827,14 @@ def render_spectra_tabs(
                 except Exception as e:
                     st.error(f"IR: {e}")
 
+            elif key == "ms":
+                st.subheader(t("ms_title"))
+
+                ms_result = ms.simulate_ms(smiles, seed=42)
+                fig = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure)
+
+                st.plotly_chart(fig, width="stretch")
+
             elif key == "ea":
                 st.subheader(t("ea_title"))
                 try:
@@ -838,14 +846,6 @@ def render_spectra_tabs(
                         st.warning(t("ea_missing"))
                 except Exception as e:
                     st.error(t("ea_error", error=e))
-
-            elif key == "ms":
-                st.subheader(t("ms_title"))
-
-                ms_result = ms.simulate_ms(smiles, seed=42)
-                fig = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure)
-
-                st.plotly_chart(fig, width="stretch")
 
             elif key == "structure":
                 st.subheader(t("structure_title"))
