@@ -112,6 +112,8 @@ from services.render_helpers import (
     start_daily,
     submit_daily,
     set_lookup,
+    give_up_quiz,
+    give_up_daily,
 )
 
 from services.plotly_spectra import (
@@ -957,6 +959,9 @@ def render_quiz():
                 except Exception as e:
                     st.warning(t("structure_display_error", error=e))
 
+        elif st.session_state.get("quiz_gave_up"):
+            st.info(t("gave_up_quiz", name=correct_name))
+
         else:
             st.error(t("wrong_quiz", name=correct_name))
 
@@ -984,7 +989,7 @@ def render_quiz():
                 else:
                     st.info(t("no_answer_image"))
 
-        col_a, col_b = st.columns(2)
+        col_a, col_b, col_c = st.columns(3)
 
         with col_a:
             if st.button(t("another_quiz"), width="stretch"):
@@ -993,6 +998,11 @@ def render_quiz():
                 st.rerun()
 
         with col_b:
+            if st.button(t("open_in_lookup"), width="stretch"):
+                set_lookup(smiles)
+                st.rerun()
+
+        with col_c:
             if st.button(t("startpage"), width="stretch", key="quiz_home_end"):
                 go_home()
                 st.rerun()
@@ -1007,7 +1017,7 @@ def render_quiz():
         key="quiz_answer_select",
     )
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         if st.button(t("quiz_submit"), type="primary", width="stretch"):
@@ -1021,6 +1031,11 @@ def render_quiz():
             st.rerun()
 
     with col2:
+        if st.button(t("give_up"), width="stretch"):
+            give_up_quiz()
+            st.rerun()
+
+    with col3:
         if st.button(t("back_home"), width="stretch"):
             go_home()
             st.rerun()

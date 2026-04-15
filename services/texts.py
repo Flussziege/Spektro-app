@@ -172,6 +172,11 @@ TEXTS = {
         "theme_label": "Design",
         "theme_light": "Hell",
         "theme_dark": "Dunkel",
+
+        "give_up": "Aufgeben",
+        "open_in_lookup": "Im Lookup ansehen",
+        "gave_up_quiz": "Du hast aufgegeben. Das Molekül war **{name}**.",
+        "gave_up_daily": "Du hast aufgegeben. Das heutige Molekül war **{name}**.",
     },
 
     "en": {
@@ -329,5 +334,11 @@ TEXTS = {
         "theme_label": "Theme",
         "theme_light": "Light",
         "theme_dark": "Dark",
+
+        "give_up": "Give up",
+        "open_in_lookup": "Open in lookup",
+        "gave_up_quiz": "You gave up. The molecule was **{name}**.",
+        "gave_up_daily": "You gave up. Today's molecule was **{name}**.",
     },
+
 }

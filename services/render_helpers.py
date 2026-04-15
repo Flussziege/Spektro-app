@@ -36,6 +36,10 @@ def init_session_state():
 
         # Sprache
         "lang": "de",
+
+        #aufgeben und wechsel zu lookup
+        "quiz_gave_up": False,  
+        "daily_gave_up": False,
     }
 
     for key, value in defaults.items():
@@ -55,6 +59,7 @@ def start_quiz(mol: dict):
     st.session_state["quiz_user_answer"] = ""
     st.session_state["quiz_user_smiles"] = None
     st.session_state["mode"] = "quiz"
+    st.session_state["quiz_gave_up"] = False
 
 
 def submit_quiz(correct: bool):
@@ -74,6 +79,7 @@ def start_daily(mol: dict):
     st.session_state["daily_last_feedback"] = None
     st.session_state["mode"] = "daily"
     st.session_state["daily_reset_selection"] = False
+    st.session_state["daily_gave_up"] = False
 
 
 def submit_daily(correct: bool):
@@ -86,3 +92,20 @@ def submit_daily(correct: bool):
 def set_lookup(smiles: str):
     st.session_state["lookup_smiles"] = smiles
     st.session_state["mode"] = "lookup"
+
+
+def give_up_quiz():
+    st.session_state["quiz_submitted"] = True
+    st.session_state["quiz_correct"] = False
+    st.session_state["quiz_gave_up"] = True
+    st.session_state["quiz_user_answer"] = ""
+    st.session_state["quiz_user_smiles"] = None
+
+
+def give_up_daily():
+    st.session_state["daily_submitted"] = True
+    st.session_state["daily_correct"] = False
+    st.session_state["daily_gave_up"] = True
+    st.session_state["daily_done_date"] = date.today().isoformat()
+    st.session_state["daily_user_answer"] = ""
+    st.session_state["daily_user_smiles"] = None
