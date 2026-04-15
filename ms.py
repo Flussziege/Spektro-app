@@ -199,6 +199,11 @@ def _has_benzene_like_ring(mol: Chem.Mol) -> bool:
             return True
     return False
 
+def _is_benzene_like(fragment: Chem.Mol) -> bool:
+    if fragment.GetNumAtoms() != 6:
+        return False
+    return all(atom.GetIsAromatic() for atom in fragment.GetAtoms())
+
 
 def _has_aromatic_seven_membered_ring(mol: Chem.Mol) -> bool:
     ring_info = mol.GetRingInfo()
