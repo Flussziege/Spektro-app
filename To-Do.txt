@@ -110,13 +110,16 @@ Webseite:
 - light/ dark design? *
 - Impressum nötig? * 
 - aufgeben button *
+- steuerung in IR, 13C und !H auch wie im MS *
+- MS darkomode *
+
 
 MS *
 - BESSER MACHEN
 
-- steuerung in IR, 13C und !H auch wie im MS
+
 - mehr diagnostische MS schemen (aromaten und so)
-- MS darkomode
+
 
 - (IR, 13C, 1H und MS gleiche quelle für schwingunen/verschiebungen/fragmentierungsmuster)
 

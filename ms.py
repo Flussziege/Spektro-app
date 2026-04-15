@@ -62,6 +62,10 @@ class MoleculeFeatures:
 
     carbonyl_like: bool = False
 
+    aromatic_atom_count: int = 0
+    has_benzylic_position: bool = False
+    has_benzene_like_ring: bool = False
+    has_aromatic_seven_ring: bool = False
 
 # ============================================================
 # SMARTS patterns
@@ -160,6 +164,40 @@ def _contains_hetero(mol: Chem.Mol) -> bool:
 def _count_carbon_neighbors(atom: Chem.Atom) -> int:
     return sum(1 for nbr in atom.GetNeighbors() if nbr.GetAtomicNum() == 6)
 
+def _count_aromatic_atoms(mol: Chem.Mol) -> int:
+    return sum(1 for atom in mol.GetAtoms() if atom.GetIsAromatic())
+
+
+def _has_benzylic_position(mol: Chem.Mol) -> bool:
+    for atom in mol.GetAtoms():
+        if atom.GetAtomicNum() != 6:
+            continue
+        if atom.GetIsAromatic():
+            continue
+
+        if any(nbr.GetIsAromatic() for nbr in atom.GetNeighbors()):
+            return True
+    return False
+
+
+def _has_benzene_like_ring(mol: Chem.Mol) -> bool:
+    ring_info = mol.GetRingInfo()
+    for ring in ring_info.AtomRings():
+        if len(ring) == 6 and all(mol.GetAtomWithIdx(idx).GetIsAromatic() for idx in ring):
+            return True
+    return False
+
+
+def _has_aromatic_seven_membered_ring(mol: Chem.Mol) -> bool:
+    ring_info = mol.GetRingInfo()
+    for ring in ring_info.AtomRings():
+        if len(ring) != 7:
+            continue
+        aromatic_atoms = sum(1 for idx in ring if mol.GetAtomWithIdx(idx).GetIsAromatic())
+        if aromatic_atoms >= 5:
+            return True
+    return False
+
 
 # ============================================================
 # Feature extraction
@@ -216,6 +254,10 @@ def extract_molecule_features(smiles: str) -> MoleculeFeatures:
         has_halogen_br=hetero_counts["Br"] > 0,
         has_halogen_f=hetero_counts["F"] > 0,
         has_halogen_i=hetero_counts["I"] > 0,
+        aromatic_atom_count=_count_aromatic_atoms(mol),
+        has_benzylic_position=_has_benzylic_position(mol),
+        has_benzene_like_ring=_has_benzene_like_ring(mol),
+        has_aromatic_seven_ring=_has_aromatic_seven_membered_ring(mol),
     )
 
     features.carbonyl_like = any(
@@ -294,18 +336,15 @@ def _fragment_smiles(mol: Chem.Mol) -> str:
 
 
 def _estimate_fragment_stability(fragment: Chem.Mol) -> float:
-    """
-    Didaktischer Stabilitäts-Score.
-    """
     score = 1.0
 
-    if _is_aromatic_fragment(fragment):
-        score += 0.6
+    aromatic_atoms = _count_aromatic_atoms(fragment)
+    if aromatic_atoms > 0:
+        score += 0.5 + 0.05 * aromatic_atoms
 
     if _contains_hetero(fragment):
         score += 0.25
 
-    # einfache Bonuslogik für stärker substituierte C-Zentren
     carbon_sub_scores = []
     for atom in fragment.GetAtoms():
         if atom.GetAtomicNum() == 6 and not atom.GetIsAromatic():
@@ -320,7 +359,6 @@ def _estimate_fragment_stability(fragment: Chem.Mol) -> float:
         elif best == 1:
             score += 0.10
 
-    # sehr kleine Fragmente leicht abwerten
     heavy_atoms = fragment.GetNumHeavyAtoms()
     if heavy_atoms <= 2:
         score *= 0.75
@@ -328,7 +366,6 @@ def _estimate_fragment_stability(fragment: Chem.Mol) -> float:
         score *= 0.90
 
     return score
-
 
 def _bond_is_alpha_to_hetero(bond: Chem.Bond) -> bool:
     a1 = bond.GetBeginAtom()
@@ -346,29 +383,79 @@ def _bond_is_alpha_to_hetero(bond: Chem.Bond) -> bool:
 # Peak generation
 # ============================================================
 
-def _generate_molecular_ion_peak(features: MoleculeFeatures, rng: random.Random) -> Peak:
-    intensity = 20.0
+def _generate_aromatic_special_peaks(
+    mol: Chem.Mol,
+    features: MoleculeFeatures,
+    rng: random.Random,
+) -> List[Peak]:
+    peaks: List[Peak] = []
 
-    if features.has_aromatic:
-        intensity += 10
-    if features.carbonyl_like:
-        intensity += 6
-    if features.has_halogen_cl or features.has_halogen_br:
-        intensity += 5
+    if not features.has_aromatic:
+        return peaks
 
-    # aliphatische, flexible Moleküle -> M+ tendenziell schwächer
-    if not features.has_aromatic and not features.carbonyl_like and features.carbon_count >= 5:
-        intensity -= 8
+    # Allgemeiner phenylartiger Peak
+    if features.has_benzene_like_ring:
+        peaks.append(
+            Peak(
+                mz=_round_mz(77.0391),
+                intensity=_jitter(38.0, rng, 0.9, 1.1),
+                label="phenyl fragment",
+                kind="aromatic_special",
+            )
+        )
 
-    intensity = max(8.0, min(40.0, _jitter(intensity, rng, 0.9, 1.1)))
+    # Benzyl/Tropylium-Heuristik
+    if features.has_benzylic_position:
+        peaks.append(
+            Peak(
+                mz=_round_mz(91.0542),
+                intensity=_jitter(82.0, rng, 0.92, 1.08),
+                label="tropylium / benzyl fragment",
+                kind="aromatic_special",
+            )
+        )
 
-    return Peak(
-        mz=_round_mz(features.exact_mass),
-        intensity=intensity,
-        label="M⁺",
-        kind="molecular_ion",
-    )
+        # etwas kleineres Folgefragment
+        peaks.append(
+            Peak(
+                mz=_round_mz(65.0386),
+                intensity=_jitter(28.0, rng, 0.9, 1.1),
+                label="aryl fragment",
+                kind="aromatic_special",
+            )
+        )
 
+    # Aromatische siebenringe / tropylartige Systeme
+    if features.has_aromatic_seven_ring:
+        peaks.append(
+            Peak(
+                mz=_round_mz(91.0542),
+                intensity=_jitter(95.0, rng, 0.95, 1.05),
+                label="aromatic 7-ring stabilized fragment",
+                kind="aromatic_special",
+            )
+        )
+        peaks.append(
+            Peak(
+                mz=_round_mz(115.0542),
+                intensity=_jitter(42.0, rng, 0.9, 1.1),
+                label="seven-membered aromatic ring fragment",
+                kind="aromatic_special",
+            )
+        )
+
+    # Allgemeine aromatische Stabilisierung -> etwas mehr Ringfragmente
+    if features.aromatic_atom_count >= 6:
+        peaks.append(
+            Peak(
+                mz=_round_mz(51.0230),
+                intensity=_jitter(16.0, rng, 0.85, 1.15),
+                label="small aromatic fragment",
+                kind="aromatic_special",
+            )
+        )
+
+    return peaks
 
 def _generate_neutral_loss_peaks(features: MoleculeFeatures, rng: random.Random) -> List[Peak]:
     peaks: List[Peak] = []
@@ -469,14 +556,15 @@ def _generate_second_generation_fragments(
     cleavage_peaks: List[Peak],
     rng: random.Random,
 ) -> List[Peak]:
-    """
-    Kontrollierte Fragmentierung von Fragmenten:
-    nur starke/stabile Primärfragmente werden einmal weiterfragmentiert.
-    """
     peaks: List[Peak] = []
 
-    for peak in cleavage_peaks:
-        if peak.intensity < 30:
+    sorted_candidates = sorted(cleavage_peaks, key=lambda p: p.intensity, reverse=True)
+
+    for peak in sorted_candidates[:8]:
+        aromatic = bool(peak.metadata.get("aromatic"))
+        threshold = 22 if aromatic else 30
+
+        if peak.intensity < threshold:
             continue
         if not peak.fragment_smiles:
             continue
@@ -490,8 +578,10 @@ def _generate_second_generation_fragments(
             continue
 
         child_peaks = _generate_cleavage_peaks(frag_mol, rng)
-        for child in child_peaks[:4]:
-            child.intensity *= 0.45
+        child_peaks = sorted(child_peaks, key=lambda p: p.intensity, reverse=True)[:3]
+
+        for child in child_peaks:
+            child.intensity *= 0.55 if aromatic else 0.45
             child.label = f"secondary fragmentation: {child.label}"
             child.kind = "secondary_fragmentation"
             peaks.append(child)
@@ -709,8 +799,17 @@ def simulate_ms(smiles: str, seed: int = 42) -> dict:
     second_gen = _generate_second_generation_fragments(cleavage_peaks, rng)
     isotope_peaks = _generate_isotope_peaks(features, molecular_ion)
     noise_peaks = _generate_noise_peaks(features.exact_mass, rng, count=2)
+    aromatic_specials = _generate_aromatic_special_peaks(mol, features, rng)
 
-    all_peaks = [molecular_ion] + neutral_losses + cleavage_peaks + second_gen + isotope_peaks + noise_peaks
+    all_peaks = (
+        [molecular_ion]
+        + neutral_losses
+        + cleavage_peaks
+        + aromatic_specials
+        + second_gen
+        + isotope_peaks
+        + noise_peaks
+    )
     all_peaks = _merge_close_peaks(all_peaks, tolerance=0.35)
     all_peaks = _normalize_peaks(all_peaks)
     all_peaks = _trim_peaks(all_peaks, max_peaks=22, min_intensity=2.0)
