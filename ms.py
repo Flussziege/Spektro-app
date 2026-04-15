@@ -469,21 +469,21 @@ def _generate_aromatic_special_peaks(
         [
             Peak(
                 mz=_round_mz(77.0391),
-                intensity=_jitter(42.0, rng, 0.90, 1.10),
+                intensity=_jitter(52.0, rng, 0.90, 1.10),
                 label="phenyl fragment",
                 kind="aromatic_special",
                 metadata={"protected": True},
             ),
             Peak(
                 mz=_round_mz(51.0230),
-                intensity=_jitter(24.0, rng, 0.88, 1.12),
+                intensity=_jitter(30.0, rng, 0.88, 1.12),
                 label="ring contraction fragment",
                 kind="aromatic_special",
                 metadata={"protected": True},
             ),
             Peak(
                 mz=_round_mz(39.0230),
-                intensity=_jitter(16.0, rng, 0.88, 1.12),
+                intensity=_jitter(21.0, rng, 0.88, 1.12),
                 label="small aromatic fragment",
                 kind="aromatic_special",
                 metadata={"protected": True},
