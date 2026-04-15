@@ -16,6 +16,7 @@ import generator
 import generator2   
 import generator5
 import hnmr
+import ms
 
 IMPRINT_TEXT = """
 **Impressum**
@@ -839,7 +840,7 @@ def render_spectra_tabs(
             elif key == "ms":
                 st.subheader(t("ms_title"))
 
-                ms_result = simulate_ms(smiles, seed=42)
+                ms_result = ms.simulate_ms(smiles, seed=42)
                 fig = make_interactive_ms_plot(ms_result)
 
                 st.plotly_chart(fig, width="stretch")
