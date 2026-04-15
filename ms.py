@@ -774,7 +774,7 @@ def simulate_ms(smiles: str, seed: int = 42) -> dict:
 # Plotting
 # ============================================================
 
-def make_interactive_ms_plot(ms_result: dict) -> go.Figure:
+def make_interactive_ms_plot(ms_result: dict, lookup_mode: bool = False) -> go.Figure:
     peaks = ms_result.get("peak_details") or ms_result.get("peaks", [])
     if not peaks:
         fig = go.Figure()
@@ -785,11 +785,11 @@ def make_interactive_ms_plot(ms_result: dict) -> go.Figure:
         )
         return fig
 
-    x_vals: List[float] = []
-    y_vals: List[float] = []
-    labels: List[str] = []
-    kinds: List[str] = []
-    frag_smiles: List[str] = []
+    x_vals = []
+    y_vals = []
+    labels = []
+    kinds = []
+    frag_smiles = []
 
     for peak in peaks:
         mz = float(peak["mz"])
@@ -798,12 +798,32 @@ def make_interactive_ms_plot(ms_result: dict) -> go.Figure:
         kind = str(peak.get("kind", ""))
         fragment_smiles = str(peak.get("fragment_smiles") or "")
 
-        # Stick spectrum: je Peak 3 Punkte
         x_vals.extend([mz, mz, None])
         y_vals.extend([0, intensity, None])
         labels.extend([label, label, ""])
         kinds.extend([kind, kind, ""])
         frag_smiles.extend([fragment_smiles, fragment_smiles, ""])
+
+    hover_texts = []
+    for i in range(len(x_vals)):
+        if x_vals[i] is None or y_vals[i] is None or y_vals[i] <= 0:
+            hover_texts.append("")
+            continue
+
+        text = (
+            f"m/z: {x_vals[i]:.4f}<br>"
+            f"Intensity: {y_vals[i]:.1f}%"
+        )
+
+        if lookup_mode:
+            if labels[i]:
+                text += f"<br>Label: {labels[i]}"
+            if kinds[i]:
+                text += f"<br>Type: {kinds[i]}"
+            if frag_smiles[i]:
+                text += f"<br>Fragment: {frag_smiles[i]}"
+
+        hover_texts.append(text)
 
     max_mz = max(float(p["mz"]) for p in peaks)
 
@@ -816,33 +836,22 @@ def make_interactive_ms_plot(ms_result: dict) -> go.Figure:
             mode="lines",
             line=dict(width=2),
             hoverinfo="text",
-            text=[
-                (
-                    f"m/z: {x_vals[i]:.4f}<br>"
-                    f"Intensity: {y_vals[i]:.1f}%<br>"
-                    f"Label: {labels[i]}"
-                    + (f"<br>Type: {kinds[i]}" if kinds[i] else "")
-                    + (f"<br>Fragment: {frag_smiles[i]}" if frag_smiles[i] else "")
-                )
-                if x_vals[i] is not None and y_vals[i] is not None and y_vals[i] > 0
-                else ""
-                for i in range(len(x_vals))
-            ],
+            text=hover_texts,
             showlegend=False,
         )
     )
 
-    # Peak labels für stärkere Peaks
-    strong_peaks = [p for p in peaks if float(p["intensity"]) >= 25]
-    for p in strong_peaks:
-        fig.add_annotation(
-            x=float(p["mz"]),
-            y=float(p["intensity"]),
-            text=p["label"],
-            showarrow=False,
-            yshift=10,
-            font=dict(size=10),
-        )
+    if lookup_mode:
+        strong_peaks = [p for p in peaks if float(p["intensity"]) >= 25]
+        for p in strong_peaks:
+            fig.add_annotation(
+                x=float(p["mz"]),
+                y=float(p["intensity"]),
+                text=p["label"],
+                showarrow=False,
+                yshift=10,
+                font=dict(size=10),
+            )
 
     fig.update_layout(
         xaxis_title="m/z",
@@ -850,8 +859,16 @@ def make_interactive_ms_plot(ms_result: dict) -> go.Figure:
         hovermode="closest",
         template="plotly_white",
         margin=dict(l=20, r=20, t=30, b=20),
-        xaxis=dict(range=[0, math.ceil(max_mz * 1.08)]),
-        yaxis=dict(range=[0, 110]),
+        dragmode="zoom",
+        uirevision="ms-spectrum",
+        xaxis=dict(
+            range=[0, math.ceil(max_mz * 1.08)],
+            fixedrange=False,
+        ),
+        yaxis=dict(
+            range=[0, 100],
+            fixedrange=True,
+        ),
     )
 
     return fig
