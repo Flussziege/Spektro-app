@@ -690,12 +690,12 @@ def render_spectra_tabs(
     if show_ir:
         tabs.append(t("ir_title"))
         tab_keys.append("ir")
+    if show_ms:
+        tabs.append(t("ms_title"))
+        tab_keys.append("ms")    
     if show_ea:
         tabs.append(t("ea_title"))
         tab_keys.append("ea")
-    if show_ms:
-        tabs.append(t("ms_title"))
-        tab_keys.append("ms")
     if show_structure:
         tabs.append(t("structure_title"))
         tab_keys.append("structure")
