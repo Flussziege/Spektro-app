@@ -382,6 +382,34 @@ def _bond_is_alpha_to_hetero(bond: Chem.Bond) -> bool:
 # ============================================================
 # Peak generation
 # ============================================================
+def _generate_molecular_ion_peak(features: MoleculeFeatures, rng: random.Random) -> Peak:
+    intensity = 20.0
+
+    if features.has_aromatic:
+        intensity += 10
+    if getattr(features, "has_benzene_like_ring", False):
+        intensity += 5
+    if getattr(features, "has_benzylic_position", False):
+        intensity += 4
+    if getattr(features, "has_aromatic_seven_ring", False):
+        intensity += 7
+    if features.carbonyl_like:
+        intensity += 6
+    if features.has_halogen_cl or features.has_halogen_br:
+        intensity += 5
+
+    if not features.has_aromatic and not features.carbonyl_like and features.carbon_count >= 5:
+        intensity -= 8
+
+    intensity = max(8.0, min(50.0, _jitter(intensity, rng, 0.9, 1.1)))
+
+    return Peak(
+        mz=_round_mz(features.exact_mass),
+        intensity=intensity,
+        label="M⁺",
+        kind="molecular_ion",
+    )
+
 
 def _generate_aromatic_special_peaks(
     mol: Chem.Mol,
