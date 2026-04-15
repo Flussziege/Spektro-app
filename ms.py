@@ -390,72 +390,69 @@ def _generate_aromatic_special_peaks(
 ) -> List[Peak]:
     peaks: List[Peak] = []
 
-    if not features.has_aromatic:
+    if not features.has_aromatic or not features.has_benzene_like_ring:
         return peaks
 
-    # Allgemeiner phenylartiger Peak
-    if features.has_benzene_like_ring:
-        peaks.append(
+    # Benzylisch substituierte Aromaten:
+    # 91 -> 65 -> 39
+    if features.has_benzylic_position:
+        peaks.extend(
+            [
+                Peak(
+                    mz=_round_mz(91.0542),
+                    intensity=_jitter(82.0, rng, 0.92, 1.08),
+                    label="tropylium / benzyl fragment",
+                    kind="aromatic_special",
+                    metadata={"protected": True},
+                ),
+                Peak(
+                    mz=_round_mz(65.0386),
+                    intensity=_jitter(36.0, rng, 0.90, 1.10),
+                    label="benzyl-derived ring fragment",
+                    kind="aromatic_special",
+                    metadata={"protected": True},
+                ),
+                Peak(
+                    mz=_round_mz(39.0230),
+                    intensity=_jitter(18.0, rng, 0.88, 1.12),
+                    label="small aromatic fragment",
+                    kind="aromatic_special",
+                    metadata={"protected": True},
+                ),
+            ]
+        )
+        return peaks
+
+    # Benzolartiger 6-Ring ohne benzyliche Substitution:
+    # 77 -> 51 -> 39
+    peaks.extend(
+        [
             Peak(
                 mz=_round_mz(77.0391),
-                intensity=_jitter(38.0, rng, 0.9, 1.1),
+                intensity=_jitter(42.0, rng, 0.90, 1.10),
                 label="phenyl fragment",
                 kind="aromatic_special",
-            )
-        )
-
-    # Benzyl/Tropylium-Heuristik
-    if features.has_benzylic_position:
-        peaks.append(
-            Peak(
-                mz=_round_mz(91.0542),
-                intensity=_jitter(82.0, rng, 0.92, 1.08),
-                label="tropylium / benzyl fragment",
-                kind="aromatic_special",
-            )
-        )
-
-        # etwas kleineres Folgefragment
-        peaks.append(
-            Peak(
-                mz=_round_mz(65.0386),
-                intensity=_jitter(28.0, rng, 0.9, 1.1),
-                label="aryl fragment",
-                kind="aromatic_special",
-            )
-        )
-
-    # Aromatische siebenringe / tropylartige Systeme
-    if features.has_aromatic_seven_ring:
-        peaks.append(
-            Peak(
-                mz=_round_mz(91.0542),
-                intensity=_jitter(95.0, rng, 0.95, 1.05),
-                label="aromatic 7-ring stabilized fragment",
-                kind="aromatic_special",
-            )
-        )
-        peaks.append(
-            Peak(
-                mz=_round_mz(115.0542),
-                intensity=_jitter(42.0, rng, 0.9, 1.1),
-                label="seven-membered aromatic ring fragment",
-                kind="aromatic_special",
-            )
-        )
-
-    # Allgemeine aromatische Stabilisierung -> etwas mehr Ringfragmente
-    if features.aromatic_atom_count >= 6:
-        peaks.append(
+                metadata={"protected": True},
+            ),
             Peak(
                 mz=_round_mz(51.0230),
-                intensity=_jitter(16.0, rng, 0.85, 1.15),
+                intensity=_jitter(24.0, rng, 0.88, 1.12),
+                label="ring contraction fragment",
+                kind="aromatic_special",
+                metadata={"protected": True},
+            ),
+            Peak(
+                mz=_round_mz(39.0230),
+                intensity=_jitter(16.0, rng, 0.88, 1.12),
                 label="small aromatic fragment",
                 kind="aromatic_special",
-            )
-        )
+                metadata={"protected": True},
+            ),
+        ]
+    )
 
     return peaks
+
 
 def _generate_neutral_loss_peaks(features: MoleculeFeatures, rng: random.Random) -> List[Peak]:
     peaks: List[Peak] = []
@@ -509,7 +506,7 @@ def _generate_cleavage_peaks(mol: Chem.Mol, rng: random.Random) -> List[Peak]:
 
         for frag in frags:
             heavy_atoms = frag.GetNumHeavyAtoms()
-            if heavy_atoms < 2:
+            if heavy_atoms < 2 and mz < 20:
                 continue
 
             mz = _fragment_mass(frag)
