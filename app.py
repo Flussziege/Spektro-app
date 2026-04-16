@@ -243,24 +243,46 @@ def get_dark_css() -> str:
         border: 1px solid #334155 !important;
         border-radius: 10px !important;
         box-shadow: none !important;
+        opacity: 1 !important;
     }
 
     .stButton > button:hover {
         background: #273449 !important;
+        color: #E5E7EB !important;
         border-color: #475569 !important;
+        opacity: 1 !important;
     }
 
+    /* Primary */
     .stButton > button[kind="primary"] {
         background: #E5E7EB !important;
         color: #000000 !important;
         border: 1px solid #E5E7EB !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #000000 !important;
+    }
+
+    .stButton > button[kind="primary"] * {
+        color: #000000 !important;
+        fill: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        opacity: 1 !important;
     }
 
     .stButton > button[kind="primary"]:hover {
-    background: #F8FAFC !important;
-    color: #000000 !important;
-    border: 1px solid #F8FAFC !important;
-}
+        background: #F8FAFC !important;
+        color: #000000 !important;
+        border: 1px solid #F8FAFC !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #000000 !important;
+    }
+
+    .stButton > button[kind="primary"]:hover * {
+        color: #000000 !important;
+        fill: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        opacity: 1 !important;
+    }
 
     /* Inputs */
     .stTextInput input,
