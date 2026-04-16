@@ -6,6 +6,35 @@ from rdkit.Chem import Draw
 def normalize_smiles(smiles: str) -> str:
     return (smiles or "").strip()
 
+def get_display_name(molecule: dict, lang: str = "de") -> str:
+    if not isinstance(molecule, dict):
+        return str(molecule)
+
+    fallback = "Unknown" if lang == "en" else "Unbekannt"
+
+    if lang == "en":
+        candidates = [
+            molecule.get("name_en"),
+            molecule.get("name_de"),
+            molecule.get("name"),
+        ]
+    else:
+        candidates = [
+            molecule.get("name_de"),
+            molecule.get("name_en"),
+            molecule.get("name"),
+        ]
+
+    for value in candidates:
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+
+        if isinstance(value, list):
+            cleaned = [str(v).strip() for v in value if str(v).strip()]
+            if cleaned:
+                return cleaned[0]
+
+    return fallback
 
 def get_display_names(molecule: dict, lang: str = "de") -> list[str]:
     if not isinstance(molecule, dict):

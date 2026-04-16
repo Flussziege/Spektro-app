@@ -102,6 +102,7 @@ from services.molecule_utils import (
     smiles_to_pil,
     molecule_exists,
     get_display_names,
+    get_display_name,
     get_difficulty,
     normalize_smiles,
 )
