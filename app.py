@@ -256,6 +256,12 @@ def get_dark_css() -> str:
         border: 1px solid #E5E7EB !important;
     }
 
+    .stButton > button[kind="primary"]:hover {
+    background: #F8FAFC !important;
+    color: #000000 !important;
+    border: 1px solid #F8FAFC !important;
+}
+
     /* Inputs */
     .stTextInput input,
     .stNumberInput input,
