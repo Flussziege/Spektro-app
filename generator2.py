@@ -68,14 +68,14 @@ def get_aromatic_substitution_peaks(mol) -> list[tuple]:
                     (3030, 0.45, 14, "ArH str mono"),
                     (1600, 0.50, 16, "Ar C=C I"),
                     (1500, 0.55, 16, "Ar C=C II"),
-                    (760,  0.80, 18, "ArH oop 5adj"),
-                    (700,  0.75, 16, "ArH oop mono"),
+                    (760,  0.25, 18, "ArH oop 5adj"),
+                    (700,  0.20, 16, "ArH oop mono"),
                     # Obertöne & Kombinationen (schwach, aber diagnostisch)
                     # 2×oop(760) ≈ 1520 überlappt C=C, daher die anderen:
-                    (1950, 0.08, 22, "Ar overtone I (mono)"),
-                    (1870, 0.10, 20, "Ar overtone II (mono)"),
-                    (1800, 0.08, 20, "Ar comb. band (mono)"),
-                    (1730, 0.06, 18, "Ar comb. band II (mono)"),
+                    (1950, 0.025, 22, "Ar overtone I (mono)"),
+                    (1870, 0.03, 20, "Ar overtone II (mono)"),
+                    (1800, 0.025, 20, "Ar comb. band (mono)"),
+                    (1730, 0.015, 18, "Ar comb. band II (mono)"),
                 ]
 
             elif n == 4:  # ── ortho-disubstituiert ─────────────────────────
@@ -83,10 +83,10 @@ def get_aromatic_substitution_peaks(mol) -> list[tuple]:
                     (3030, 0.40, 14, "ArH str ortho"),
                     (1600, 0.45, 16, "Ar C=C I"),
                     (1500, 0.50, 16, "Ar C=C II"),
-                    (750,  0.85, 18, "ArH oop 4adj"),
+                    (750,  0.25, 18, "ArH oop 4adj"),
                     # Obertöne
-                    (1950, 0.09, 20, "Ar overtone (ortho)"),
-                    (1850, 0.10, 20, "Ar comb. band (ortho)"),
+                    (1950, 0.025, 20, "Ar overtone (ortho)"),
+                    (1850, 0.03, 20, "Ar comb. band (ortho)"),
                 ]
 
             elif n == 3:  # ── meta-disubstituiert / 1,2,3-trisubst. ────────
@@ -94,12 +94,12 @@ def get_aromatic_substitution_peaks(mol) -> list[tuple]:
                     (3030, 0.38, 14, "ArH str meta"),
                     (1600, 0.42, 16, "Ar C=C I"),
                     (1500, 0.48, 16, "Ar C=C II"),
-                    (780,  0.70, 18, "ArH oop 3adj"),
-                    (690,  0.45, 16, "ArH oop meta"),
+                    (780,  0.20, 18, "ArH oop 3adj"),
+                    (690,  0.15, 16, "ArH oop meta"),
                     # Obertöne: 3 Banden charakteristisch für meta
-                    (1950, 0.07, 20, "Ar overtone I (meta)"),
-                    (1860, 0.09, 18, "Ar overtone II (meta)"),
-                    (1800, 0.07, 18, "Ar comb. band (meta)"),
+                    (1950, 0.02, 20, "Ar overtone I (meta)"),
+                    (1860, 0.025, 18, "Ar overtone II (meta)"),
+                    (1800, 0.02, 18, "Ar comb. band (meta)"),
                 ]
 
             elif n == 2:  # ── para-disubstituiert ──────────────────────────
@@ -107,10 +107,10 @@ def get_aromatic_substitution_peaks(mol) -> list[tuple]:
                     (3030, 0.35, 14, "ArH str para"),
                     (1600, 0.40, 16, "Ar C=C I"),
                     (1500, 0.45, 16, "Ar C=C II"),
-                    (830,  0.85, 14, "ArH oop 2adj"),
+                    (830,  0.25, 14, "ArH oop 2adj"),
                     # para hat nur 2 Obertöne → sehr aufgeräumtes Muster
-                    (1930, 0.09, 18, "Ar overtone (para)"),
-                    (1820, 0.10, 16, "Ar comb. band (para)"),
+                    (1930, 0.025, 18, "Ar overtone (para)"),
+                    (1820, 0.03, 16, "Ar comb. band (para)"),
                 ]
 
             elif n == 1:  # ── 1,3,5-trisubstituiert ────────────────────────
@@ -118,9 +118,9 @@ def get_aromatic_substitution_peaks(mol) -> list[tuple]:
                     (3030, 0.30, 14, "ArH str 1,3,5"),
                     (1600, 0.35, 16, "Ar C=C I"),
                     (1500, 0.40, 16, "Ar C=C II"),
-                    (860,  0.60, 14, "ArH oop 1adj"),
+                    (860,  0.20, 14, "ArH oop 1adj"),
                     # nur 1 isoliertes H → nur eine schwache Oberton-Bande
-                    (1900, 0.06, 18, "Ar overtone (1,3,5)"),
+                    (1900, 0.02, 18, "Ar overtone (1,3,5)"),
                 ]
 
     return peaks
@@ -353,7 +353,7 @@ def simulate_ir(smiles: str, noise: float = 0.006,
 
 if __name__ == "__main__":
     for smi in [
-                "CCCO",               # 1-Propanol
+                "Cc1cccc(O)c1",               # 1-Propanol
                 "CC(=O)O",            # Essigsäure
                 "CC(=O)OCC",          # Ethylacetat
                 ]:

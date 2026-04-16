@@ -826,7 +826,7 @@ FUNCTIONAL_GROUPS.update({
             (1180, 0.14, 18,  "Ar-O str II"),
             (1150, 0.10, 18,  "phenolic deformation"),
             (980,  0.08, 18,  "OH wag"),
-            (750,  0.01, 20,  "OH oop phenol"),
+            (750,  0.23, 20,  "OH oop phenol"),
             (690,  0.10, 16,  "Ar-O deformation"),
         ]
     },
@@ -1180,13 +1180,13 @@ AROMATIC_CORE = {
         (3060, 0.40, 10, "ArH str"),
         (3030, 0.45, 12, "ArH str"),
 
-        (2000, 0.06, 18, "overtone"),
-        (1950, 0.10, 20, "overtone"),
-        (1905, 0.08, 18, "combination"),
-        (1870, 0.12, 18, "overtone"),
-        (1835, 0.08, 18, "combination"),
-        (1800, 0.10, 18, "combination"),
-        (1730, 0.06, 16, "combination"),
+        (2000, 0.03, 18, "overtone"),
+        (1950, 0.05, 20, "overtone"),
+        (1905, 0.04, 18, "combination"),
+        (1870, 0.06, 18, "overtone"),
+        (1835, 0.04, 18, "combination"),
+        (1800, 0.05, 18, "combination"),
+        (1730, 0.03, 16, "combination"),
 
         (1600, 0.65, 14, "Ar C=C"),
         (1580, 0.18, 12, "Ar C=C shoulder"),
@@ -1205,7 +1205,7 @@ AROMATIC_CORE = {
         (900,  0.08, 16, "ArH oop"),
         (860,  0.08, 16, "ArH oop"),
         (820,  0.08, 16, "ArH oop"),
-        (760,  0.08, 14, "ArH oop"),
+        (760,  0.20, 14, "ArH oop"),
         (690,  0.75, 14, "ArH oop"),
     ]
 }
