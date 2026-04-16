@@ -7,7 +7,7 @@ def normalize_smiles(smiles: str) -> str:
     return (smiles or "").strip()
 
 
-def get_display_names(molecule: dict, lang: str = "de") -> list[str]:
+def get_display_name(molecule: dict, lang: str = "de") -> list[str]:
     if not isinstance(molecule, dict):
         return [str(molecule)]
 
