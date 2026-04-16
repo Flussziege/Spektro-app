@@ -34,6 +34,10 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1460, 0.22, 14, "CH3 asym def"),   # war 0.35
             (1375, 0.28, 10, "CH3 sym def"),    # war 0.40
             (1165, 0.12, 18, "CH3 rock"),       # war 0.20
+            # Obertöne und schwache Schwingungen
+            (1481, 0.02, 16, "2*CH3 asym str overtone"),
+            (1436, 0.02, 14, "2*CH3 sym str overtone"),
+            (730,  0.05, 20, "CH3 combination band"),
         ]
     },
     "CH2": {
@@ -46,6 +50,10 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1350, 0.10, 16, "CH2 wag"),        # war 0.15
             (1250, 0.10, 18, "CH2 twist"),      # war 0.15
             (720,  0.18, 14, "CH2 rock"),       # war 0.25
+            # Obertöne und schwache Schwingungen
+            (1463, 0.02, 16, "2*CH2 asym str overtone"),
+            (1428, 0.02, 14, "2*CH2 sym str overtone"),
+            (360,  0.03, 20, "CH2 combination band"),
         ]
     },
     "CH_sp3": {
@@ -54,6 +62,9 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
         "peaks": [
             (2890, 0.40, 14, "CH str"),
             (1340, 0.20, 16, "CH bend"),
+            # Obertöne und schwache Schwingungen
+            (1445, 0.02, 16, "2*CH str overtone"),
+            (670,  0.03, 18, "CH combination band"),
         ]
     },
 
@@ -67,6 +78,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1640, 0.50, 20, "C=C str"),
             (990,  0.55, 14, "=CH2 oop"),
             (910,  0.65, 14, "=CH2 wag"),   # sehr charakteristisch
+            # Obertöne
+            (1820, 0.02, 16, "2*=CH2 oop overtone"),
         ]
     },
     "trans_alkene": {
@@ -76,6 +89,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (3020, 0.40, 12, "=CH str"),
             (1670, 0.45, 20, "C=C str trans"),
             (970,  0.70, 14, "=CH oop trans"),  # sehr stark und charakteristisch
+            # Obertöne
+            (1940, 0.02, 16, "2*=CH oop trans overtone"),
         ]
     },
     "cis_alkene": {
@@ -85,6 +100,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (3010, 0.40, 12, "=CH str"),
             (1650, 0.45, 20, "C=C str cis"),
             (730,  0.55, 18, "=CH oop cis"),
+            # Obertöne
+            (1460, 0.02, 16, "2*=CH oop cis overtone"),
         ]
     },
     "trisubst_alkene": {
@@ -94,6 +111,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (3020, 0.35, 12, "=CH str"),
             (1660, 0.40, 20, "C=C str"),
             (820,  0.45, 16, "=CH oop"),
+            # Obertöne
+            (1640, 0.02, 16, "2*=CH oop overtone"),
         ]
     },
 
@@ -105,6 +124,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (3300, 0.60, 10, "≡C-H str"),
             (2120, 0.55, 16, "C≡C str terminal"),
             (680,  0.40, 14, "≡C-H bend"),
+            # Obertöne
+            (1360, 0.02, 16, "2*≡C-H bend overtone"),
         ]
     },
     "internal_alkyne": {
@@ -126,6 +147,9 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1250, 0.40, 25,  "C-O str II"),
             (940,  0.35, 30,  "OH oop (COOH)"),
 
+            # Obertöne
+            (855,  0.03, 20, "2*C=O str overtone"),
+
             # ── OH-Stretch: breiter, unförmiger "Säuresack" ───────────────
             # Wird NICHT mit Maximum-Methode behandelt sondern addiert
             # → natürliche Unregelmäßigkeit durch Überlagerung
@@ -135,9 +159,9 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (2670, 0.28, 140, "OH broad IV"),      # untere Flanke
             (2560, 0.18, 110, "OH broad V"),       # Ausläufer
             # Fermi-Resonanz-Schultern (charakteristische Dellen/Höcker)
-            (2990, 0.20,  45, "Fermi shoulder I"),
-            (2900, 0.22,  40, "Fermi shoulder II"),
-            (2730, 0.15,  35, "Fermi shoulder III"),
+            (2990, 0.12,  45, "Fermi shoulder I"),
+            (2900, 0.12,  40, "Fermi shoulder II"),
+            (2730, 0.12,  35, "Fermi shoulder III"),
         ]
     },
     "ester": {
@@ -147,6 +171,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1735, 1.00, 18, "C=O str (ester)"),
             (1240, 0.65, 30, "C-O-C asym str"),
             (1050, 0.45, 28, "C-O-C sym str"),
+            # Obertöne
+            (868, 0.03, 18, "2*C=O str overtone"),
         ]
     },
     "ketone": {
@@ -155,6 +181,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
         "peaks": [
             (1715, 0.95, 20, "C=O str (ketone)"),
             (1220, 0.30, 22, "C-C-C str"),
+            # Obertöne
+            (858, 0.03, 18, "2*C=O str overtone"),
         ]
     },
     "aldehyde": {
@@ -165,9 +193,11 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (2720, 0.30, 14, "CHO str (Fermi II)"),
             (1725, 0.95, 20, "C=O str (aldehyde)"),
             (1390, 0.25, 18, "CH bend (CHO)"),
+            # Obertöne
+            (863, 0.03, 18, "2*C=O str overtone"),
         ]
     },
-    "Formaldehyd": {
+    "formaldehyde": {
         "smarts": "[CX3H2](=O)",
         "count": False,
         "peaks": [
@@ -203,17 +233,40 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (760, 0.12, 18, "CHO out-of-plane bend"),
             (705, 0.12, 16, "skeletal deformation"),
             (625, 0.22, 18, "low-frequency deformation"),
-            (590, 0.12, 16, "low-frequency deformation")
+            (590, 0.12, 16, "low-frequency deformation"),
+            # Obertöne
+            (868, 0.03, 18, "2*C=O str overtone")
         ]
     },
-    "amide": {
-        "smarts": "[CX3](=O)[NX3]",
+    "primary_amide": {
+        "smarts": "[CX3](=O)[NX3H2]",
         "count": False,
         "peaks": [
-            (3350, 0.50, 50, "NH str (amide)"),
-            (3180, 0.45, 50, "NH str (amide)"),
+            (3350, 0.50, 50, "NH2 asym str"),
+            (3180, 0.45, 50, "NH2 sym str"),
+            (1660, 0.95, 25, "C=O str (amide I)"),
+            (1550, 0.65, 25, "NH2 bend (amide II)"),
+            # Obertöne
+            (830, 0.03, 20, "2*C=O str overtone"),
+        ]
+    },
+    "secondary_amide": {
+        "smarts": "[CX3](=O)[NX3H1]",
+        "count": False,
+        "peaks": [
+            (3300, 0.50, 50, "NH str"),
             (1660, 0.95, 25, "C=O str (amide I)"),
             (1550, 0.65, 25, "NH bend (amide II)"),
+        ]
+    },
+    "tertiary_amide": {
+        "smarts": "[CX3](=O)[NX3H0]",
+        "count": False,
+        "peaks": [
+            (1660, 0.95, 25, "C=O str (amide I)"),
+            (1550, 0.65, 25, "amide II"),
+            # Obertöne
+            (830, 0.03, 20, "2*C=O str overtone"),
         ]
     },
     "anhydride": {
@@ -288,6 +341,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1260, 0.55, 18, "epoxide ring str"),
             (920,  0.45, 16, "epoxide ring bend"),
             (830,  0.40, 14, "epoxide ring bend II"),
+            # Obertöne
+            (1840, 0.02, 16, "2*epoxide ring bend overtone"),
         ]
     },
 
@@ -300,6 +355,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (3300, 0.45, 50, "NH2 sym str"),
             (1615, 0.45, 30, "NH2 scissor"),
             (800,  0.30, 25, "NH2 wag"),
+            # Obertöne
+            (1600, 0.02, 16, "2*NH2 scissor overtone"),
         ]
     },
     "secondary_amine": {
@@ -308,6 +365,8 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
         "peaks": [
             (3320, 0.35, 45, "N-H str (sec)"),
             (1510, 0.30, 25, "N-H bend"),
+            # Obertöne
+            (3020, 0.02, 16, "2*N-H bend overtone"),
         ]
     },
     "nitrile": {
@@ -318,7 +377,7 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
         ]
     },
     "nitro": {
-        "smarts": "[NX3](=O)=O",
+        "smarts": "[N+](=O)[O-]",
         "count": False,
         "peaks": [
             (1540, 0.90, 22, "NO2 asym str"),
@@ -326,12 +385,23 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (860,  0.30, 18, "NO2 oop"),
         ]
     },
-    "imine": {
-        "smarts": "[CX3]=[NX2]",
+    "imine_NH": {
+        "smarts": "[CX3]=[NX2H]",
         "count": False,
         "peaks": [
             (1650, 0.55, 20, "C=N str"),
-            (3320, 0.25, 40, "N-H str (imine)"),
+            (3320, 0.25, 40, "N-H str"),
+            # Obertöne
+            (3300, 0.02, 16, "2*C=N str overtone"),
+        ]
+    },
+    "imine_substituted": {
+        "smarts": "[CX3]=[NX2H0]",
+        "count": False,
+        "peaks": [
+            (1650, 0.55, 20, "C=N str"),
+            # Obertöne
+            (3300, 0.02, 16, "2*C=N str overtone"),
         ]
     },
 
@@ -350,16 +420,10 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
         "peaks": [
             (760,  0.60, 20, "C-Cl str"),
             (700,  0.40, 18, "C-Cl str II"),
+            # Obertöne
+            (1520, 0.02, 16, "2*C-Cl str overtone"),
         ]
     },
-    "C_Br": {
-        "smarts": "[CX4][Br]",
-        "count": True,
-        "peaks": [
-            (650,  0.55, 20, "C-Br str"),
-        ]
-    },
-
     # ── Schwefel ─────────────────────────────────────────────────────────────
     "thiol": {
         "smarts": "[SX2H]",
@@ -584,9 +648,9 @@ FUNCTIONAL_GROUPS.update({
             (2670, 0.28, 140, "OH broad IV"),
             (2560, 0.18, 110, "OH broad V"),
 
-            (2990, 0.20,  45, "Fermi shoulder I"),
-            (2900, 0.22,  40, "Fermi shoulder II"),
-            (2730, 0.15,  35, "Fermi shoulder III"),
+            (2990, 0.12,  45, "Fermi shoulder I"),
+            (2900, 0.12,  40, "Fermi shoulder II"),
+            (2730, 0.12,  35, "Fermi shoulder III"),
         ]
     },
 
@@ -646,7 +710,7 @@ FUNCTIONAL_GROUPS.update({
         ]
     },
 
-    "Formaldehyd": {
+    "formaldehyde": {
         "smarts": "[CX3H2](=O)",
         "count": False,
         "peaks": [
@@ -690,22 +754,12 @@ FUNCTIONAL_GROUPS.update({
         "smarts": "[CX3](=O)[NX3]",
         "count": False,
         "peaks": [
-            (3350, 0.50, 50, "NH str (amide)"),
-            (3180, 0.45, 50, "NH str (amide) II"),
+            (3350, 0.50, 50, "NH2 asym str"),
+            (3180, 0.45, 50, "NH2 sym str"),
             (1660, 0.95, 25, "C=O str (amide I)"),
-            (1635, 0.14, 18, "amide I shoulder"),
-            (1550, 0.65, 25, "NH bend (amide II)"),
-            (1515, 0.16, 18, "amide II shoulder"),
-            (1460, 0.14, 18, "C-N / NH deformation"),
-            (1410, 0.10, 18, "amide III shoulder"),
-            (1310, 0.24, 18, "amide III"),
-            (1260, 0.20, 18, "C-N str"),
-            (1175, 0.08, 18, "C-N / skeletal"),
-            (770,  0.10, 18, "NH wag"),
-            (650,  0.08, 18, "NH oop"),
+            (1550, 0.65, 25, "NH2 bend (amide II)"),
         ]
     },
-
     "anhydride": {
         "smarts": "[CX3](=O)[OX2][CX3](=O)",
         "count": False,
@@ -877,7 +931,7 @@ FUNCTIONAL_GROUPS.update({
     },
 
     "nitro": {
-        "smarts": "[NX3](=O)=O",
+        "smarts": "[N+](=O)[O-]",
         "count": False,
         "peaks": [
             (1560, 0.16, 18, "NO2 asym shoulder"),
@@ -890,21 +944,6 @@ FUNCTIONAL_GROUPS.update({
             (860,  0.30, 18, "NO2 oop"),
             (760,  0.12, 16, "NO2 deformation"),
             (720,  0.08, 16, "NO2 deformation II"),
-        ]
-    },
-
-    "imine": {
-        "smarts": "[CX3]=[NX2]",
-        "count": False,
-        "peaks": [
-            (1660, 0.16, 18, "C=N shoulder"),
-            (1650, 0.55, 20, "C=N str"),
-            (1620, 0.10, 18, "C=N conjugation shoulder"),
-            (3320, 0.25, 40, "N-H str (imine-like, optional)"),
-            (1450, 0.08, 18, "C=N / CH deformation"),
-            (1280, 0.10, 18, "C-N deformation"),
-            (1170, 0.08, 18, "skeletal / imine mode"),
-            (980,  0.08, 16, "out-of-plane mode"),
         ]
     },
 
@@ -940,6 +979,8 @@ FUNCTIONAL_GROUPS.update({
             (690,  0.12, 16, "C-Br str shoulder"),
             (650,  0.55, 20, "C-Br str"),
             (610,  0.16, 18, "C-Br str II"),
+            # Obertöne
+            (1300, 0.02, 16, "2*C-Br str overtone"),
         ]
     },
 

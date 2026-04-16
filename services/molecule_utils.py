@@ -7,24 +7,33 @@ def normalize_smiles(smiles: str) -> str:
     return (smiles or "").strip()
 
 
-def get_display_name(molecule: dict, lang: str = "de") -> str:
+def get_display_names(molecule: dict, lang: str = "de") -> list[str]:
     if not isinstance(molecule, dict):
-        return str(molecule)
+        return [str(molecule)]
 
     if lang == "en":
-        return (
-            molecule.get("name_en")
-            or molecule.get("name_de")
-            or molecule.get("name")
-            or "Unknown"
-        )
+        candidates = [
+            molecule.get("name_en"),
+            molecule.get("name_de"),
+            molecule.get("name"),
+        ]
+    else:
+        candidates = [
+            molecule.get("name_de"),
+            molecule.get("name_en"),
+            molecule.get("name"),
+        ]
 
-    return (
-        molecule.get("name_de")
-        or molecule.get("name_en")
-        or molecule.get("name")
-        or "Unbekannt"
-    )
+    for value in candidates:
+        if isinstance(value, str) and value.strip():
+            return [value.strip()]
+
+        if isinstance(value, list):
+            cleaned = [str(v).strip() for v in value if str(v).strip()]
+            if cleaned:
+                return cleaned
+
+    return ["Unknown" if lang == "en" else "Unbekannt"]
 
 
 def get_difficulty(molecule: dict, default: str = "medium") -> str:
@@ -40,16 +49,26 @@ def build_name_maps(molecules: list[dict], lang: str = "de"):
     smiles_to_names: dict[str, list[str]] = {}
 
     for m in molecules:
-        display_name = get_display_name(m, lang).strip()
         smiles = normalize_smiles(m.get("smiles", ""))
-
-        if not display_name or not smiles:
+        if not smiles:
             continue
 
-        names.append(display_name)
-        name_to_smiles[display_name.lower()] = smiles
-        smiles_to_names.setdefault(smiles, []).append(display_name)
+        raw_names = m.get(f"name_{lang}") or m.get("name") or []
 
+        if isinstance(raw_names, str):
+            raw_names = [raw_names]
+
+        clean_names = [str(n).strip() for n in raw_names if str(n).strip()]
+        if not clean_names:
+            continue
+
+        for name in clean_names:
+            names.append(name)
+            name_to_smiles[name.lower()] = smiles
+
+        smiles_to_names[smiles] = clean_names
+
+    names = sorted(set(names), key=str.lower)
     return names, name_to_smiles, smiles_to_names
 
 

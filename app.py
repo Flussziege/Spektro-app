@@ -461,8 +461,8 @@ if "lang" not in st.session_state:
 
 lang = st.session_state.get("lang_select", st.session_state.get("lang", "de"))
 
-namen_liste, name_to_smiles, smiles_to_name = build_name_maps(moleküle, lang=lang)
-daily_names, daily_name_to_smiles, daily_smiles_to_name = build_name_maps(moleküle_daily, lang=lang)
+namen_liste, name_to_smiles, smiles_to_names = build_name_maps(moleküle, lang=lang)
+daily_names, daily_name_to_smiles, daily_smiles_to_names = build_name_maps(moleküle_daily, lang=lang)
 
 smiles_to_molecule = build_smiles_to_molecule_map(moleküle)
 daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)    
@@ -993,6 +993,10 @@ def render_quiz():
 
     mol_data, correct_name, difficulty = get_molecule_data(smiles, daily=False)
 
+    names = get_display_names(mol_data, lang=lang)
+    primary_name = names[0]
+    synonyms = names[1:]
+
     st.title(t("quiz_title"))
     st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
 
@@ -1007,7 +1011,10 @@ def render_quiz():
         user_name = user_answer if user_answer else t("no_selection")
 
         if st.session_state["quiz_correct"]:
-            st.success(t("correct_quiz", name=correct_name))
+            st.success(t("correct_quiz", name=primary_name))
+
+            if synonyms:
+                st.caption(" / ".join(synonyms))
 
             col_left, col_center, col_right = st.columns([1, 2, 1])
 
@@ -1214,6 +1221,12 @@ def render_daily():
 
     _, correct_name, difficulty = get_molecule_data(smiles, daily=True)
 
+    mol_data, _, _ = get_molecule_data(smiles, daily=True)
+
+    names = get_display_names(mol_data, lang=lang)
+    primary_name = names[0]
+    synonyms = names[1:]
+
     attempts = st.session_state.get("daily_attempt_count", 0)
     wrong_guesses = st.session_state.get("daily_wrong_guesses", [])
 
@@ -1240,8 +1253,10 @@ def render_daily():
     if st.session_state["daily_submitted"] and (
         st.session_state["daily_correct"] or st.session_state.get("daily_gave_up")
     ):
-        if st.session_state["daily_correct"]:
-            st.success(t("correct_daily", name=correct_name))
+        st.success(t("correct_daily", name=primary_name))
+
+        if synonyms:
+            st.caption(" / ".join(synonyms))
         else:
             st.warning(t("gave_up_daily", name=correct_name))
 
@@ -1418,7 +1433,14 @@ def render_lookup():
     mol_data, display_name, difficulty = get_molecule_data(smiles, daily=False)
 
     if mol_data:
-        st.subheader(display_name)
+        names = get_display_names(mol_data, lang=lang)
+        primary_name = names[0]
+        synonyms = names[1:]
+
+        st.subheader(primary_name)
+
+        if synonyms:
+            st.caption(" / ".join(synonyms))
         st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
 
     st.write(f"**SMILES:** `{smiles}`")
