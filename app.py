@@ -1087,10 +1087,19 @@ def render_quiz():
         key="quiz_answer_select",
     )
 
+    quiz_can_submit = bool(answer and answer.strip() and answer in namen_liste)
+
+    col1, col2, col3 = st.columns(3)
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        if st.button(t("quiz_submit"), type="primary", width="stretch"):
+        if st.button(
+            t("quiz_submit"),
+            type="primary",
+            width="stretch",
+            disabled=not quiz_can_submit,
+        ):
             selected_smiles = name_to_smiles.get(answer.strip().lower()) if answer else None
             correct = is_correct_answer(answer, smiles, name_to_smiles)
 
@@ -1327,8 +1336,20 @@ def render_daily():
 
     col1, col2, col3 = st.columns(3)
 
+    daily_can_submit = bool(
+        answer
+        and answer.strip()
+        and answer in daily_names
+        and answer not in wrong_guesses
+    )
+
     with col1:
-        if st.button(t("daily_submit"), type="primary", width="stretch"):
+        if st.button(
+            t("daily_submit"),
+            type="primary",
+            width="stretch",
+            disabled=not daily_can_submit,
+        ):
             cleaned_answer = answer.strip() if answer else ""
 
             if not cleaned_answer:
