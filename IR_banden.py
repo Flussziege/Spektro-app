@@ -826,7 +826,7 @@ FUNCTIONAL_GROUPS.update({
             (1180, 0.14, 18,  "Ar-O str II"),
             (1150, 0.10, 18,  "phenolic deformation"),
             (980,  0.08, 18,  "OH wag"),
-            (750,  0.12, 20,  "OH oop phenol"),
+            (750,  0.04, 20,  "OH oop phenol"),
             (690,  0.10, 16,  "Ar-O deformation"),
         ]
     },
