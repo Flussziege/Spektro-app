@@ -37,7 +37,7 @@ def get_difficulty(molecule: dict, default: str = "medium") -> str:
 def build_name_maps(molecules: list[dict], lang: str = "de"):
     names: list[str] = []
     name_to_smiles: dict[str, str] = {}
-    smiles_to_name: dict[str, str] = {}
+    smiles_to_names: dict[str, list[str]] = {}
 
     for m in molecules:
         display_name = get_display_name(m, lang).strip()
@@ -48,11 +48,9 @@ def build_name_maps(molecules: list[dict], lang: str = "de"):
 
         names.append(display_name)
         name_to_smiles[display_name.lower()] = smiles
+        smiles_to_names.setdefault(smiles, []).append(display_name)
 
-        if smiles not in smiles_to_name:
-            smiles_to_name[smiles] = display_name
-
-    return names, name_to_smiles, smiles_to_name
+    return names, name_to_smiles, smiles_to_names
 
 
 def build_smiles_to_molecule_map(molecules: list[dict]) -> dict[str, dict]:

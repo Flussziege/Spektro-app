@@ -114,6 +114,7 @@ Webseite:
 - MS darkomode *
 - mehr diagnostische MS schemen (aromaten und so) *
 - button im dark design für primary color *
+- soll nicht abgeben können, wenn man nichts eingegeben hat *
 
 
 MS *
@@ -125,7 +126,7 @@ MS *
     - wie viele das schon gelöst haben
     - das man es schon gelöst hat
 
-- soll nicht abgeben können, wenn man nichts eingegeben hat 
+
 
 - nicht alle namen werden angeboten
 

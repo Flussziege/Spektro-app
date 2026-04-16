@@ -470,6 +470,7 @@ daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)
 def render_top_controls():
     col_spacer, col_lang, col_theme = st.columns([6, 1, 1])
 
+    st.write([n for n in namen_liste if "kresol" in n.lower() or "methylphenol" in n.lower()])
     
     with col_lang:
         lang = st.segmented_control(
