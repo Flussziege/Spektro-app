@@ -47,6 +47,7 @@ def init_session_state():
             st.session_state[key] = value
 
 
+
 def go_home():
     st.session_state["mode"] = "home"
 

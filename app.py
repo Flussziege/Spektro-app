@@ -252,7 +252,7 @@ def get_dark_css() -> str:
 
     .stButton > button[kind="primary"] {
         background: #E5E7EB !important;
-        color: #0F172A !important;
+        color: #FFFFFF !important;
         border: 1px solid #E5E7EB !important;
     }
 
@@ -414,6 +414,9 @@ def get_dark_css() -> str:
     """
 
 init_session_state()
+
+if "plot_reset_counter" not in st.session_state:
+    st.session_state["plot_reset_counter"] = 0
 
 theme_mode = st.session_state.get("theme_mode", "light")
 
@@ -679,6 +682,7 @@ def render_spectra_tabs(
     theme_mode = st.session_state.get("theme_mode", "light")
     tabs = []
     tab_keys = []
+    plot_key_base = st.session_state.get("plot_reset_counter", 0)
 
 
     if show_c13:
@@ -727,6 +731,7 @@ def render_spectra_tabs(
                     st.plotly_chart(
                         fig1,
                         width="stretch",
+                        key=f"c13-{plot_key_base}",
                         config={
                             "scrollZoom": False,
                             "displaylogo": False,
@@ -769,6 +774,7 @@ def render_spectra_tabs(
                     st.plotly_chart(
                         fig2,
                         width="stretch",
+                        key=f"h1-{plot_key_base}",
                         config={
                             "scrollZoom": False,
                             "displaylogo": False,
@@ -809,6 +815,7 @@ def render_spectra_tabs(
                     st.plotly_chart(
                         fig3,
                         width="stretch",
+                        key=f"ir-{plot_key_base}",
                         config={
                             "scrollZoom": False,
                             "displaylogo": False,
@@ -836,6 +843,7 @@ def render_spectra_tabs(
                 st.plotly_chart(
                         fig5,
                         width="stretch",
+                        key=f"ms-{plot_key_base}",
                         config={
                             "scrollZoom": False,
                             "displaylogo": False,
@@ -1327,11 +1335,13 @@ def render_daily():
                 st.session_state["daily_last_feedback"] = get_daily_unlock_message(attempts_now)
                 st.session_state["daily_reset_selection"] = True
 
+            st.session_state["plot_reset_counter"] += 1    
             st.rerun()
 
     with col2:
         if st.button(t("give_up"), width="stretch"):
             give_up_daily()
+            st.session_state["plot_reset_counter"] += 1
             st.rerun()
 
     with col3:
