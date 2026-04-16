@@ -101,7 +101,7 @@ from services.molecule_utils import (
     build_smiles_to_molecule_map,
     smiles_to_pil,
     molecule_exists,
-    get_display_name,
+    get_display_names,
     get_difficulty,
     normalize_smiles,
 )
