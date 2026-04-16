@@ -307,16 +307,6 @@ FUNCTIONAL_GROUPS: dict[str, dict] = {
             (1150, 0.50, 25,  "C-O str tert"),
         ]
     },
-    "phenol": {
-        "smarts": "[OX2H][cX3]",
-        "count": False,
-        "peaks": [
-            (3300, 0.55, 90,  "OH str (phenol)"),
-            (1230, 0.55, 25,  "C-O str phenol"),
-            (750,  0.35, 20,  "OH oop phenol"),
-        ]
-    },
-
     # ── Ether ────────────────────────────────────────────────────────────────
     "ether_aliph": {
         "smarts": "[CX4][OX2H0][CX4]",
@@ -836,7 +826,7 @@ FUNCTIONAL_GROUPS.update({
             (1180, 0.14, 18,  "Ar-O str II"),
             (1150, 0.10, 18,  "phenolic deformation"),
             (980,  0.08, 18,  "OH wag"),
-            (750,  0.35, 20,  "OH oop phenol"),
+            (750,  0.12, 20,  "OH oop phenol"),
             (690,  0.10, 16,  "Ar-O deformation"),
         ]
     },
