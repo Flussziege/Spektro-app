@@ -83,7 +83,7 @@ def get_aromatic_substitution_peaks(mol) -> list[tuple]:
                     (3030, 0.40, 14, "ArH str ortho"),
                     (1600, 0.45, 16, "Ar C=C I"),
                     (1500, 0.50, 16, "Ar C=C II"),
-                    (750,  0.25, 18, "ArH oop 4adj"),
+                    (750,  0.15, 18, "ArH oop 4adj"),
                     # Obertöne
                     (1950, 0.025, 20, "Ar overtone (ortho)"),
                     (1850, 0.03, 20, "Ar comb. band (ortho)"),
