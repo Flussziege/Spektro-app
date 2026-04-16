@@ -252,7 +252,7 @@ def get_dark_css() -> str:
 
     .stButton > button[kind="primary"] {
         background: #E5E7EB !important;
-        color: #FFFFFF !important;
+        color: #000000 !important;
         border: 1px solid #E5E7EB !important;
     }
 
