@@ -120,7 +120,7 @@ Webseite:
 MS *
 - BESSER MACHEN
 
-- Cookies:
+- Cookies: (sehr aufwendig? erstmal nicht)
     - Statistik, wie lange man immer gebraucht hat
     - wie viele das schon gelöst haben
     - das man es schon gelöst hat

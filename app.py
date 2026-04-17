@@ -17,6 +17,7 @@ import generator2
 import generator5
 import hnmr
 import ms
+import ms_simulator_v2
 
 IMPRINT_TEXT = """
 **Impressum**
@@ -725,7 +726,12 @@ def render_spectra_tabs(
         tab_keys.append("ir")
     if show_ms:
         tabs.append(t("ms_title"))
-        tab_keys.append("ms")    
+        tab_keys.append("ms")   
+    ##
+    if show_ms:
+        tabs.append("Ms-2")
+        tab_keys.append("ms-2") 
+    ##      
     if show_ea:
         tabs.append(t("ea_title"))
         tab_keys.append("ea")
@@ -888,6 +894,34 @@ def render_spectra_tabs(
                         },
                         theme=None,
                 )
+
+##### Bgeinn
+            elif key == "ms":
+                st.subheader(t("ms_title"))
+
+                ms_result = ms_simulator_v2.simulate_ms(smiles, seed=42)
+                fig5 = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure, theme_mode=theme_mode)
+
+                st.plotly_chart(
+                        fig5,
+                        width="stretch",
+                        key=f"ms-{plot_key_base}",
+                        config={
+                            "scrollZoom": False,
+                            "displaylogo": False,
+                            "doubleClick": "reset",
+                            "modeBarButtonsToRemove": [
+                                "zoom2d",
+                                "select2d",
+                                "lasso2d",
+                                "zoomIn2d",
+                                "zoomOut2d",
+                                "autoScale2d",
+                            ],
+                        },
+                        theme=None,
+                )
+# Ende                
 
             elif key == "ea":
                 st.subheader(t("ea_title"))
