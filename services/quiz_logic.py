@@ -13,9 +13,17 @@ def pick_random_molecule(molecules: list[dict]) -> dict:
 def pick_daily_molecule(molecules: list[dict], today: Optional[date] = None) -> dict:
     if not molecules:
         raise ValueError("Daily-Molekülliste ist leer.")
+
     today = today or date.today()
-    index = today.toordinal() % len(molecules)
-    return molecules[index]
+    n = len(molecules)
+
+    cycle = today.toordinal() // n
+    index_in_cycle = today.toordinal() % n
+
+    shuffled = molecules.copy()
+    random.Random(cycle).shuffle(shuffled)
+
+    return shuffled[index_in_cycle]
 
 
 def is_correct_answer(user_answer: str, correct_smiles: str, name_to_smiles: dict[str, str]) -> bool:
