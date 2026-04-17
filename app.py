@@ -1284,7 +1284,7 @@ def render_daily():
         st.session_state["daily_last_feedback"] = None
 
     if st.session_state["daily_submitted"] and (
-        st.session_state["daily_correct"] or st.session_state.get("daily_gave_up")
+        st.session_state["daily_correct"] 
     ):
         st.success(t("correct_daily", name=primary_name))
 
@@ -1292,6 +1292,41 @@ def render_daily():
             st.caption(" / ".join(synonyms))
         else:
             st.warning(t("gave_up_daily", name=correct_name))
+
+        try:
+            img = smiles_to_pil(smiles)
+            if img is not None:
+                st.image(img, caption=correct_name, width=320)
+        except Exception as e:
+            st.warning(t("structure_display_error", error=e))
+
+        st.markdown(f"### {t('wrong_guesses_title')}")
+        if wrong_guesses:
+            for guess in wrong_guesses:
+                st.write(f"- {guess}")
+        else:
+            st.write(t("no_selection"))
+
+        col_a, col_b = st.columns(2)
+
+        with col_a:
+            if st.button(t("open_in_lookup"), key="daily_lookup_bottom", width="stretch"):
+                set_lookup(smiles)
+                st.rerun()
+
+        with col_b:
+            if st.button(t("startpage"), key="daily_home_bottom", width="stretch"):
+                st.session_state["daily_submitted"] = False
+                go_home()
+                st.rerun()
+
+        render_footer()
+        return
+    
+    if st.session_state["daily_submitted"] and (
+         st.session_state.get("daily_gave_up")
+    ):
+        st.warning(t("gave_up_daily", name=primary_name))
 
         try:
             img = smiles_to_pil(smiles)
