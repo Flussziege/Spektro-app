@@ -896,7 +896,7 @@ def render_spectra_tabs(
                 )
 
 ##### Bgeinn
-            elif key == "ms":
+            elif key == "ms-2":
                 st.subheader(t("ms_title"))
 
                 ms_result = ms_simulator_v2.simulate_ms(smiles, seed=42)
