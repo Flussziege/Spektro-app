@@ -706,7 +706,7 @@ def render_spectra_tabs(
     show_ir: bool = True,
     show_ea: bool = True,
     show_ms: bool = True,
-    show_ms_v2: bool = True,
+    show_ms_v2: bool = False,
     c13_easy_mode: bool = False,
 ):
     
