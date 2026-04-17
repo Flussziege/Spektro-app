@@ -216,43 +216,77 @@ def get_dark_css() -> str:
         color: #E5E7EB;
     }
 
+    /* Oberer Header-Balken */
     header[data-testid="stHeader"] {
         background: #0F172A !important;
     }
 
+    /* Toolbar / obere Leiste */
     [data-testid="stToolbar"] {
         background: #0F172A !important;
     }
 
+    /* Hauptcontainer */
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
         max-width: 95rem;
     }
 
+    /* Text */
     .stMarkdown, .stText, p, label, span, h1, h2, h3, h4, h5, h6 {
         color: #E5E7EB;
     }
 
+    /* Buttons */
     .stButton > button {
         background: #1E293B !important;
         color: #E5E7EB !important;
         border: 1px solid #334155 !important;
         border-radius: 10px !important;
         box-shadow: none !important;
+        opacity: 1 !important;
     }
 
     .stButton > button:hover {
         background: #273449 !important;
+        color: #E5E7EB !important;
         border-color: #475569 !important;
+        opacity: 1 !important;
     }
 
+    /* Primary */
     .stButton > button[kind="primary"] {
         background: #E5E7EB !important;
         color: #000000 !important;
         border: 1px solid #E5E7EB !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #000000 !important;
     }
 
+    .stButton > button[kind="primary"] * {
+        color: #000000 !important;
+        fill: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        opacity: 1 !important;
+    }
+
+    .stButton > button[kind="primary"]:hover {
+        background: #F8FAFC !important;
+        color: #000000 !important;
+        border: 1px solid #F8FAFC !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #000000 !important;
+    }
+
+    .stButton > button[kind="primary"]:hover * {
+        color: #000000 !important;
+        fill: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        opacity: 1 !important;
+    }
+
+    /* Inputs */
     .stTextInput input,
     .stNumberInput input,
     .stTextArea textarea {
@@ -262,12 +296,59 @@ def get_dark_css() -> str:
         color: #E5E7EB !important;
     }
 
-    /* Nur das sichtbare Select-Feld stylen */
-    [data-testid="stSelectbox"] > div > div {
+    /* Selectbox / Dropdown / Antwortfeld */
+    .stSelectbox div[data-baseweb="select"] > div,
+    div[data-baseweb="select"] > div {
         background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        border-radius: 10px !important;
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] input {
+        color: #E5E7EB !important;
+    }
+
+    /* Dropdown-Menü selbst */
+    div[role="listbox"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
+    }
+
+    div[role="option"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+    }
+
+    div[role="option"]:hover {
+        background: #273449 !important;
+    }
+
+    /* Segmented control / Button group */
+    [data-testid="stBaseButton-segmented_control"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
+    }
+
+    div[role="radiogroup"] {
+        background: transparent !important;
+    }
+
+    div[role="radiogroup"] > label {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+        border: 1px solid #334155 !important;
         border-radius: 10px !important;
     }
 
+    div[role="radiogroup"] > label[data-checked="true"] {
+        background: #334155 !important;
+        color: #FFFFFF !important;
+    }
+
+    /* Expander */
     details {
         background: #1E293B !important;
         border: 1px solid #334155 !important;
@@ -278,8 +359,14 @@ def get_dark_css() -> str:
         color: #E5E7EB !important;
     }
 
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.25rem;
+    }
+
     .stTabs [data-baseweb="tab"] {
         background: #0F172A !important;
+        border: none !important;
         color: #E5E7EB !important;
         border-radius: 8px !important;
     }
@@ -289,14 +376,72 @@ def get_dark_css() -> str:
         color: #FFFFFF !important;
     }
 
+    /* Alerts */
     [data-testid="stAlert"] {
         background: #1E293B !important;
         border: 1px solid #334155 !important;
         color: #E5E7EB !important;
     }
+
+    /* Plotly-Container */
+    .js-plotly-plot, .plotly, .plot-container {
+        background: transparent !important;
+    }
+
+    /* Tabellen / Codeboxen / sonstige Container */
+    [data-testid="stVerticalBlock"] {
+        color: #E5E7EB;
+    }
+    /* Selectbox / Combobox komplett dunkel */
+    div[data-baseweb="select"] {
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] > div {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] span {
+        color: #E5E7EB !important;
+    }
+
+    div[data-baseweb="select"] input {
+        color: #E5E7EB !important;
+        -webkit-text-fill-color: #E5E7EB !important;
+    }
+
+    /* Das eigentliche Antwortfeld / placeholder */
+    [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    /* Dropdown-Liste im Portal */
+    div[role="listbox"] {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #E5E7EB !important;
+    }
+
+    div[role="option"] {
+        background: #1E293B !important;
+        color: #E5E7EB !important;
+    }
+
+    div[role="option"][aria-selected="true"] {
+        background: #334155 !important;
+        color: #FFFFFF !important;
+    }
+
+    div[role="option"]:hover {
+        background: #273449 !important;
+        color: #FFFFFF !important;
+    }
     </style>
     """
-
 
 init_session_state()
 
