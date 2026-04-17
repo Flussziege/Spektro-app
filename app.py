@@ -897,7 +897,7 @@ def render_spectra_tabs(
 
 ##### Bgeinn
             elif key == "mas":
-                st.subheader(t("ms_title"))
+                st.subheader("test-ms2")
 
                 ms2_result = ms_simulator_v2.simulate_ms(smiles, seed=42)
                 fig6 = make_interactive_ms_plot(ms2_result, smiles=smiles, lookup_mode=show_structure, theme_mode=theme_mode)
