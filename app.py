@@ -706,7 +706,7 @@ def render_spectra_tabs(
     show_ir: bool = True,
     show_ea: bool = True,
     show_ms: bool = True,
-    show_ms_v2: bool = True,
+    show_ms_v1: bool = False,
     c13_easy_mode: bool = False,
 ):
     
@@ -728,9 +728,9 @@ def render_spectra_tabs(
     if show_ms:
         tabs.append(t("ms_title"))
         tab_keys.append("ms")
-    if show_ms_v2:
-        tabs.append("MS v2")
-        tab_keys.append("ms_v2")
+    if show_ms_v1:
+        tabs.append("MS v1")
+        tab_keys.append("ms_v1")
     if show_ea:
         tabs.append(t("ea_title"))
         tab_keys.append("ea")
@@ -871,7 +871,7 @@ def render_spectra_tabs(
             elif key == "ms":
                 st.subheader(t("ms_title"))
 
-                ms_result = ms.simulate_ms(smiles, seed=42)
+                ms_result = ms_simulator_v2.simulate_ms(smiles, seed=42)
                 fig5 = make_interactive_ms_plot(ms_result, smiles=smiles, lookup_mode=show_structure, theme_mode=theme_mode)
 
                 st.plotly_chart(
@@ -894,10 +894,10 @@ def render_spectra_tabs(
                         theme=None,
                 )
 
-            elif key == "ms_v2":
-                st.subheader("MS v2")
+            elif key == "ms_v1":
+                st.subheader("MS v1")
 
-                ms2_result = ms_simulator_v2.simulate_ms(smiles, seed=42)
+                ms2_result = ms.simulate_ms(smiles, seed=42)
                 fig6 = make_interactive_ms_plot(ms2_result, smiles=smiles, lookup_mode=show_structure, theme_mode=theme_mode)
 
                 st.plotly_chart(
