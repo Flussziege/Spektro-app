@@ -470,7 +470,7 @@ smiles_to_molecule = build_smiles_to_molecule_map(moleküle)
 daily_smiles_to_molecule = build_smiles_to_molecule_map(moleküle_daily)    
 
 def render_top_controls():
-    col_spacer, col_lang, col_theme = st.columns([5, 2, 1])
+    col_spacer, col_lang, col_theme = st.columns([6, 2, 1])
 
 
     with col_lang:
