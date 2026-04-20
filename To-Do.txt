@@ -116,6 +116,7 @@ Webseite:
 - button im dark design für primary color *
 - soll nicht abgeben können, wenn man nichts eingegeben hat *
 - nicht alle namen werden angeboten *s
+- give up im daily gibt "richt" *
 
 MS *
 - BESSER MACHEN
@@ -126,9 +127,10 @@ MS *
     - das man es schon gelöst hat
 
 
-- give up im daily gibt "richt"
+
 
 - (IR, 13C, 1H und MS gleiche quelle für schwingunen/verschiebungen/fragmentierungsmuster)
 
 
 
+sdmbfkbsljjsndfkjsdfn 
