@@ -1290,8 +1290,6 @@ def render_daily():
 
         if synonyms:
             st.caption(" / ".join(synonyms))
-        else:
-            st.warning(t("gave_up_daily", name=correct_name))
 
         try:
             img = smiles_to_pil(smiles)
