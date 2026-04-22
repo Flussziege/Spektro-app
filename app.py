@@ -1321,10 +1321,8 @@ def render_daily():
         render_footer()
         return
     
-    if st.session_state["daily_submitted"] and (
-         st.session_state.get("daily_gave_up")
-    ):
-        #st.warning(t("gave_up_daily", name=primary_name))
+    if st.session_state["daily_submitted"] and st.session_state["daily_gave_up"]:
+        st.warning(t("gave_up_daily", name=primary_name))
 
         try:
             img = smiles_to_pil(smiles)
@@ -1336,7 +1334,7 @@ def render_daily():
         st.markdown(f"### {t('wrong_guesses_title')}")
         if wrong_guesses:
             for guess in wrong_guesses:
-                st.write(f"- {guess}")
+                st.write(f"- {guess}")st.session_state
         else:
             st.write(t("no_selection"))
 
