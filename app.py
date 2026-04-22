@@ -1200,10 +1200,18 @@ def render_daily():
         st.session_state["daily_last_feedback"] = None
     if "daily_user_smiles" not in st.session_state:
         st.session_state["daily_user_smiles"] = None
+    if "daily_gave_up" not in st.session_state:
+        st.session_state["daily_gave_up"] = False
+    if "daily_correct" not in st.session_state:
+        st.session_state["daily_correct"] = None
+    if "daily_submitted" not in st.session_state:
+        st.session_state["daily_submitted"] = False
+    if "daily_done_date" not in st.session_state:
+        st.session_state["daily_done_date"] = None
 
     st.title(t("daily_title"))
 
-
+    # Daily wurde heute schon abgeschlossen und wir sind nicht mehr im direkten Submit-Zustand
     if (
         st.session_state["daily_done_date"] == today
         and not st.session_state["daily_submitted"]
@@ -1214,7 +1222,11 @@ def render_daily():
 
         _, correct_name, difficulty = get_molecule_data(smiles, daily=True)
 
-        st.success(t("daily_done"))
+        if st.session_state.get("daily_gave_up", False):
+            st.warning(t("gave_up_daily", name=correct_name))
+        else:
+            st.success(t("daily_done"))
+
         st.markdown(f"### {correct_name}")
         st.caption(f"{t('difficulty_label')}: {difficulty_text(difficulty)}")
 
@@ -1283,9 +1295,7 @@ def render_daily():
         st.info(unlock_message)
         st.session_state["daily_last_feedback"] = None
 
-    if st.session_state["daily_submitted"] and (
-        st.session_state["daily_correct"] 
-    ):
+    if st.session_state["daily_submitted"] and st.session_state["daily_correct"]:
         st.success(t("correct_daily", name=primary_name))
 
         if synonyms:
@@ -1320,10 +1330,8 @@ def render_daily():
 
         render_footer()
         return
-    
-    if st.session_state["daily_submitted"] and (
-         st.session_state.get("daily_gave_up")
-    ):
+
+    if st.session_state["daily_submitted"] and st.session_state.get("daily_gave_up"):
         st.warning(t("gave_up_daily", name=primary_name))
 
         try:
@@ -1336,7 +1344,7 @@ def render_daily():
         st.markdown(f"### {t('wrong_guesses_title')}")
         if wrong_guesses:
             for guess in wrong_guesses:
-                st.write(f"- {guess}")st.session_state
+                st.write(f"- {guess}")
         else:
             st.write(t("no_selection"))
 
@@ -1455,7 +1463,7 @@ def render_daily():
             st.session_state["daily_gave_up"] = False
 
             if correct:
-                st.session_state["daily_done_date"] = date.today().isoformat()
+                st.session_state["daily_done_date"] = today
             else:
                 st.session_state["daily_attempt_count"] += 1
                 if cleaned_answer not in st.session_state["daily_wrong_guesses"]:
@@ -1465,7 +1473,7 @@ def render_daily():
                 st.session_state["daily_last_feedback"] = get_daily_unlock_message(attempts_now)
                 st.session_state["daily_reset_selection"] = True
 
-            st.session_state["plot_reset_counter"] += 1    
+            st.session_state["plot_reset_counter"] += 1
             st.rerun()
 
     with col2:
@@ -1478,9 +1486,8 @@ def render_daily():
         if st.button(t("back_home"), key="daily_home_top", width="stretch"):
             go_home()
             st.rerun()
-    
-    render_footer()   # 👈 HIER
 
+    render_footer()
 
 def render_lookup():
     smiles = st.session_state["lookup_smiles"]
