@@ -1324,7 +1324,7 @@ def render_daily():
     if st.session_state["daily_submitted"] and (
          st.session_state.get("daily_gave_up")
     ):
-        st.warning(t("gave_up_daily", name=primary_name))
+        #st.warning(t("gave_up_daily", name=primary_name))
 
         try:
             img = smiles_to_pil(smiles)
